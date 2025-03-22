@@ -1,6 +1,25 @@
 #!/usr/bin/env node
 
-import 'dotenv/config'
+import dotenv from 'dotenv'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+// Load .env from package directory, accounting for both source and dist contexts
+const envPath = path.resolve(
+  __dirname,
+  process.env.NODE_ENV === 'production' ? '../../.env' : '../.env'
+)
+dotenv.config({ path: envPath })
+
+// Debug: Check if GITHUB_TOKEN is loaded (showing first 4 chars only for security)
+const token = process.env.GITHUB_TOKEN
+console.log(
+  'GITHUB_TOKEN loaded:',
+  token ? `${token.slice(0, 4)}...` : 'not found'
+)
 
 import { parseFile } from '@repo-vector/parser-core'
 import { getFilesFromTarball } from '@repo-vector/github-fetcher'
