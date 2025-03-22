@@ -14,7 +14,12 @@
   "dependencies": {
     "@repo-vector/parser-ts": "workspace:*",
     "@repo-vector/parser-md": "workspace:*",
-    "@repo-vector/parser-json": "workspace:*"
+    "@repo-vector/parser-json": "workspace:*",
+    "@repo-vector/parser-css": "workspace:*",
+    "@repo-vector/parser-yaml": "workspace:*",
+    "@repo-vector/parser-py": "workspace:*",
+    "@repo-vector/parser-rust": "workspace:*",
+    "@repo-vector/parser-html": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

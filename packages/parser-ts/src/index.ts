@@ -7,9 +7,19 @@ export interface ParsedChunk {
   parent?: string
 }
 
-export function parse(content: string): ParsedChunk[] {
-  const project = new Project({ useInMemoryFileSystem: true })
-  const sourceFile = project.createSourceFile('temp.ts', content)
+export function parse(
+  content: string,
+  extension: string = 'ts'
+): ParsedChunk[] {
+  const project = new Project({
+    useInMemoryFileSystem: true,
+    compilerOptions: {
+      allowJs: true,
+      jsx: extension === 'tsx' || extension === 'jsx' ? 2 : undefined,
+    },
+  })
+
+  const sourceFile = project.createSourceFile(`temp.${extension}`, content)
 
   const chunks: ParsedChunk[] = []
 

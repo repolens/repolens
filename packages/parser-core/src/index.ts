@@ -10,6 +10,26 @@ import {
   parse as parseJSON,
   type ParsedChunk as ParsedChunkJSON,
 } from '@repo-vector/parser-json'
+import {
+  parse as parseCSS,
+  type ParsedChunk as ParsedChunkCSS,
+} from '@repo-vector/parser-css'
+import {
+  parse as parseYAML,
+  type ParsedChunk as ParsedChunkYAML,
+} from '@repo-vector/parser-yaml'
+import {
+  parse as parsePY,
+  type ParsedChunk as ParsedChunkPY,
+} from '@repo-vector/parser-py'
+import {
+  parse as parseRust,
+  type ParsedChunk as ParsedChunkRust,
+} from '@repo-vector/parser-rust'
+import {
+  parse as parseHTML,
+  type ParsedChunk as ParsedChunkHTML,
+} from '@repo-vector/parser-html'
 
 export interface ParsedChunk {
   type: string
@@ -30,11 +50,13 @@ export function parseFile({
 
   switch (ext) {
     case 'ts':
+    case 'js':
+    case 'jsx':
     case 'tsx':
-      return parseTS(content).map((chunk: ParsedChunkTS) => ({
+      return parseTS(content, ext).map((chunk: ParsedChunkTS) => ({
         ...chunk,
         path,
-        language: 'ts',
+        language: ext,
       }))
 
     case 'md':
@@ -51,7 +73,41 @@ export function parseFile({
         language: 'json',
       }))
 
-    // Add others as needed
+    case 'css':
+      return parseCSS(content).map((chunk: ParsedChunkCSS) => ({
+        ...chunk,
+        path,
+        language: 'css',
+      }))
+
+    case 'yaml':
+    case 'yml':
+      return parseYAML(content).map((chunk: ParsedChunkYAML) => ({
+        ...chunk,
+        path,
+        language: ext,
+      }))
+
+    case 'py':
+      return parsePY(content).map((chunk: ParsedChunkPY) => ({
+        ...chunk,
+        path,
+        language: 'python',
+      }))
+
+    case 'rs':
+      return parseRust(content).map((chunk: ParsedChunkRust) => ({
+        ...chunk,
+        path,
+        language: 'rust',
+      }))
+
+    case 'html':
+      return parseHTML(content).map((chunk: ParsedChunkHTML) => ({
+        ...chunk,
+        path,
+        language: 'html',
+      }))
 
     default:
       return [] // unsupported file
