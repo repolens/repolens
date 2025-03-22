@@ -39,23 +39,34 @@ async function run() {
     process.exit(1)
   }
 
-  const files = await getFilesFromTarball(owner, repo, ref)
-  console.log(`🧾 Found ${files.length} files.`)
+  try {
+    const files = await getFilesFromTarball(owner, repo, ref)
 
-  let totalChunks = 0
-
-  for (const file of files) {
-    const chunks = parseFile(file)
-    if (chunks.length > 0) {
-      console.log(`\n📄 ${file.path}`)
-      for (const chunk of chunks) {
-        console.log(`  - [${chunk.language}] ${chunk.type}: ${chunk.name}`)
-      }
-      totalChunks += chunks.length
+    if (files.length === 0) {
+      console.log('⚠️ No files were found in the repository')
+      process.exit(0)
     }
-  }
 
-  console.log(`\n✅ Parsed ${totalChunks} chunks from ${files.length} files.`)
+    console.log(`🧾 Found ${files.length} files.`)
+
+    let totalChunks = 0
+
+    for (const file of files) {
+      const chunks = parseFile(file)
+      if (chunks.length > 0) {
+        console.log(`\n📄 ${file.path}`)
+        for (const chunk of chunks) {
+          console.log(`  - [${chunk.language}] ${chunk.type}: ${chunk.name}`)
+        }
+        totalChunks += chunks.length
+      }
+    }
+
+    console.log(`\n✅ Parsed ${totalChunks} chunks from ${files.length} files.`)
+  } catch (err) {
+    console.error('❌ Error:', err instanceof Error ? err.message : err)
+    process.exit(1)
+  }
 }
 
 run().catch((err) => {

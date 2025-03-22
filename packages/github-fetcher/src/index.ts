@@ -17,6 +17,8 @@ export async function getFilesFromTarball(
   ref = 'main'
 ): Promise<GitHubFile[]> {
   const url = `https://api.github.com/repos/${owner}/${repo}/tarball/${ref}`
+  console.log(`📦 Downloading ${owner}/${repo}@${ref}...`)
+
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), `${repo}-`))
 
   const res = await fetch(url, {
@@ -27,43 +29,49 @@ export async function getFilesFromTarball(
   })
 
   if (!res.ok || !res.body) {
-    throw new Error(`Failed to download tarball: ${res.statusText}`)
+    throw new Error(
+      `Failed to download tarball: ${res.statusText} (${res.status})`
+    )
   }
 
-  await tar.x(
-    {
+  try {
+    // Save and extract tarball
+    const tarPath = path.join(tmpDir, 'repo.tar.gz')
+    const buffer = await res.arrayBuffer()
+    await fs.writeFile(tarPath, Buffer.from(buffer))
+    await tar.x({
+      file: tarPath,
       cwd: tmpDir,
-      file: undefined,
       strip: 1,
-      sync: false,
-      gzip: true,
-      onentry: () => {},
-      // @ts-ignore
-      readable: true,
-    },
-    res.body
-  )
+    })
+    await fs.unlink(tarPath)
+  } catch (err) {
+    console.error('❌ Failed to extract tarball:', err)
+    throw err
+  }
 
   const files: GitHubFile[] = []
 
   async function walk(dir: string) {
-    console.log('walking', dir)
-    const entries = await fs.readdir(dir, { withFileTypes: true })
-
-    console.log('entries', entries)
-    for (const entry of entries) {
-      console.log('entry', entry)
-      const fullPath = path.join(dir, entry.name)
-      if (entry.isDirectory()) {
-        await walk(fullPath)
-      } else {
-        const content = await fs.readFile(fullPath, 'utf-8')
-        const relativePath = path.relative(tmpDir, fullPath)
-        files.push({ path: relativePath, content })
+    try {
+      const entries = await fs.readdir(dir, { withFileTypes: true })
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name)
+        if (entry.isDirectory()) {
+          await walk(fullPath)
+        } else {
+          const content = await fs.readFile(fullPath, 'utf-8')
+          const relativePath = path.relative(tmpDir, fullPath)
+          files.push({ path: relativePath, content })
+        }
       }
+    } catch (err) {
+      console.error(`❌ Error walking directory ${dir}:`, err)
+      throw err
     }
   }
 
   await walk(tmpDir)
+  console.log(`✅ Found ${files.length} files`)
   return files
 }
