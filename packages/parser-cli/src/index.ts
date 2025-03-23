@@ -14,60 +14,36 @@ const envPath = path.resolve(
 )
 dotenv.config({ path: envPath })
 
-// Debug: Check if GITHUB_TOKEN is loaded (showing first 4 chars only for security)
-const token = process.env.GITHUB_TOKEN
-console.log(
-  'GITHUB_TOKEN loaded:',
-  token ? `${token.slice(0, 4)}...` : 'not found'
-)
-
-import { parseFile } from '@repo-vector/parser-core'
-import { getFilesFromTarball } from '@repo-vector/github-fetcher'
+import { RepoVector } from '@repo-vector/core'
 
 const [, , owner, repo, ref = 'main'] = process.argv
 
-if (!owner || !repo) {
-  console.error('Usage: parser <owner> <repo> [ref]')
-  process.exit(1)
-}
-
 async function run() {
-  console.log(`📦 Downloading tarball for ${owner}/${repo}@${ref}...`)
-
   if (!owner || !repo) {
     console.error('Usage: parser <owner> <repo> [ref]')
     process.exit(1)
   }
 
-  try {
-    const files = await getFilesFromTarball(owner, repo, ref)
+  const client = new RepoVector({
+    owner,
+    repo,
+    ref,
+    // You can also add includeExtensions, filters, etc.
+  })
 
-    if (files.length === 0) {
-      console.log('⚠️ No files were found in the repository')
-      process.exit(0)
-    }
+  const chunks = await client.run()
 
-    console.log(`🧾 Found ${files.length} files.`)
-
-    let totalChunks = 0
-
-    for (const file of files) {
-      const chunks = parseFile(file)
-      if (chunks.length > 0) {
-        console.log(`\n📄 ${file.path}`)
-        for (const chunk of chunks) {
-          console.log(`  - [${chunk.language}] ${chunk.type}: ${chunk.name}`)
-          console.log(chunk.text)
-        }
-        totalChunks += chunks.length
-      }
-    }
-
-    console.log(`\n✅ Parsed ${totalChunks} chunks from ${files.length} files.`)
-  } catch (err) {
-    console.error('❌ Error:', err instanceof Error ? err.message : err)
-    process.exit(1)
+  for (const chunk of chunks) {
+    console.log(`\n📄 ${chunk.filePath}`)
+    console.log(`  - [${chunk.language}] ${chunk.type}: ${chunk.name}`)
+    console.log(
+      `  - 🔢 embedding: [${chunk.embedding?.slice(0, 5).join(', ')}...]\n`
+    )
   }
+
+  console.log(
+    `✅ Parsed and embedded ${chunks.length} chunks from ${owner}/${repo}@${ref}`
+  )
 }
 
 run().catch((err) => {

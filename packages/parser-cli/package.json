@@ -19,8 +19,7 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@repo-vector/github-fetcher": "workspace:*",
-    "@repo-vector/parser-core": "workspace:*",
+    "@repo-vector/core": "workspace:*",
     "dotenv": "^16.4.7"
   }
 }
