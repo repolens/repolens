@@ -1,0 +1,26 @@
+{
+  "name": "@repo-vector/parser-toml",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@turbo/gen": "^2.4.4",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "typescript": "5.8.2"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5"
+  }
+}

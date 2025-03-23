@@ -57,6 +57,7 @@ async function run() {
         console.log(`\n📄 ${file.path}`)
         for (const chunk of chunks) {
           console.log(`  - [${chunk.language}] ${chunk.type}: ${chunk.name}`)
+          console.log(chunk.text)
         }
         totalChunks += chunks.length
       }

@@ -30,6 +30,34 @@ import {
   parse as parseHTML,
   type ParsedChunk as ParsedChunkHTML,
 } from '@repo-vector/parser-html'
+import {
+  parse as parseTOML,
+  type ParsedChunk as ParsedChunkTOML,
+} from '@repo-vector/parser-toml'
+import {
+  parse as parseJava,
+  type ParsedChunk as ParsedChunkJava,
+} from '@repo-vector/parser-java'
+import {
+  parse as parseKotlin,
+  type ParsedChunk as ParsedChunkKotlin,
+} from '@repo-vector/parser-kotlin'
+import {
+  parse as parsePHP,
+  type ParsedChunk as ParsedChunkPHP,
+} from '@repo-vector/parser-php'
+import {
+  parse as parseCPP,
+  type ParsedChunk as ParsedChunkCPP,
+} from '@repo-vector/parser-cpp'
+import {
+  parse as parseGo,
+  type ParsedChunk as ParsedChunkGo,
+} from '@repo-vector/parser-go'
+import {
+  parse as parseRuby,
+  type ParsedChunk as ParsedChunkRuby,
+} from '@repo-vector/parser-ruby'
 
 export interface ParsedChunk {
   type: string
@@ -74,6 +102,8 @@ export function parseFile({
       }))
 
     case 'css':
+    case 'scss':
+    case 'sass':
       return parseCSS(content).map((chunk: ParsedChunkCSS) => ({
         ...chunk,
         path,
@@ -102,11 +132,63 @@ export function parseFile({
         language: 'rust',
       }))
 
+    case 'rb':
+      return parseRuby(content).map((chunk: ParsedChunkRuby) => ({
+        ...chunk,
+        path,
+        language: 'ruby',
+      }))
+
     case 'html':
       return parseHTML(content).map((chunk: ParsedChunkHTML) => ({
         ...chunk,
         path,
         language: 'html',
+      }))
+
+    case 'toml':
+      return parseTOML(content).map((chunk: ParsedChunkTOML) => ({
+        ...chunk,
+        path,
+        language: 'toml',
+      }))
+
+    case 'java':
+      return parseJava(content).map((chunk: ParsedChunkJava) => ({
+        ...chunk,
+        path,
+        language: 'java',
+      }))
+
+    case 'kt':
+      return parseKotlin(content).map((chunk: ParsedChunkKotlin) => ({
+        ...chunk,
+        path,
+        language: 'kotlin',
+      }))
+
+    case 'php':
+      return parsePHP(content).map((chunk: ParsedChunkPHP) => ({
+        ...chunk,
+        path,
+        language: 'php',
+      }))
+
+    case 'c':
+    case 'cpp':
+    case 'cc':
+    case 'cxx':
+      return parseCPP(content).map((chunk: ParsedChunkCPP) => ({
+        ...chunk,
+        path,
+        language: 'cpp',
+      }))
+
+    case 'go':
+      return parseGo(content).map((chunk: ParsedChunkGo) => ({
+        ...chunk,
+        path,
+        language: 'go',
       }))
 
     default:

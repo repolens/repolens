@@ -19,7 +19,14 @@
     "@repo-vector/parser-yaml": "workspace:*",
     "@repo-vector/parser-py": "workspace:*",
     "@repo-vector/parser-rust": "workspace:*",
-    "@repo-vector/parser-html": "workspace:*"
+    "@repo-vector/parser-html": "workspace:*",
+    "@repo-vector/parser-toml": "workspace:*",
+    "@repo-vector/parser-java": "workspace:*",
+    "@repo-vector/parser-kotlin": "workspace:*",
+    "@repo-vector/parser-php": "workspace:*",
+    "@repo-vector/parser-cpp": "workspace:*",
+    "@repo-vector/parser-go": "workspace:*",
+    "@repo-vector/parser-ruby": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
