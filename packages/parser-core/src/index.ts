@@ -181,7 +181,7 @@ export function parseFile({
       return parseCPP(content).map((chunk: ParsedChunkCPP) => ({
         ...chunk,
         path,
-        language: 'cpp',
+        language: ext,
       }))
 
     case 'go':
