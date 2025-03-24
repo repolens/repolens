@@ -1,7 +1,7 @@
 import { GithubFetcher } from '@repo-vector/github-fetcher'
 import { parseFile, ParsedChunk } from '@repo-vector/parser-core'
 import { Vectorizer } from './vectorize'
-import { splitChunkText } from './utils/split-chunk-text'
+import { splitChunkText } from '@repo-vector/utils/splitChunkText'
 
 export interface RepoVectorConfig {
   owner: string
@@ -58,7 +58,12 @@ export class RepoVector {
     const texts: string[] = []
 
     chunks.forEach((chunk) => {
-      const parts = splitChunkText(chunk.text)
+      const parts = splitChunkText(
+        chunk.text,
+        'text-embedding-3-small',
+        8000,
+        0
+      )
       parts.forEach((partText, index) => {
         texts.push(partText)
         splitChunks.push({

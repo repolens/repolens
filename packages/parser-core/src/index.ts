@@ -58,6 +58,10 @@ import {
   parse as parseRuby,
   type ParsedChunk as ParsedChunkRuby,
 } from '@repo-vector/parser-ruby'
+import {
+  parse as parseDefault,
+  type ParsedChunk as ParsedChunkDefault,
+} from '@repo-vector/parser-default'
 
 export interface ParsedChunk {
   type: string
@@ -67,13 +71,18 @@ export interface ParsedChunk {
   language: string
 }
 
-export function parseFile({
-  path,
-  content,
-}: {
-  path: string
-  content: string
-}): ParsedChunk[] {
+interface ParserCoreOptions {
+  fallbackParser?: (content: string) => ParsedChunk[]
+}
+
+export function parseFile(
+  file: {
+    path: string
+    content: string
+  },
+  options?: ParserCoreOptions
+): ParsedChunk[] {
+  const { path, content } = file
   const ext = path.split('.').pop()
 
   switch (ext) {
@@ -191,7 +200,19 @@ export function parseFile({
         language: 'go',
       }))
 
+    case 'txt':
+      return parseDefault(content).map((chunk: ParsedChunkDefault) => ({
+        ...chunk,
+        path,
+        language: 'plain',
+      }))
+
     default:
-      return [] // unsupported file
+      const fallback = options?.fallbackParser || parseDefault
+      return fallback(content).map((chunk: ParsedChunkDefault) => ({
+        ...chunk,
+        path: file.path,
+        language: 'plain',
+      }))
   }
 }

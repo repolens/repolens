@@ -26,7 +26,8 @@
     "@repo-vector/parser-php": "workspace:*",
     "@repo-vector/parser-cpp": "workspace:*",
     "@repo-vector/parser-go": "workspace:*",
-    "@repo-vector/parser-ruby": "workspace:*"
+    "@repo-vector/parser-ruby": "workspace:*",
+    "@repo-vector/parser-default": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

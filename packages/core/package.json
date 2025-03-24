@@ -29,6 +29,7 @@
     "@dqbd/tiktoken": "^1.0.20",
     "@repo-vector/github-fetcher": "workspace:*",
     "@repo-vector/parser-core": "workspace:*",
+    "@repo-vector/utils": "workspace:*",
     "openai": "^4.89.0"
   }
 }

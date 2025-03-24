@@ -69,6 +69,9 @@ importers:
       '@repo-vector/parser-core':
         specifier: workspace:*
         version: link:../parser-core
+      '@repo-vector/utils':
+        specifier: workspace:*
+        version: link:../utils
       openai:
         specifier: ^4.89.0
         version: 4.89.0
@@ -201,6 +204,9 @@ importers:
       '@repo-vector/parser-css':
         specifier: workspace:*
         version: link:../parser-css
+      '@repo-vector/parser-default':
+        specifier: workspace:*
+        version: link:../parser-default
       '@repo-vector/parser-go':
         specifier: workspace:*
         version: link:../parser-go
@@ -302,6 +308,31 @@ importers:
       postcss-safe-parser:
         specifier: ^7.0.1
         version: 7.0.1(postcss@8.5.3)
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@turbo/gen':
+        specifier: ^2.4.4
+        version: 2.4.4(@types/node@22.13.10)(typescript@5.8.2)
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.13.10
+      eslint:
+        specifier: ^9.22.0
+        version: 9.22.0(jiti@2.4.2)
+      typescript:
+        specifier: 5.8.2
+        version: 5.8.2
+
+  packages/parser-default:
+    dependencies:
+      '@repo-vector/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -702,6 +733,31 @@ importers:
       '@types/react-dom':
         specifier: 19.0.4
         version: 19.0.4(@types/react@19.0.10)
+      eslint:
+        specifier: ^9.22.0
+        version: 9.22.0(jiti@2.4.2)
+      typescript:
+        specifier: 5.8.2
+        version: 5.8.2
+
+  packages/utils:
+    dependencies:
+      '@dqbd/tiktoken':
+        specifier: ^1.0.20
+        version: 1.0.20
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@turbo/gen':
+        specifier: ^2.4.4
+        version: 2.4.4(@types/node@22.13.10)(typescript@5.8.2)
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.13.10
       eslint:
         specifier: ^9.22.0
         version: 9.22.0(jiti@2.4.2)
