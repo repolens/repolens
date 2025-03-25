@@ -6,8 +6,7 @@
     "./splitChunkText": "./dist/split-chunk-text.js"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "build": "tsc"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
