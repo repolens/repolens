@@ -1,5 +1,6 @@
 import { Parser } from '@repo-vector/parser'
 import { createDefaultParser } from '@repo-vector/parser-default'
+import { createTSParser } from '@repo-vector/parser-ts'
 import { Vectorizer } from '@repo-vector/vectorizer'
 
 export async function POST(req: Request) {
@@ -13,6 +14,13 @@ export async function POST(req: Request) {
       chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
     }),
   })
+
+  parser.register(
+    'ts',
+    createTSParser({
+      chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
+    })
+  )
 
   const chunks = parser.parse({
     path: `file.${extension}`,

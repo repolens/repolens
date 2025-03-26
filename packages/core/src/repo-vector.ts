@@ -1,6 +1,7 @@
 import { GitHubFetcher } from '@repo-vector/github-fetcher'
 import { Parser } from '@repo-vector/parser'
 import { createDefaultParser } from '@repo-vector/parser-default'
+import { createTSParser } from '@repo-vector/parser-ts'
 import { Vectorizer } from '@repo-vector/vectorizer'
 import type { ParsedChunk, Chunker } from '@repo-vector/types'
 
@@ -17,7 +18,6 @@ export interface RepoVectorConfig {
 }
 
 export interface RepoVectorChunk extends ParsedChunk {
-  embedding?: number[]
   filePath: string
   repo: string
   part?: number
@@ -83,6 +83,11 @@ export class RepoVector {
     const parser = new Parser({
       fallback: createDefaultParser(chunker),
     })
+
+    parser.register('ts', createTSParser(chunker))
+    parser.register('tsx', createTSParser(chunker))
+    parser.register('jsx', createTSParser(chunker))
+    parser.register('js', createTSParser(chunker))
 
     const chunks: RepoVectorChunk[] = []
 

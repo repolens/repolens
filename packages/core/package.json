@@ -23,13 +23,18 @@
     "dotenv": "^16.4.7",
     "eslint": "^9.22.0",
     "tsup": "^8.4.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "ts-morph": "^25.0.1"
   },
   "dependencies": {
     "@repo-vector/github-fetcher": "workspace:*",
     "@repo-vector/parser": "workspace:*",
     "@repo-vector/parser-default": "workspace:*",
+    "@repo-vector/parser-ts": "workspace:*",
     "@repo-vector/types": "workspace:*",
     "@repo-vector/vectorizer": "workspace:*"
+  },
+  "peerDependencies": {
+    "ts-morph": "^25.0.1"
   }
 }

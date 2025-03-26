@@ -46,6 +46,7 @@ export function TextParser() {
               onChange={(e) => setParser(e.target.value)}
             >
               <option value="default">Default Parser</option>
+              <option value="ts">TypeScript Parser</option>
             </select>
           </div>
 
