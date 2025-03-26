@@ -1,4 +1,4 @@
-import type { FileInput, ParsedChunk } from '@repo-vector/types'
+import type { FileInput, ParsedChunk } from '@repolens/types'
 
 export type { FileInput, ParsedChunk }
 export type ParserFn = (file: FileInput) => ParsedChunk[]

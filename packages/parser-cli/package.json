@@ -1,5 +1,5 @@
 {
-  "name": "@repo-vector/parser-cli",
+  "name": "@repolens/parser-cli",
   "version": "0.0.0",
   "type": "module",
   "bin": {
@@ -19,7 +19,7 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@repo-vector/core": "workspace:*",
+    "@repolens/core": "workspace:*",
     "dotenv": "^16.4.7"
   }
 }

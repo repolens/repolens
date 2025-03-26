@@ -1,4 +1,4 @@
-import type { Chunker, FileInput, ParsedChunk } from '@repo-vector/types'
+import type { Chunker, FileInput, ParsedChunk } from '@repolens/types'
 
 export type { Chunker, FileInput, ParsedChunk }
 export function createDefaultParser(chunker: Chunker) {

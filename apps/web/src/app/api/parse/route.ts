@@ -1,7 +1,7 @@
-import { Parser } from '@repo-vector/parser'
-import { createDefaultParser } from '@repo-vector/parser-default'
-import { createTSParser } from '@repo-vector/parser-ts'
-import { Vectorizer } from '@repo-vector/vectorizer'
+import { Parser } from '@repolens/parser'
+import { createDefaultParser } from '@repolens/parser-default'
+import { createTSParser } from '@repolens/parser-ts'
+import { Vectorizer } from '@repolens/vectorizer'
 
 export async function POST(req: Request) {
   const { content, extension } = await req.json()

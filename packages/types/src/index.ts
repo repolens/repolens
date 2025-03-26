@@ -9,6 +9,7 @@ export interface ChunkerOptions {
 export interface ParsedChunk {
   type: string
   name: string
+  parent?: string
   text: string
   path?: string
   language?: string

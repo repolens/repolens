@@ -1,19 +1,19 @@
 {
-  "name": "@repo-vector/core",
+  "name": "@repolens/core",
   "version": "0.0.0",
-  "main": "./dist/repo-vector.js",
-  "module": "./dist/repo-vector.mjs",
-  "types": "./dist/repo-vector.d.ts",
+  "main": "./dist/repolens.js",
+  "module": "./dist/repolens.mjs",
+  "types": "./dist/repolens.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/repo-vector.d.ts",
-      "require": "./dist/repo-vector.js",
-      "import": "./dist/repo-vector.mjs"
+      "types": "./dist/repolens.d.ts",
+      "require": "./dist/repolens.js",
+      "import": "./dist/repolens.mjs"
     }
   },
   "scripts": {
-    "build": "tsup src/repo-vector.ts --format cjs,esm --dts",
-    "dev": "tsup src/repo-vector.ts --format cjs,esm --dts --watch"
+    "build": "tsup src/repolens.ts --format cjs,esm --dts",
+    "dev": "tsup src/repolens.ts --format cjs,esm --dts --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -27,12 +27,12 @@
     "ts-morph": "^25.0.1"
   },
   "dependencies": {
-    "@repo-vector/github-fetcher": "workspace:*",
-    "@repo-vector/parser": "workspace:*",
-    "@repo-vector/parser-default": "workspace:*",
-    "@repo-vector/parser-ts": "workspace:*",
-    "@repo-vector/types": "workspace:*",
-    "@repo-vector/vectorizer": "workspace:*"
+    "@repolens/github-fetcher": "workspace:*",
+    "@repolens/parser": "workspace:*",
+    "@repolens/parser-default": "workspace:*",
+    "@repolens/parser-ts": "workspace:*",
+    "@repolens/types": "workspace:*",
+    "@repolens/vectorizer": "workspace:*"
   },
   "peerDependencies": {
     "ts-morph": "^25.0.1"

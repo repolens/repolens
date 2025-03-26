@@ -1,5 +1,5 @@
 import { Project, SyntaxKind } from 'ts-morph'
-import type { Chunker, FileInput, ParsedChunk } from '@repo-vector/types'
+import type { Chunker, FileInput, ParsedChunk } from '@repolens/types'
 
 export function createTSParser(chunker: Chunker) {
   return function parseTS(file: FileInput): ParsedChunk[] {
@@ -56,9 +56,27 @@ export function createTSParser(chunker: Chunker) {
               chunks.push({
                 type: 'method',
                 name: method.getName() ?? '',
+                parent: cls.getName() ?? '',
                 text,
-                metadata: { part: index, parent: cls.getName() ?? '' },
+                metadata: { part: index },
               })
+            })
+          })
+        }
+      }
+
+      if (node.getKind() === SyntaxKind.TypeAliasDeclaration) {
+        const alias = node.asKind(SyntaxKind.TypeAliasDeclaration)
+        if (alias?.getName()) {
+          const aliasParts = chunker.chunk(alias.getText(), {
+            path: file.path,
+          })
+          aliasParts.forEach((text, index) => {
+            chunks.push({
+              type: 'type',
+              name: alias.getName() ?? '',
+              text,
+              metadata: { part: index },
             })
           })
         }
@@ -74,6 +92,57 @@ export function createTSParser(chunker: Chunker) {
             chunks.push({
               type: 'interface',
               name: int.getName() ?? '',
+              text,
+              metadata: { part: index },
+            })
+          })
+        }
+      }
+
+      if (node.getKind() === SyntaxKind.EnumDeclaration) {
+        const enumNode = node.asKind(SyntaxKind.EnumDeclaration)
+        if (enumNode?.getName()) {
+          const enumParts = chunker.chunk(enumNode.getText(), {
+            path: file.path,
+          })
+          enumParts.forEach((text, index) => {
+            chunks.push({
+              type: 'enum',
+              name: enumNode.getName() ?? '',
+              text,
+              metadata: { part: index },
+            })
+          })
+        }
+      }
+
+      if (node.getKind() === SyntaxKind.VariableDeclaration) {
+        const varNode = node.asKind(SyntaxKind.VariableDeclaration)
+        if (varNode?.getName()) {
+          const varParts = chunker.chunk(varNode.getText(), {
+            path: file.path,
+          })
+          varParts.forEach((text, index) => {
+            chunks.push({
+              type: 'variable',
+              name: varNode.getName() ?? '',
+              text,
+              metadata: { part: index },
+            })
+          })
+        }
+      }
+
+      if (node.getKind() === SyntaxKind.ImportDeclaration) {
+        const importNode = node.asKind(SyntaxKind.ImportDeclaration)
+        if (importNode?.getModuleSpecifier()) {
+          const importParts = chunker.chunk(importNode.getText(), {
+            path: file.path,
+          })
+          importParts.forEach((text, index) => {
+            chunks.push({
+              type: 'import',
+              name: importNode.getModuleSpecifier()?.getText() ?? '',
               text,
               metadata: { part: index },
             })

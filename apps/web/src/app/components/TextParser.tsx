@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import type { ParsedChunk } from '@repo-vector/types'
+import type { ParsedChunk } from '@repolens/types'
 
 export function TextParser() {
   const [input, setInput] = useState('')

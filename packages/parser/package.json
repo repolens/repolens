@@ -1,5 +1,5 @@
 {
-  "name": "@repo-vector/parser",
+  "name": "@repolens/parser",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -12,8 +12,8 @@
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
   },
   "dependencies": {
-    "@repo-vector/parser-default": "workspace:*",
-    "@repo-vector/types": "workspace:*"
+    "@repolens/parser-default": "workspace:*",
+    "@repolens/types": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

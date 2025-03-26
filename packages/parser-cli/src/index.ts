@@ -14,7 +14,7 @@ const envPath = path.resolve(
 )
 dotenv.config({ path: envPath })
 
-import { RepoVector } from '@repo-vector/core'
+import { RepoLens } from '@repolens/core'
 
 const [, , owner, repo, ref = 'main'] = process.argv
 
@@ -24,7 +24,7 @@ async function run() {
     process.exit(1)
   }
 
-  const client = new RepoVector({
+  const client = new RepoLens({
     owner,
     repo,
     ref,

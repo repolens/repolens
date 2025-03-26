@@ -1,5 +1,5 @@
 {
-  "name": "@repo-vector/github-fetcher",
+  "name": "@repolens/github-fetcher",
   "version": "0.0.0",
   "type": "module",
   "exports": {

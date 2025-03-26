@@ -1,11 +1,11 @@
-import { GitHubFetcher } from '@repo-vector/github-fetcher'
-import { Parser } from '@repo-vector/parser'
-import { createDefaultParser } from '@repo-vector/parser-default'
-import { createTSParser } from '@repo-vector/parser-ts'
-import { Vectorizer } from '@repo-vector/vectorizer'
-import type { ParsedChunk, Chunker } from '@repo-vector/types'
+import { GitHubFetcher } from '@repolens/github-fetcher'
+import { Parser } from '@repolens/parser'
+import { createDefaultParser } from '@repolens/parser-default'
+import { createTSParser } from '@repolens/parser-ts'
+import { Vectorizer } from '@repolens/vectorizer'
+import type { ParsedChunk, Chunker } from '@repolens/types'
 
-export interface RepoVectorConfig {
+export interface RepoLensConfig {
   owner: string
   repo: string
   ref?: string
@@ -17,19 +17,19 @@ export interface RepoVectorConfig {
   excludeRegex?: RegExp[]
 }
 
-export interface RepoVectorChunk extends ParsedChunk {
+export interface RepoLensChunk extends ParsedChunk {
   filePath: string
   repo: string
   part?: number
 }
 
-export class RepoVector {
-  constructor(private config: RepoVectorConfig) {
+export class RepoLens {
+  constructor(private config: RepoLensConfig) {
     this.config.githubToken ||= process.env.GITHUB_TOKEN
     this.config.openaiApiKey ||= process.env.OPENAI_API_KEY
   }
 
-  async run(): Promise<RepoVectorChunk[]> {
+  async run(): Promise<RepoLensChunk[]> {
     const {
       owner,
       repo,
@@ -89,7 +89,7 @@ export class RepoVector {
     parser.register('jsx', createTSParser(chunker))
     parser.register('js', createTSParser(chunker))
 
-    const chunks: RepoVectorChunk[] = []
+    const chunks: RepoLensChunk[] = []
 
     for (const file of filtered) {
       const parsed = parser.parse(file)
@@ -102,7 +102,7 @@ export class RepoVector {
       })
     }
 
-    const splitChunks: RepoVectorChunk[] = []
+    const splitChunks: RepoLensChunk[] = []
     const texts: string[] = []
 
     chunks.forEach((chunk) => {

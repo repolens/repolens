@@ -1,5 +1,5 @@
 {
-  "name": "@repo-vector/vectorizer",
+  "name": "@repolens/vectorizer",
   "version": "0.0.0",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -14,7 +14,7 @@
   "dependencies": {
     "openai": "^4.89.0",
     "gpt-tokenizer": "^2.9.0",
-    "@repo-vector/types": "workspace:*"
+    "@repolens/types": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

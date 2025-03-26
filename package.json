@@ -1,5 +1,5 @@
 {
-  "name": "repo-vector",
+  "name": "repolens",
   "private": true,
   "scripts": {
     "build": "turbo run build",

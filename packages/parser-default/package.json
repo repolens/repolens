@@ -1,5 +1,5 @@
 {
-  "name": "@repo-vector/parser-default",
+  "name": "@repolens/parser-default",
   "version": "0.0.0",
   "type": "module",
   "exports": {
@@ -12,7 +12,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@repo-vector/types": "workspace:*"
+    "@repolens/types": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
