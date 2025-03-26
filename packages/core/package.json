@@ -1,19 +1,19 @@
 {
   "name": "@repo-vector/core",
   "version": "0.0.0",
-  "main": "./dist/RepoVector.js",
-  "module": "./dist/RepoVector.mjs",
-  "types": "./dist/RepoVector.d.ts",
+  "main": "./dist/repo-vector.js",
+  "module": "./dist/repo-vector.mjs",
+  "types": "./dist/repo-vector.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/RepoVector.d.ts",
-      "require": "./dist/RepoVector.js",
-      "import": "./dist/RepoVector.mjs"
+      "types": "./dist/repo-vector.d.ts",
+      "require": "./dist/repo-vector.js",
+      "import": "./dist/repo-vector.mjs"
     }
   },
   "scripts": {
-    "build": "tsup src/RepoVector.ts --format cjs,esm --dts",
-    "dev": "tsup src/RepoVector.ts --format cjs,esm --dts --watch"
+    "build": "tsup src/repo-vector.ts --format cjs,esm --dts",
+    "dev": "tsup src/repo-vector.ts --format cjs,esm --dts --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -23,13 +23,18 @@
     "dotenv": "^16.4.7",
     "eslint": "^9.22.0",
     "tsup": "^8.4.0",
-    "typescript": "5.8.2"
+    "typescript": "5.8.2",
+    "ts-morph": "^25.0.1"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.20",
     "@repo-vector/github-fetcher": "workspace:*",
-    "@repo-vector/parser-core": "workspace:*",
-    "@repo-vector/utils": "workspace:*",
-    "openai": "^4.89.0"
+    "@repo-vector/parser": "workspace:*",
+    "@repo-vector/parser-default": "workspace:*",
+    "@repo-vector/parser-ts": "workspace:*",
+    "@repo-vector/types": "workspace:*",
+    "@repo-vector/vectorizer": "workspace:*"
+  },
+  "peerDependencies": {
+    "ts-morph": "^25.0.1"
   }
 }

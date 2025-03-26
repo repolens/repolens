@@ -1,17 +1,17 @@
-import { splitChunkText } from '@repo-vector/utils/splitChunkText'
+import type { Chunker, FileInput, ParsedChunk } from '@repo-vector/types'
 
-export interface ParsedChunk {
-  type: string
-  name: string
-  text: string
-}
+export type { Chunker, FileInput, ParsedChunk }
+export function createDefaultParser(chunker: Chunker) {
+  return function parseDefault(file: FileInput): ParsedChunk[] {
+    const parts = chunker.chunk(file.content, { path: file.path })
 
-export function parse(content: string): ParsedChunk[] {
-  const parts = splitChunkText(content)
-
-  return parts.map((text, i) => ({
-    type: 'text',
-    name: `chunk_${i}`,
-    text,
-  }))
+    return parts.map((text, index) => ({
+      type: 'text',
+      name: `part-${index + 1}`,
+      text,
+      path: file.path,
+      language: 'plain',
+      metadata: { part: index },
+    }))
+  }
 }

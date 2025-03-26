@@ -1,17 +1,19 @@
 {
-  "name": "@repo-vector/parser-default",
+  "name": "@repo-vector/vectorizer",
   "version": "0.0.0",
-  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.js"
-    }
+    ".": "./dist/index.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --watch"
   },
   "dependencies": {
+    "openai": "^4.89.0",
+    "gpt-tokenizer": "^2.9.0",
     "@repo-vector/types": "workspace:*"
   },
   "devDependencies": {
@@ -20,6 +22,7 @@
     "@turbo/gen": "^2.4.4",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
+    "tsup": "^8.4.0",
     "typescript": "5.8.2"
   }
 }
