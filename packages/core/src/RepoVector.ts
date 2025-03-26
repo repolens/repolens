@@ -1,7 +1,8 @@
-import { GithubFetcher } from '@repo-vector/github-fetcher'
-import { parseFile, ParsedChunk } from '@repo-vector/parser-core'
-import { Vectorizer } from './vectorize'
-import { splitChunkText } from '@repo-vector/utils/splitChunkText'
+import { GitHubFetcher } from '@repo-vector/github-fetcher'
+import { Parser } from '@repo-vector/parser'
+import { createDefaultParser } from '@repo-vector/parser-default'
+import { Vectorizer } from '@repo-vector/vectorizer'
+import type { ParsedChunk, Chunker } from '@repo-vector/types'
 
 export interface RepoVectorConfig {
   owner: string
@@ -29,17 +30,64 @@ export class RepoVector {
   }
 
   async run(): Promise<RepoVectorChunk[]> {
-    const { owner, repo, ref, githubToken, openaiApiKey, openaiBaseUrl } =
-      this.config
+    const {
+      owner,
+      repo,
+      ref,
+      githubToken,
+      openaiApiKey,
+      openaiBaseUrl,
+      includeExtensions,
+      excludePaths,
+      excludeRegex,
+    } = this.config
 
-    const fetcher = new GithubFetcher({ token: githubToken })
-    const files = await fetcher.getFilesFromTarball(owner, repo, ref)
-    const filtered = this.filterFiles(files)
+    const fetcher = new GitHubFetcher({ token: githubToken })
+    const treeEntries = await fetcher.getFilteredTreePaths(owner, repo, ref)
+
+    const filteredTree = treeEntries.filter((entry) => {
+      const ext = entry.path.split('.').pop()?.toLowerCase()
+      const isIncluded = !includeExtensions || includeExtensions.includes(ext!)
+      const isExcluded =
+        excludePaths?.some((p) => entry.path.startsWith(p)) ||
+        excludeRegex?.some((re) => re.test(entry.path))
+      return isIncluded && !isExcluded
+    })
+
+    const includePaths = new Set(filteredTree.map((f) => f.path))
+    const shaMap = new Map(filteredTree.map((f) => [f.path, f.sha]))
+
+    const files = await fetcher.getFilesFromTarball(
+      owner,
+      repo,
+      ref,
+      includePaths
+    )
+
+    const filesWithSha = files.map((file) => ({
+      ...file,
+      sha: shaMap.get(file.path) || '',
+    }))
+
+    const filtered = this.filterFiles(filesWithSha)
+
+    const vectorizer = new Vectorizer({
+      apiKey: openaiApiKey,
+      baseUrl: openaiBaseUrl,
+    })
+
+    const chunker: Chunker = {
+      chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
+    }
+
+    const parser = new Parser({
+      fallback: createDefaultParser(chunker),
+    })
 
     const chunks: RepoVectorChunk[] = []
 
     for (const file of filtered) {
-      const parsed = parseFile(file)
+      const parsed = parser.parse(file)
       parsed.forEach((chunk) => {
         chunks.push({
           ...chunk,
@@ -49,21 +97,11 @@ export class RepoVector {
       })
     }
 
-    const vectorizer = new Vectorizer({
-      apiKey: openaiApiKey,
-      baseUrl: openaiBaseUrl,
-    })
-
     const splitChunks: RepoVectorChunk[] = []
     const texts: string[] = []
 
     chunks.forEach((chunk) => {
-      const parts = splitChunkText(
-        chunk.text,
-        'text-embedding-3-small',
-        8000,
-        0
-      )
+      const parts = vectorizer.generateEmbeddableChunks(chunk.text, 8000, 0)
       parts.forEach((partText, index) => {
         texts.push(partText)
         splitChunks.push({

@@ -26,10 +26,10 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@dqbd/tiktoken": "^1.0.20",
     "@repo-vector/github-fetcher": "workspace:*",
-    "@repo-vector/parser-core": "workspace:*",
-    "@repo-vector/utils": "workspace:*",
-    "openai": "^4.89.0"
+    "@repo-vector/parser": "workspace:*",
+    "@repo-vector/parser-default": "workspace:*",
+    "@repo-vector/types": "workspace:*",
+    "@repo-vector/vectorizer": "workspace:*"
   }
 }

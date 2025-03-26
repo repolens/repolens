@@ -1,94 +1,119 @@
-import * as tar from 'tar'
-import fs from 'fs/promises'
-import path from 'path'
-import os from 'os'
+// packages/github-fetcher/src/GitHubFetcher.ts
 
-export interface GithubFile {
+import { Octokit } from 'octokit'
+import path from 'path'
+import tar from 'tar-stream'
+import gunzip from 'gunzip-maybe'
+import { Readable } from 'stream'
+import { Buffer } from 'buffer'
+
+export interface GitHubFile {
   path: string
+  name: string
   content: string
+  sha: string
 }
 
-export interface GithubFetcherOptions {
+export interface GitHubFetcherOptions {
   token?: string
 }
 
-export class GithubFetcher {
-  private token: string
-  private githubURL = 'https://api.github.com'
+export class GitHubFetcher {
+  private octokit: Octokit
 
-  constructor(options: GithubFetcherOptions) {
-    const token = options.token ?? process.env.GITHUB_TOKEN ?? ''
-    if (!token) {
-      throw new Error('GITHUB_TOKEN is not set')
-    }
-    this.token = token
+  constructor(options: GitHubFetcherOptions = {}) {
+    this.octokit = new Octokit({
+      auth: options.token || process.env.GITHUB_TOKEN,
+    })
   }
 
-  /**
-   * Downloads and extracts the tarball from a GitHub repo and returns all files
-   */
+  async getFilteredTreePaths(
+    owner: string,
+    repo: string,
+    ref = 'HEAD'
+  ): Promise<{ path: string; sha: string }[]> {
+    const { data: refData } = await this.octokit.rest.git.getRef({
+      owner,
+      repo,
+      ref: `heads/${ref}`,
+    })
+
+    const commitSha = refData.object.sha
+
+    const { data: commitData } = await this.octokit.rest.git.getCommit({
+      owner,
+      repo,
+      commit_sha: commitSha,
+    })
+
+    const treeSha = commitData.tree.sha
+
+    const { data: treeData } = await this.octokit.rest.git.getTree({
+      owner,
+      repo,
+      tree_sha: treeSha,
+      recursive: '1',
+    })
+
+    return treeData.tree
+      .filter((item) => item.type === 'blob' && item.path)
+      .map((item) => ({ path: item.path!, sha: item.sha! }))
+  }
+
   async getFilesFromTarball(
     owner: string,
     repo: string,
-    ref = 'main'
-  ): Promise<GithubFile[]> {
-    const url = `${this.githubURL}/repos/${owner}/${repo}/tarball/${ref}`
-    console.log(`📦 Downloading ${owner}/${repo}@${ref}...`)
+    ref: string = 'HEAD',
+    includePaths: Set<string>
+  ): Promise<GitHubFile[]> {
+    const response = await this.octokit.request(
+      'GET /repos/{owner}/{repo}/tarball/{ref}',
+      {
+        owner,
+        repo,
+        ref,
+        headers: { Accept: 'application/vnd.github.v3+json' },
+      }
+    )
 
-    const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), `${repo}-`))
+    const buffer = Buffer.from(response.data as ArrayBuffer)
+    const extract = tar.extract()
+    const stream = Readable.from(buffer).pipe(gunzip())
 
-    const res = await fetch(url, {
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        Accept: 'application/vnd.github.v3+json',
-      },
+    const files: GitHubFile[] = []
+
+    const finished = new Promise<void>((resolve, reject) => {
+      extract.on('entry', (header: any, streamEntry: any, next: any) => {
+        const relPath = header.name.split('/').slice(1).join('/')
+
+        if (!includePaths.has(relPath)) {
+          streamEntry.resume()
+          return next()
+        }
+
+        let content = ''
+        streamEntry.setEncoding('utf8')
+
+        streamEntry.on('data', (chunk: any) => (content += chunk))
+        streamEntry.on('end', () => {
+          files.push({
+            path: relPath,
+            name: path.basename(relPath),
+            content,
+            sha: '', // sha injected later
+          })
+          next()
+        })
+        streamEntry.on('error', reject)
+      })
+
+      extract.on('finish', resolve)
+      extract.on('error', reject)
     })
 
-    if (!res.ok || !res.body) {
-      throw new Error(
-        `Failed to download tarball: ${res.statusText} (${res.status})`
-      )
-    }
+    stream.pipe(extract)
 
-    try {
-      // Save and extract tarball
-      const tarPath = path.join(tmpDir, 'repo.tar.gz')
-      const buffer = await res.arrayBuffer()
-      await fs.writeFile(tarPath, Buffer.from(buffer))
-      await tar.x({
-        file: tarPath,
-        cwd: tmpDir,
-        strip: 1,
-      })
-      await fs.unlink(tarPath)
-    } catch (err) {
-      console.error('❌ Failed to extract tarball:', err)
-      throw err
-    }
-
-    const files: GithubFile[] = []
-
-    async function walk(dir: string) {
-      try {
-        const entries = await fs.readdir(dir, { withFileTypes: true })
-        for (const entry of entries) {
-          const fullPath = path.join(dir, entry.name)
-          if (entry.isDirectory()) {
-            await walk(fullPath)
-          } else {
-            const content = await fs.readFile(fullPath, 'utf-8')
-            const relativePath = path.relative(tmpDir, fullPath)
-            files.push({ path: relativePath, content })
-          }
-        }
-      } catch (err) {
-        console.error(`❌ Error walking directory ${dir}:`, err)
-        throw err
-      }
-    }
-
-    await walk(tmpDir)
-    console.log(`✅ Found ${files.length} files`)
+    await finished
     return files
   }
 }
