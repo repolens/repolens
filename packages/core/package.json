@@ -1,19 +1,19 @@
 {
   "name": "@repo-vector/core",
   "version": "0.0.0",
-  "main": "./dist/RepoVector.js",
-  "module": "./dist/RepoVector.mjs",
-  "types": "./dist/RepoVector.d.ts",
+  "main": "./dist/repo-vector.js",
+  "module": "./dist/repo-vector.mjs",
+  "types": "./dist/repo-vector.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/RepoVector.d.ts",
-      "require": "./dist/RepoVector.js",
-      "import": "./dist/RepoVector.mjs"
+      "types": "./dist/repo-vector.d.ts",
+      "require": "./dist/repo-vector.js",
+      "import": "./dist/repo-vector.mjs"
     }
   },
   "scripts": {
-    "build": "tsup src/RepoVector.ts --format cjs,esm --dts",
-    "dev": "tsup src/RepoVector.ts --format cjs,esm --dts --watch"
+    "build": "tsup src/repo-vector.ts --format cjs,esm --dts",
+    "dev": "tsup src/repo-vector.ts --format cjs,esm --dts --watch"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
