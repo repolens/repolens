@@ -1,4 +1,5 @@
-import { GitHubFetcher } from '@repolens/github-fetcher'
+import { Octokit } from 'octokit'
+import { GitHubFetcher } from '@repolens/fetcher-github'
 import { Parser } from '@repolens/parser'
 import { createDefaultParser } from '@repolens/parser-default'
 import { createTSParser } from '@repolens/parser-ts'
@@ -30,99 +31,86 @@ export class RepoLens {
   }
 
   async run(): Promise<RepoLensChunk[]> {
-    const {
-      owner,
-      repo,
-      ref,
-      githubToken,
-      openaiApiKey,
-      openaiBaseUrl,
-      includeExtensions,
-      excludePaths,
-      excludeRegex,
-    } = this.config
+    try {
+      const {
+        owner,
+        repo,
+        ref,
+        githubToken,
+        openaiApiKey,
+        openaiBaseUrl,
+        includeExtensions,
+        excludePaths,
+        excludeRegex,
+      } = this.config
 
-    const fetcher = new GitHubFetcher({ token: githubToken })
-    const treeEntries = await fetcher.getFilteredTreePaths(owner, repo, ref)
+      const octokit = new Octokit({ auth: githubToken })
 
-    const filteredTree = treeEntries.filter((entry) => {
-      const ext = entry.path.split('.').pop()?.toLowerCase()
-      const isIncluded = !includeExtensions || includeExtensions.includes(ext!)
-      const isExcluded =
-        excludePaths?.some((p) => entry.path.startsWith(p)) ||
-        excludeRegex?.some((re) => re.test(entry.path))
-      return isIncluded && !isExcluded
-    })
+      const fetcher = new GitHubFetcher(octokit)
 
-    const includePaths = new Set(filteredTree.map((f) => f.path))
-    const shaMap = new Map(filteredTree.map((f) => [f.path, f.sha]))
+      const files = await fetcher.fetch({
+        owner,
+        repo,
+        ref,
+        includePaths: new Set(),
+      })
+      console.log('files', files)
+      const vectorizer = new Vectorizer({
+        apiKey: openaiApiKey,
+        baseUrl: openaiBaseUrl,
+      })
 
-    const files = await fetcher.getFilesFromTarball(
-      owner,
-      repo,
-      ref,
-      includePaths
-    )
+      const chunker: Chunker = {
+        chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
+      }
 
-    const filesWithSha = files.map((file) => ({
-      ...file,
-      sha: shaMap.get(file.path) || '',
-    }))
+      const parser = new Parser({
+        fallback: createDefaultParser(chunker),
+      })
 
-    const filtered = this.filterFiles(filesWithSha)
+      parser.register('ts', createTSParser(chunker))
+      parser.register('tsx', createTSParser(chunker))
+      parser.register('jsx', createTSParser(chunker))
+      parser.register('js', createTSParser(chunker))
 
-    const vectorizer = new Vectorizer({
-      apiKey: openaiApiKey,
-      baseUrl: openaiBaseUrl,
-    })
+      const chunks: RepoLensChunk[] = []
 
-    const chunker: Chunker = {
-      chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
-    }
+      for (const file of files) {
+        const parsed = parser.parse(file)
+        parsed.forEach((chunk) => {
+          chunks.push({
+            ...chunk,
+            filePath: file.path,
+            repo: `${owner}/${repo}`,
+          })
+        })
+      }
 
-    const parser = new Parser({
-      fallback: createDefaultParser(chunker),
-    })
+      const splitChunks: RepoLensChunk[] = []
+      const texts: string[] = []
 
-    parser.register('ts', createTSParser(chunker))
-    parser.register('tsx', createTSParser(chunker))
-    parser.register('jsx', createTSParser(chunker))
-    parser.register('js', createTSParser(chunker))
-
-    const chunks: RepoLensChunk[] = []
-
-    for (const file of filtered) {
-      const parsed = parser.parse(file)
-      parsed.forEach((chunk) => {
-        chunks.push({
-          ...chunk,
-          filePath: file.path,
-          repo: `${owner}/${repo}`,
+      chunks.forEach((chunk) => {
+        const parts = vectorizer.generateEmbeddableChunks(chunk.text, 8000, 0)
+        parts.forEach((partText, index) => {
+          texts.push(partText)
+          splitChunks.push({
+            ...chunk,
+            text: partText,
+            part: parts.length > 1 ? index : undefined,
+          })
         })
       })
+
+      const embeddingMap = await vectorizer.embed(texts)
+
+      return splitChunks.map((chunk, i) => ({
+        ...chunk,
+        embedding: embeddingMap.get(i),
+      }))
+    } catch (error) {
+      console.error(error)
+      throw error
     }
-
-    const splitChunks: RepoLensChunk[] = []
-    const texts: string[] = []
-
-    chunks.forEach((chunk) => {
-      const parts = vectorizer.generateEmbeddableChunks(chunk.text, 8000, 0)
-      parts.forEach((partText, index) => {
-        texts.push(partText)
-        splitChunks.push({
-          ...chunk,
-          text: partText,
-          part: parts.length > 1 ? index : undefined,
-        })
-      })
-    })
-
-    const embeddingMap = await vectorizer.embed(texts)
-
-    return splitChunks.map((chunk, i) => ({
-      ...chunk,
-      embedding: embeddingMap.get(i),
-    }))
   }
 
   private filterFiles(files: { path: string; content: string }[]) {
