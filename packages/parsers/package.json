@@ -1,0 +1,57 @@
+{
+  "name": "@repolens/parsers",
+  "version": "0.0.0",
+  "type": "module",
+  "exports": {
+    "./default": {
+      "types": "./dist/parsers/default.d.ts",
+      "import": "./dist/parsers/default.js",
+      "require": "./dist/parsers/default.cjs",
+      "default": "./dist/parsers/default.js"
+    },
+    "./typescript": {
+      "types": "./dist/parsers/typescript.d.ts",
+      "import": "./dist/parsers/typescript.js",
+      "require": "./dist/parsers/typescript.cjs",
+      "default": "./dist/parsers/typescript.js"
+    },
+    ".": {
+      "types": "./dist/parser.d.ts",
+      "import": "./dist/parser.js",
+      "require": "./dist/parser.cjs",
+      "default": "./dist/parser.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch"
+  },
+  "dependencies": {
+    "@repolens/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@turbo/gen": "^2.4.4",
+    "@types/node": "^22.13.10",
+    "eslint": "^9.22.0",
+    "tsup": "^8.4.0",
+    "typescript": "5.8.2",
+    "ts-morph": "^25.0.1",
+    "yaml": "^2.7.0",
+    "@iarna/toml": "^2.2.5",
+    "parse5": "^7.2.1",
+    "@types/postcss-safe-parser": "^5.0.4",
+    "postcss": "^8.5.3",
+    "postcss-safe-parser": "^7.0.1"
+  },
+  "peerDependencies": {
+    "ts-morph": "^25.0.1",
+    "yaml": "^2.7.0",
+    "@iarna/toml": "^2.2.5",
+    "parse5": "^7.2.1",
+    "@types/postcss-safe-parser": "^5.0.4",
+    "postcss": "^8.5.3",
+    "postcss-safe-parser": "^7.0.1"
+  }
+}

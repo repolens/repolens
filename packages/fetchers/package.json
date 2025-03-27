@@ -1,18 +1,18 @@
 {
-  "name": "@repolens/fetcher-github",
+  "name": "@repolens/fetchers",
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    ".": {
-      "types": "./src/fetcher.ts",
-      "default": "./dist/fetcher.js"
+    "./github": {
+      "types": "./src/github.ts",
+      "default": "./dist/github.js"
     }
   },
   "scripts": {
     "build": "tsc"
   },
   "devDependencies": {
-    "@repolens/fetcher-types": "workspace:*",
+    "@repolens/types": "workspace:*",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@turbo/gen": "^2.4.4",

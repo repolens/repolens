@@ -1,6 +1,6 @@
-import { Parser } from '@repolens/parser'
-import { createDefaultParser } from '@repolens/parser-default'
-import { createTSParser } from '@repolens/parser-ts'
+import { Parser } from '@repolens/parsers'
+import { createDefaultParser } from '@repolens/parsers/default'
+import { createTSParser } from '@repolens/parsers/typescript'
 import { Vectorizer } from '@repolens/vectorizer'
 
 export async function POST(req: Request) {

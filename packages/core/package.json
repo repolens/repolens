@@ -27,10 +27,8 @@
     "ts-morph": "^25.0.1"
   },
   "dependencies": {
-    "@repolens/fetcher-github": "workspace:*",
-    "@repolens/parser": "workspace:*",
-    "@repolens/parser-default": "workspace:*",
-    "@repolens/parser-ts": "workspace:*",
+    "@repolens/fetchers": "workspace:*",
+    "@repolens/parsers": "workspace:*",
     "@repolens/types": "workspace:*",
     "@repolens/vectorizer": "workspace:*",
     "octokit": "^4.1.2"

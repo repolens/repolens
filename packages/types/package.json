@@ -1,13 +1,22 @@
 {
   "name": "@repolens/types",
   "version": "0.0.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    "./fetcher": {
+      "types": "./dist/fetcher.d.ts",
+      "import": "./dist/fetcher.mjs",
+      "require": "./dist/fetcher.js",
+      "default": "./dist/fetcher.mjs"
+    },
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    }
+  },
   "sideEffects": false,
-  "files": [
-    "dist/**"
-  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

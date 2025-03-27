@@ -9,9 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@repolens/parser": "workspace:*",
-    "@repolens/parser-default": "workspace:*",
-    "@repolens/parser-ts": "workspace:*",
+    "@repolens/parsers": "workspace:*",
     "@repolens/types": "workspace:*",
     "@repolens/vectorizer": "workspace:*",
     "react": "^19.0.0",

@@ -1,8 +1,8 @@
 import { Octokit } from 'octokit'
-import { GitHubFetcher } from '@repolens/fetcher-github'
-import { Parser } from '@repolens/parser'
-import { createDefaultParser } from '@repolens/parser-default'
-import { createTSParser } from '@repolens/parser-ts'
+import { GitHubFetcher } from '@repolens/fetchers/github'
+import { Parser } from '@repolens/parsers'
+import { createDefaultParser } from '@repolens/parsers/default'
+import { createTSParser } from '@repolens/parsers/typescript'
 import { Vectorizer } from '@repolens/vectorizer'
 import type { ParsedChunk, Chunker } from '@repolens/types'
 
@@ -54,7 +54,7 @@ export class RepoLens {
         ref,
         includePaths: new Set(),
       })
-      console.log('files', files)
+
       const vectorizer = new Vectorizer({
         apiKey: openaiApiKey,
         baseUrl: openaiBaseUrl,
@@ -73,18 +73,14 @@ export class RepoLens {
       parser.register('jsx', createTSParser(chunker))
       parser.register('js', createTSParser(chunker))
 
-      const chunks: RepoLensChunk[] = []
-
-      for (const file of files) {
+      const chunks: RepoLensChunk[] = files.flatMap((file) => {
         const parsed = parser.parse(file)
-        parsed.forEach((chunk) => {
-          chunks.push({
-            ...chunk,
-            filePath: file.path,
-            repo: `${owner}/${repo}`,
-          })
-        })
-      }
+        return parsed.map((chunk) => ({
+          ...chunk,
+          filePath: file.path,
+          repo: `${owner}/${repo}`,
+        }))
+      })
 
       const splitChunks: RepoLensChunk[] = []
       const texts: string[] = []
@@ -111,25 +107,5 @@ export class RepoLens {
       console.error(error)
       throw error
     }
-  }
-
-  private filterFiles(files: { path: string; content: string }[]) {
-    const {
-      includeExtensions,
-      excludePaths = [],
-      excludeRegex = [],
-    } = this.config
-
-    return files.filter((file) => {
-      const ext = file.path.split('.').pop()?.toLowerCase()
-      const path = file.path.toLowerCase()
-
-      if (includeExtensions && !includeExtensions.includes(ext ?? ''))
-        return false
-      if (excludePaths.some((p) => path.startsWith(p))) return false
-      if (excludeRegex.some((re) => re.test(file.path))) return false
-
-      return true
-    })
   }
 }

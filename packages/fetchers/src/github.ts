@@ -4,7 +4,7 @@ import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
-import type { Fetcher, FetchedFile } from '@repolens/fetcher-types'
+import type { Fetcher, FetchedFile } from '@repolens/types/fetcher'
 
 interface FetcherOptions {
   owner: string
@@ -86,7 +86,7 @@ export class GitHubFetcher implements Fetcher<FetcherOptions> {
   ) {
     const files: FetchedFile[] = []
     const extract = tar.extract()
-    await new Promise<void>((resolve, reject) => {
+    const extractPromise = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header: any, streamEntry: any, next: any) => {
         const relPath = header.name.split('/').slice(1).join('/')
 
@@ -116,6 +116,7 @@ export class GitHubFetcher implements Fetcher<FetcherOptions> {
     })
 
     stream.pipe(extract)
+    await extractPromise
     return files
   }
 

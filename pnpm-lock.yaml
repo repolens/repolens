@@ -20,15 +20,9 @@ importers:
 
   apps/web:
     dependencies:
-      '@repolens/parser':
+      '@repolens/parsers':
         specifier: workspace:*
-        version: link:../../packages/parser
-      '@repolens/parser-default':
-        specifier: workspace:*
-        version: link:../../packages/parser-default
-      '@repolens/parser-ts':
-        specifier: workspace:*
-        version: link:../../packages/parser-ts
+        version: link:../../packages/parsers
       '@repolens/types':
         specifier: workspace:*
         version: link:../../packages/types
@@ -116,18 +110,12 @@ importers:
 
   packages/core:
     dependencies:
-      '@repolens/fetcher-github':
+      '@repolens/fetchers':
         specifier: workspace:*
-        version: link:../fetcher-github
-      '@repolens/parser':
+        version: link:../fetchers
+      '@repolens/parsers':
         specifier: workspace:*
-        version: link:../parser
-      '@repolens/parser-default':
-        specifier: workspace:*
-        version: link:../parser-default
-      '@repolens/parser-ts':
-        specifier: workspace:*
-        version: link:../parser-ts
+        version: link:../parsers
       '@repolens/types':
         specifier: workspace:*
         version: link:../types
@@ -166,7 +154,7 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
-  packages/fetcher-github:
+  packages/fetchers:
     dependencies:
       adm-zip:
         specifier: ^0.5.16
@@ -187,9 +175,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../config/typescript-config
-      '@repolens/fetcher-types':
+      '@repolens/types':
         specifier: workspace:*
-        version: link:../fetcher-types
+        version: link:../types
       '@turbo/gen':
         specifier: ^2.4.4
         version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
@@ -211,58 +199,6 @@ importers:
       octokit:
         specifier: ^4.1.2
         version: 4.1.2
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/fetcher-types:
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser:
-    dependencies:
-      '@repolens/parser-default':
-        specifier: workspace:*
-        version: link:../parser-default
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../types
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      tsup:
-        specifier: ^8.4.0
-        version: 8.4.0(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.7.0)
       typescript:
         specifier: 5.8.2
         version: 5.8.2
@@ -298,184 +234,54 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
-  packages/parser-css:
+  packages/parsers:
     dependencies:
+      '@repolens/types':
+        specifier: workspace:*
+        version: link:../types
+    devDependencies:
+      '@iarna/toml':
+        specifier: ^2.2.5
+        version: 2.2.5
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../config/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../config/typescript-config
+      '@turbo/gen':
+        specifier: ^2.4.4
+        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.13.13
       '@types/postcss-safe-parser':
         specifier: ^5.0.4
         version: 5.0.4
+      eslint:
+        specifier: ^9.22.0
+        version: 9.23.0(jiti@2.4.2)
+      parse5:
+        specifier: ^7.2.1
+        version: 7.2.1
       postcss:
         specifier: ^8.5.3
         version: 8.5.3
       postcss-safe-parser:
         specifier: ^7.0.1
         version: 7.0.1(postcss@8.5.3)
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser-default:
-    dependencies:
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../types
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser-html:
-    dependencies:
-      parse5:
-        specifier: ^7.2.1
-        version: 7.2.1
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser-json:
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser-toml:
-    dependencies:
-      '@iarna/toml':
-        specifier: ^2.2.5
-        version: 2.2.5
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
-
-  packages/parser-ts:
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../types
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
+      tsup:
+        specifier: ^8.4.0
+        version: 8.4.0(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.2)(yaml@2.7.0)
       typescript:
         specifier: 5.8.2
         version: 5.8.2
-
-  packages/parser-yaml:
-    dependencies:
       yaml:
         specifier: ^2.7.0
         version: 2.7.0
-    devDependencies:
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../config/eslint-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../config/typescript-config
-      '@turbo/gen':
-        specifier: ^2.4.4
-        version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
-      '@types/node':
-        specifier: ^22.13.10
-        version: 22.13.13
-      eslint:
-        specifier: ^9.22.0
-        version: 9.23.0(jiti@2.4.2)
-      typescript:
-        specifier: 5.8.2
-        version: 5.8.2
 
   packages/types:
     devDependencies:
@@ -524,10 +330,6 @@ importers:
         version: 5.8.2
 
   packages/utils:
-    dependencies:
-      '@dqbd/tiktoken':
-        specifier: ^1.0.20
-        version: 1.0.20
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -535,6 +337,9 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../config/typescript-config
+      '@repolens/types':
+        specifier: workspace:*
+        version: link:../types
       '@turbo/gen':
         specifier: ^2.4.4
         version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
@@ -595,9 +400,6 @@ packages:
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
-
-  '@dqbd/tiktoken@1.0.20':
-    resolution: {integrity: sha512-WsLzNYO1uzYOvIXunvwRcQObD4UsebirRnGzOuZc/x4oJ+0haEjdNxeeCfFaQami+Bai3u06QTt0/FWyYRsIhw==}
 
   '@emnapi/core@1.3.1':
     resolution: {integrity: sha512-pVGjBIt1Y6gg3EJN8jTcfpP/+uuRksIo055oE/OBkDNcjZqVbfkWCksG1Jp4yZnj3iKWyWX8fdG/j6UDYPbFog==}
@@ -3830,8 +3632,6 @@ snapshots:
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
-
-  '@dqbd/tiktoken@1.0.20': {}
 
   '@emnapi/core@1.3.1':
     dependencies:
