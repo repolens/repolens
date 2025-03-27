@@ -1,0 +1,57 @@
+---
+title: HTML
+description: HTML parser
+---
+
+## Overview
+
+The HTML parser processes HTML documents, providing detailed analysis of document structure, elements, and attributes. It supports modern HTML5 features and handles various HTML content types.
+
+## Features
+
+- HTML5 specification support
+- DOM tree structure analysis
+- Attribute parsing
+- Comment preservation
+- Script and style tag handling
+- Self-closing tag support
+- Custom data attributes
+
+## Usage
+
+The HTML parser is automatically selected for files with `.html` and `.htm` extensions. It processes HTML content and creates a structured representation.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Example Page</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container" data-role="main">
+      <h1>Welcome</h1>
+      <!-- Navigation menu -->
+      <nav class="menu">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </body>
+</html>
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Element hierarchy
+- Tag names and attributes
+- Text content
+- Comments
+- DOCTYPE declarations
+- Meta information
+- Script and style contents

@@ -1,0 +1,7 @@
+{
+  "title": "Parsers",
+  "description": "Parsers are responsible for parsing the content of the repository",
+  "root": false,
+  "defaultOpen": true,
+  "pages": ["---Parsers---", "index", "...", "fallback"]
+}

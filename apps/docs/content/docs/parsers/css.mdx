@@ -1,0 +1,67 @@
+---
+title: CSS
+description: CSS parser
+---
+
+## Overview
+
+The CSS parser analyzes Cascading Style Sheets (CSS) files, providing detailed parsing of styles, selectors, and rules. It supports modern CSS features and preprocessor syntax.
+
+## Features
+
+- CSS3 specification support
+- Complex selector parsing
+- Media query handling
+- Custom property (variables) support
+- Vendor prefix handling
+- At-rules processing
+- Comment preservation
+- Nested rules support
+
+## Usage
+
+The CSS parser is automatically selected for files with `.css` extension. It processes CSS content and creates a structured representation of styles.
+
+```css
+/* Main styles */
+:root {
+  --primary-color: #007bff;
+  --spacing: 1rem;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: calc(var(--spacing) / 2);
+  }
+}
+
+/* Component styles */
+.button {
+  background-color: var(--primary-color);
+  border: none;
+  padding: 0.5rem 1rem;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Selectors and rules
+- Properties and values
+- Media queries
+- Custom properties
+- At-rules
+- Comments
+- Nested structures
+- Vendor prefixes

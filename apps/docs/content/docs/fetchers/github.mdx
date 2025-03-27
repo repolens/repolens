@@ -1,0 +1,104 @@
+---
+title: GitHub
+description: Embed entire GitHub repositories
+---
+
+## Introduction
+
+The GitHub fetcher is a component that enables fetching content from GitHub repositories. It uses the GitHub API through Octokit to download repository contents and provides them in a standardized format for RepoLens to process.
+
+## Installation
+
+The GitHub fetcher is included in the `@repolens/fetchers` package. You'll need to install both the fetchers package and its peer dependency `octokit`:
+
+```bash title="CLI" tab="pnpm"
+pnpm add @repolens/fetchers octokit
+```
+
+```bash title="CLI" tab="npm"
+npm install @repolens/fetchers octokit
+```
+
+## Configuration
+
+The GitHub fetcher requires an Octokit instance for authentication. You'll need to provide a GitHub token to authenticate API requests.
+
+```ts
+import { Octokit } from "octokit";
+import { GitHubFetcher } from "repolens-fetcher-github";
+
+// Initialize Octokit with your GitHub token
+const octokit = new Octokit({ auth: "your-github-token" });
+
+// Create the fetcher instance
+const fetcher = new GitHubFetcher(octokit);
+```
+
+## Usage
+
+The fetcher accepts the following options:
+
+```ts
+interface FetcherOptions {
+  owner: string; // GitHub repository owner/organization
+  repo: string; // Repository name
+  ref?: string; // Git reference (branch, tag, or commit SHA). Defaults to 'HEAD'
+  includePaths?: Set<string>; // Optional set of specific paths to include
+}
+
+// Example usage
+const files = await fetcher.fetch({
+  owner: "repolens",
+  repo: "repolens",
+  ref: "main",
+  includePaths: new Set(["src/", "packages/"]),
+});
+```
+
+## Features
+
+### File Structure
+
+The fetcher returns an array of `FetchedFile` objects with the following structure:
+
+```ts
+interface FetchedFile {
+  path: string; // Relative path of the file in the repository
+  name: string; // File name
+  content: string; // File content
+  sha: string; // Git SHA of the file
+}
+```
+
+### Key Capabilities
+
+1. **Efficient Content Retrieval**: Uses tarball downloads for better performance when fetching repository contents.
+2. **Path Filtering**: Supports including specific paths to fetch only relevant files.
+3. **Version Control**: Ability to fetch from specific branches, tags, or commit SHAs.
+4. **SHA Tracking**: Automatically injects Git SHAs for each file, enabling version tracking.
+
+### Error Handling
+
+The fetcher includes robust error handling for common scenarios:
+
+- Invalid repository or access permissions
+- Non-existent references (branches/tags)
+- Network issues during content retrieval
+
+## Integration with RepoLens
+
+When used as part of RepoLens, the GitHub fetcher is typically initialized through the core configuration:
+
+```ts
+import { RepoLens } from "@repolens/core";
+
+const repolens = new RepoLens({
+  owner: "repolens",
+  repo: "repolens",
+  githubToken: "your-github-token",
+  ref: "main",
+});
+
+// The fetcher is automatically initialized and used
+await repolens.run();
+```

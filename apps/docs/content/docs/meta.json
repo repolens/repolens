@@ -1,0 +1,14 @@
+{
+  "title": "RepoLens",
+  "description": "Embed your entire repository in one fell swoop!",
+  "root": true,
+  "pages": [
+    "---Introduction---",
+    "index",
+    "installation",
+    "philosophy",
+    "...fetchers",
+    "...parsers",
+    "...embedders"
+  ]
+}

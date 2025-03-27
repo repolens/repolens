@@ -1,0 +1,124 @@
+---
+title: Concept
+description: Parsers are responsible for parsing the content of the repository
+---
+
+Parsers in RepoLens are responsible for transforming raw repository content into structured, meaningful chunks that can be processed by AI models. They play a crucial role in breaking down code and configuration files into logical units that are optimized for analysis and embedding.
+
+## Overview
+
+The parser system is designed to be modular and extensible, with specialized parsers for different file types. Each parser extracts meaningful components from files while preserving their semantic context.
+
+## Architecture
+
+The parser system consists of several key components:
+
+### Core Parser
+
+The main `Parser` class manages the parsing process and provides:
+
+- File type registration system
+- Fallback parsing for unknown file types
+- Consistent chunk output format
+- Integration with the chunking system for size optimization
+
+## Supported File Types
+
+RepoLens includes specialized parsers for:
+
+### TypeScript/JavaScript
+
+- Functions and methods
+- Classes and their members
+- Type definitions and interfaces
+- JSX/TSX components
+
+### Configuration Files
+
+- JSON
+- YAML
+- TOML
+
+### Web Technologies
+
+- HTML
+- CSS
+
+## Output Format
+
+All parsers produce chunks that follow a consistent structure:
+
+```typescript
+interface ParsedChunk {
+  type: string; // The type of content (e.g., 'function', 'class')
+  name: string; // Identifier for the chunk
+  text: string; // The actual content
+  path?: string; // File path
+  language?: string; // Programming language
+  metadata?: any; // Additional contextual information
+}
+```
+
+## Usage
+
+Here's a basic example of using the parser system:
+
+```typescript
+import { Parser } from "@repolens/parsers";
+import { createDefaultParser } from "@repolens/parsers/default";
+import { createTSParser } from "@repolens/parsers/typescript";
+
+// Initialize parser with a fallback for unknown file types
+const parser = new Parser({
+  fallback: createDefaultParser(chunker),
+});
+
+// Register TypeScript parser
+parser.register("ts", createTSParser(chunker));
+
+// Parse a file
+const chunks = parser.parse({
+  path: "example.ts",
+  content: sourceCode,
+});
+```
+
+## Integration with RepoLens
+
+Parsers work seamlessly with other RepoLens components:
+
+1. **Fetchers** provide the raw content to parse
+2. **Parsers** break down the content into meaningful chunks
+3. **Chunkers** ensure the chunks are properly sized
+4. **Embedders** convert the chunks into vector embeddings
+
+## Best Practices
+
+When working with parsers:
+
+1. **Register Specific Parsers**: Always register specific parsers for file types you expect to process frequently
+2. **Configure Chunking**: Ensure your chunking configuration matches your embedding model's requirements
+3. **Handle Errors**: Implement proper error handling for malformed files
+4. **Monitor Output**: Verify that the chunks maintain semantic meaning and context
+
+## Extending the System
+
+You can create custom parsers for additional file types by:
+
+1. Implementing the parser interface
+2. Registering the parser for specific file extensions
+3. Ensuring the output follows the `ParsedChunk` format
+
+For example:
+
+```typescript
+parser.register("custom", createCustomParser(chunker));
+```
+
+## Performance Considerations
+
+Parsers are designed to be efficient, but keep in mind:
+
+- Large files may require additional processing time
+- Complex parsing (like TypeScript) is more resource-intensive
+- Chunking helps manage memory usage for large codebases

@@ -1,0 +1,63 @@
+---
+title: TOML
+description: TOML parser
+---
+
+## Overview
+
+The TOML (Tom's Obvious, Minimal Language) parser processes TOML configuration files, providing structured parsing of configuration data. It supports TOML v1.0 specification and handles all TOML data types.
+
+## Features
+
+- TOML v1.0 specification support
+- Table and array table parsing
+- Date and time handling
+- Multi-line string support
+- Integer and float parsing
+- Comment preservation
+- Dotted key support
+- Array of tables
+
+## Usage
+
+The TOML parser is automatically selected for files with `.toml` extension. It processes TOML content and creates a structured representation.
+
+```toml
+# Server configuration
+title = "My Application"
+version = "1.0.0"
+
+[server]
+host = "localhost"
+port = 8080
+enabled = true
+
+[database]
+url = "postgresql://localhost:5432"
+max_connections = 100
+
+[[environments]]
+name = "development"
+debug = true
+
+[[environments]]
+name = "production"
+debug = false
+
+[dependencies]
+express = "^4.17.1"
+typescript = "^4.5.0"
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Key-value pairs
+- Tables and sub-tables
+- Arrays and array tables
+- Date and time values
+- Numbers and strings
+- Boolean values
+- Comments
+- Nested structures

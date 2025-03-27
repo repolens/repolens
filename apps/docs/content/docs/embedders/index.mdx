@@ -1,0 +1,76 @@
+---
+title: Concept
+description: Embedders are responsible for embedding the content of the repository
+---
+
+## Overview
+
+Embedders in RepoLens are a core component responsible for converting code content into vector embeddings that can be used for AI-powered code understanding and analysis. Currently, RepoLens exclusively uses OpenAI's embedding models for this purpose.
+
+## Supported Models
+
+RepoLens supports the following OpenAI embedding models:
+
+- `text-embedding-3-small` (default)
+- `text-embedding-3-large`
+- `text-embedding-ada-002`
+
+## Key Features
+
+### Smart Chunking
+
+The vectorizer automatically splits large texts into manageable chunks that fit within OpenAI's token limits (8192 tokens). This ensures that even large files can be processed effectively while maintaining semantic meaning.
+
+### Batch Processing
+
+The system processes multiple texts efficiently in batches, optimizing the embedding generation process and reducing API calls.
+
+### Token Management
+
+Using `gpt-tokenizer`, the system accurately counts and manages tokens to ensure optimal use of the embedding models while staying within rate limits.
+
+### Error Handling
+
+The embedder includes robust error handling for failed embedding attempts, ensuring reliability in production environments.
+
+## Usage Example
+
+```typescript
+import { Vectorizer } from "@repolens/vectorizer";
+
+const vectorizer = new Vectorizer({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "text-embedding-3-small", // optional, this is the default
+});
+
+// Embed multiple texts
+const embeddings = await vectorizer.embed(texts);
+```
+
+## Technical Details
+
+### Vector Representations
+
+Each embedding is a high-dimensional vector representation of the code that preserves semantic meaning. This makes them suitable for:
+
+- Similarity search
+- Code understanding tasks
+- AI-powered analysis
+
+### Chunking Strategy
+
+The system handles both small and large files by:
+
+- Automatically chunking content when necessary
+- Supporting overlap options to maintain context between segments
+- Preserving relationships between code chunks and their vector representations
+
+### Integration
+
+Embedders work as part of a pipeline alongside:
+
+1. Fetchers (for retrieving code)
+2. Parsers (for code analysis)
+3. Vector storage (for later retrieval)
+
+This integrated approach ensures that your codebase is properly prepared for AI-powered analysis while maintaining the relationships between code segments and their semantic representations.

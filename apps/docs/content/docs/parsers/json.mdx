@@ -1,0 +1,46 @@
+---
+title: JSON
+description: JSON parser
+---
+
+## Overview
+
+The JSON parser handles JavaScript Object Notation (JSON) files, providing reliable parsing of structured data. It follows the JSON specification strictly while offering helpful error messages for invalid JSON.
+
+## Features
+
+- Strict JSON specification compliance
+- Detailed error reporting
+- Support for all JSON data types
+- Nested object parsing
+- Array handling
+- Number precision preservation
+
+## Usage
+
+The JSON parser is automatically selected for files with `.json` extension. It processes JSON content and validates its structure.
+
+```json
+{
+  "name": "example-project",
+  "version": "1.0.0",
+  "config": {
+    "port": 3000,
+    "api": {
+      "endpoint": "https://api.example.com",
+      "timeout": 5000
+    }
+  },
+  "dependencies": ["express", "typescript", "node-fetch"]
+}
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Object structures
+- Arrays
+- Primitive values (strings, numbers, booleans, null)
+- Nested object hierarchies
+- Location information for each value

@@ -1,0 +1,8 @@
+{
+  "title": "Fetchers",
+  "description": "Fetchers are responsible for fetching the content of the repository",
+  "root": false,
+  "defaultOpen": true,
+  "icon": "ph:download",
+  "pages": ["---Fetchers---", "index", "..."]
+}

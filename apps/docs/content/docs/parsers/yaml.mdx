@@ -1,0 +1,46 @@
+---
+title: YAML
+description: YAML parser
+---
+
+## Overview
+
+The YAML parser processes YAML (YAML Ain't Markup Language) files, providing structured parsing of configuration and data files. It supports the YAML 1.2 specification and handles common YAML features.
+
+## Features
+
+- YAML 1.2 specification support
+- Multi-document parsing
+- Complex data structures
+- Anchors and aliases
+- Block and flow styles
+- Comments preservation
+
+## Usage
+
+The YAML parser is automatically selected for files with `.yml` and `.yaml` extensions. It processes YAML content and converts it into structured data.
+
+```yaml
+# Example YAML configuration
+server:
+  host: localhost
+  port: 3000
+  settings:
+    - debug: true
+    - environment: development
+
+database:
+  url: postgresql://localhost:5432
+  credentials:
+    username: admin
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Key-value pairs
+- Nested structures
+- Arrays and lists
+- Comments
+- Document metadata

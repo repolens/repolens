@@ -1,0 +1,44 @@
+---
+title: Concept
+description: Fetchers are responsible for fetching the content of the repository
+---
+
+Fetchers are a core component of RepoLens that handle the retrieval of repository content. They provide a standardized interface for accessing code from different sources, making it easy to work with repositories hosted on various platforms.
+
+## Overview
+
+A fetcher in RepoLens implements the `Fetcher` interface, which requires a `fetch` method that returns an array of `FetchedFile` objects. Each fetched file contains:
+
+- `path`: The relative path of the file in the repository
+- `name`: The filename
+- `content`: The actual content of the file
+- `sha`: A unique identifier for the file version
+
+## Key Features
+
+- **Standardized Interface**: All fetchers follow the same interface, making it easy to switch between different repository sources
+- **Flexible Configuration**: Fetchers can be configured with options specific to their source platform
+- **Content Streaming**: Efficient handling of repository content through streaming mechanisms
+- **Path Filtering**: Support for including or excluding specific paths during fetching
+
+## Available Fetchers
+
+Currently, RepoLens provides the following fetcher implementations:
+
+<Cards>
+  <Card
+    icon={<Icon icon="ph:github-logo" className="text-white" />}
+    title="GitHub Fetcher"
+    description="Fetches content from GitHub repositories using the GitHub API"
+    href="/docs/fetchers/github"
+  />
+</Cards>
+
+## Usage in RepoLens
+
+Fetchers are typically used as the first step in the RepoLens pipeline, before content is passed to parsers and embedders. They are responsible for:
+
+1. Connecting to the repository source
+2. Downloading the relevant files
+3. Organizing the content in a standardized format
+4. Providing metadata like file paths and version information

@@ -1,0 +1,63 @@
+---
+title: Fallback Parser
+description: Fallback parser for unsupported file types
+---
+
+## Overview
+
+The Default Parser serves as a fallback mechanism for handling files with unsupported extensions or when language-specific parsing is not required. It provides basic text chunking capabilities while maintaining file structure information.
+
+## Features
+
+- Universal file type support
+- Basic text chunking
+- Metadata preservation
+- Path tracking
+- Language identification
+- Sequential part numbering
+- Configurable chunk sizes
+
+## Usage
+
+The Default Parser is automatically used when:
+
+1. A file's extension is not registered with a specific parser
+2. The parser is running in 'fast' mode
+3. No language-specific parser is available
+
+```plaintext
+# Example file with unsupported extension
+This content will be processed by the default parser,
+which will split it into manageable chunks while
+preserving the original structure and metadata.
+
+The parser will maintain:
+- File path information
+- Language identification (as 'plain')
+- Sequential part numbering
+- Original text content
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Text chunks with sequential part numbers
+- File path information
+- Language identification (marked as 'plain')
+- Chunk metadata
+- Original text content
+- Part index tracking
+
+## Configuration
+
+The Default Parser can be configured through the Parser options:
+
+```typescript
+const parser = new Parser({
+  fallback: createDefaultParser(chunker),
+  mode: "semantic" | "fast" | "hybrid",
+});
+```
+
+When in 'fast' mode, all files will be processed by the Default Parser regardless of their extension.

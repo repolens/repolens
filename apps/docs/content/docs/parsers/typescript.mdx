@@ -1,0 +1,43 @@
+---
+title: TypeScript
+description: Parse TypeScript code
+---
+
+## Overview
+
+The TypeScript parser is designed to analyze and parse TypeScript source code, providing structured insights into the code's components. It handles both TypeScript-specific syntax and JavaScript features.
+
+## Features
+
+- Full TypeScript syntax support
+- Type definitions parsing
+- Interface and type alias detection
+- Decorators parsing
+- JSX/TSX support
+- ES Modules support
+
+## Usage
+
+The TypeScript parser is automatically selected for files with `.ts` and `.tsx` extensions. It processes the code and breaks it down into meaningful chunks that can be analyzed.
+
+```typescript
+// Example TypeScript code
+interface User {
+  id: number;
+  name: string;
+}
+
+function getUser(id: number): User {
+  // Implementation
+}
+```
+
+## Output
+
+The parser generates structured output that includes:
+
+- Type information
+- Function signatures
+- Interface definitions
+- Import/export statements
+- Class declarations

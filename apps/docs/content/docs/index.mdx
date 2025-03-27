@@ -1,0 +1,33 @@
+---
+title: Overview
+icon: ph:rocket
+description: Welcome to the RepoLens documentation!
+full: true
+---
+
+## Motivation
+
+RepoLens was created to streamline the process of preparing codebases for RAG (Retrieval-Augmented Generation) applications. It provides a unified solution to fetch, parse, and embed entire code repositories with minimal setup. By automating these crucial preprocessing steps, RepoLens enables developers to quickly transform their codebase into a format that's ready for AI-powered code understanding and analysis.
+
+## Key Concepts
+
+<Card
+  icon={<Icon icon="ph:download" className="text-rose-500" />}
+  title="Fetchers"
+  description="Fetchers are responsible for fetching the content of the repository"
+  href="/docs/fetchers"
+/>
+<br />
+<Card
+  icon={<Icon icon="ph:code" className="text-amber-500" />}
+  title="Parsers"
+  description="Parsers are responsible for parsing the content of the repository"
+  href="/docs/parsers"
+/>
+<br />
+<Card
+  icon={<Icon icon="ph:sparkle" className="text-emerald-500" />}
+  title="Embedders"
+  description="Embedders are responsible for embedding the content of the repository"
+  href="/docs/embedders"
+/>
