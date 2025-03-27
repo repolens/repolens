@@ -9,6 +9,6 @@
     "philosophy",
     "...fetchers",
     "...parsers",
-    "...embedders"
+    "...vectorizers"
   ]
 }

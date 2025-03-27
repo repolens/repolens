@@ -1,7 +1,0 @@
-{
-  "title": "Embedders",
-  "description": "Embedders are responsible for embedding the content of the repository",
-  "root": false,
-  "defaultOpen": true,
-  "pages": ["---Embedders---", "index", "..."]
-}

@@ -1,0 +1,46 @@
+---
+title: OpenAI
+description: OpenAI vectorizer implementation for RepoLens
+---
+
+## Overview
+
+RepoLens currently uses OpenAI's embedding models as its primary vectorization solution, offering state-of-the-art semantic code understanding capabilities.
+
+## Supported Models
+
+RepoLens supports the following OpenAI embedding models:
+
+- `text-embedding-3-small` (default)
+- `text-embedding-3-large`
+- `text-embedding-ada-002`
+
+## Configuration
+
+The OpenAI vectorizer requires an API key and optionally accepts a model selection:
+
+```typescript
+import { Vectorizer } from "@repolens/vectorizer";
+
+const vectorizer = new Vectorizer({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "text-embedding-3-small", // optional, this is the default
+});
+
+// Embed multiple texts
+const embeddings = await vectorizer.embed(texts);
+```
+
+## Technical Details
+
+### Token Limits
+
+The vectorizer automatically handles OpenAI's token limits:
+
+- Maximum 8192 tokens per request
+- Uses `gpt-tokenizer` for accurate token counting
+- Automatically chunks content to stay within limits
+
+### Rate Limiting
+
+The vectorizer implements smart rate limiting to comply with OpenAI's API constraints while maximizing throughput for batch operations.

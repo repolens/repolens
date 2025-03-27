@@ -1,0 +1,67 @@
+---
+title: Concept
+description: Vectorizers are responsible for embedding the content of the repository
+---
+
+## Overview
+
+Vectorizers in RepoLens are a core component responsible for converting code content into vector embeddings that can be used for AI-powered code understanding and analysis. These embeddings enable powerful features like semantic code search, similarity analysis, and AI-assisted code comprehension.
+
+## Key Features
+
+### Smart Chunking
+
+The vectorizer automatically splits large texts into manageable chunks that fit within model token limits. This ensures that even large files can be processed effectively while maintaining semantic meaning.
+
+### Batch Processing
+
+The system processes multiple texts efficiently in batches, optimizing the embedding generation process and reducing API calls.
+
+### Token Management
+
+The system accurately counts and manages tokens to ensure optimal use of the embedding models while staying within rate limits.
+
+### Error Handling
+
+The vectorizer includes robust error handling for failed embedding attempts, ensuring reliability in production environments.
+
+## Technical Details
+
+### Vector Representations
+
+Each embedding is a high-dimensional vector representation of the code that preserves semantic meaning. This makes them suitable for:
+
+- Similarity search
+- Code understanding tasks
+- AI-powered analysis
+
+### Chunking Strategy
+
+The system handles both small and large files by:
+
+- Automatically chunking content when necessary
+- Supporting overlap options to maintain context between segments
+- Preserving relationships between code chunks and their vector representations
+
+### Integration
+
+Vectorizers work as part of a pipeline alongside:
+
+1. Fetchers (for retrieving code)
+2. Parsers (for code analysis)
+3. Vector storage (for later retrieval)
+
+This integrated approach ensures that your codebase is properly prepared for AI-powered analysis while maintaining the relationships between code segments and their semantic representations.
+
+## Available Vectorizers
+
+Currently, RepoLens supports the following vectorizer implementations:
+
+<Cards>
+  <Card
+    icon={<Icon icon="meteor-icons:openai" className="text-white" />}
+    title="OpenAI"
+    description="Uses OpenAI's embedding models for high-quality code embeddings"
+    href="/docs/vectorizers/openai"
+  />
+</Cards>

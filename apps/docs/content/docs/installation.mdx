@@ -4,10 +4,215 @@ description: Install RepoLens
 icon: ph:download
 ---
 
-```bash title="CLI" tab="pnpm" persist
-pnpm add repolens
+## Installation
+
+RepoLens is distributed as a collection of packages. Install the packages you need based on your requirements:
+
+```bash title="Core Package" tab="pnpm" persist
+pnpm add @repolens/core
 ```
 
-```bash title="CLI" tab="npm"
-npm install repolens
+```bash title="Core Package" tab="npm"
+npm install @repolens/core
+```
+
+### Additional Packages
+
+Depending on your needs, you may want to install these additional packages:
+
+#### Fetchers
+
+```bash title="Fetchers" tab="npm"
+npm install @repolens/fetchers octokit
+```
+
+```bash title="Fetchers" tab="pnpm"
+pnpm add @repolens/fetchers octokit
+```
+
+#### Parsers
+
+```bash title="Parsers" tab="npm"
+npm install @repolens/parsers
+```
+
+```bash title="Parsers" tab="pnpm"
+pnpm add @repolens/parsers
+```
+
+#### Vectorizers
+
+```bash title="Vectorizers" tab="npm"
+npm install @repolens/vectorizer
+```
+
+```bash title="Vectorizers" tab="pnpm"
+pnpm add @repolens/vectorizer
+```
+
+### Peer Dependencies
+
+Some packages have peer dependencies that need to be installed:
+
+```bash
+pnpm add ts-morph@^25.0.1 yaml@^2.7.0 @iarna/toml@^2.2.5 parse5@^7.2.1 postcss@^8.5.3
+```
+
+## Configuration
+
+RepoLens requires configuration for GitHub access and OpenAI embeddings. You can provide these through environment variables or directly in the code:
+
+```typescript
+import { RepoLens } from "@repolens/core";
+
+// Initialize RepoLens with configuration
+const repolens = new RepoLens({
+  // Required
+  owner: "username", // GitHub repository owner/organization
+  repo: "repository-name", // Repository name
+
+  // Optional
+  ref: "main", // Git reference (branch, tag, or commit SHA)
+  githubToken: "your-token", // GitHub token (or use GITHUB_TOKEN env var)
+  openaiApiKey: "your-key", // OpenAI API key (or use OPENAI_API_KEY env var)
+  openaiBaseUrl: "url", // Custom OpenAI API URL (optional)
+  includeExtensions: ["ts", "tsx", "js", "jsx"], // File extensions to include
+  excludePaths: ["node_modules/", "dist/"], // Paths to exclude
+  excludeRegex: [/\.test\.ts$/], // Regex patterns to exclude
+});
+```
+
+### Environment Variables
+
+You can set these environment variables instead of passing them in code:
+
+```bash
+GITHUB_TOKEN=your-github-token
+OPENAI_API_KEY=your-openai-key
+```
+
+## Basic Usage
+
+Here's a simple example of how to use RepoLens:
+
+```typescript
+import { RepoLens } from "@repolens/core";
+
+async function embedRepository() {
+  // Initialize RepoLens
+  const repolens = new RepoLens({
+    owner: "repolens",
+    repo: "repolens",
+    ref: "main",
+  });
+
+  try {
+    // Process the repository
+    const chunks = await repolens.run();
+
+    // Each chunk contains:
+    // - filePath: string (relative path in the repository)
+    // - repo: string (repository identifier)
+    // - type: string (content type, e.g., 'function', 'class')
+    // - name: string (identifier for the chunk)
+    // - text: string (actual content)
+    // - embedding: number[] (vector embedding)
+
+    console.log(`✅ Processed ${chunks.length} chunks from the repository`);
+
+    return chunks;
+  } catch (error) {
+    console.error("Error processing repository:", error);
+    throw error;
+  }
+}
+```
+
+## Features
+
+RepoLens provides three main components:
+
+1. **Fetchers**: Download repository content from GitHub
+
+   - Efficient content retrieval using tarball downloads
+   - Path filtering support
+   - Version control integration
+
+2. **Parsers**: Transform code into meaningful chunks
+
+   - Support for TypeScript/JavaScript, including JSX/TSX
+   - Configuration file parsing (JSON, YAML, TOML)
+   - Extensible parser system
+
+3. **Vectorizers**: Generate vector embeddings
+   - OpenAI embedding models support
+   - Smart chunking for large files
+   - Batch processing optimization
+
+## Advanced Configuration
+
+### Customizing Parser Behavior
+
+```typescript
+import { Parser } from "@repolens/parsers";
+import { createDefaultParser } from "@repolens/parsers/default";
+import { createTSParser } from "@repolens/parsers/typescript";
+import { Vectorizer } from "@repolens/vectorizer";
+
+// Initialize vectorizer for chunking
+const vectorizer = new Vectorizer({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "text-embedding-3-small", // Optional, this is the default
+});
+
+// Create custom parser configuration
+const parser = new Parser({
+  fallback: createDefaultParser(vectorizer),
+});
+
+// Register TypeScript parser
+parser.register("ts", createTSParser(vectorizer));
+```
+
+### Embedding Options
+
+RepoLens supports multiple OpenAI embedding models:
+
+- `text-embedding-3-small` (default)
+- `text-embedding-3-large`
+- `text-embedding-ada-002`
+
+You can specify the model when initializing the vectorizer:
+
+```typescript
+const vectorizer = new Vectorizer({
+  apiKey: process.env.OPENAI_API_KEY,
+  model: "text-embedding-3-large",
+});
+```
+
+## Error Handling
+
+RepoLens includes robust error handling for common scenarios:
+
+- Invalid repository or access permissions
+- Non-existent references (branches/tags)
+- Network issues during content retrieval
+- Failed embedding attempts
+
+It's recommended to implement proper error handling in your application:
+
+```typescript
+try {
+  const chunks = await repolens.run();
+  // Process chunks
+} catch (error) {
+  if (error.response?.status === 404) {
+    console.error("Repository not found");
+  } else if (error.response?.status === 401) {
+    console.error("Invalid GitHub token");
+  } else {
+    console.error("An error occurred:", error);
+  }
+}
 ```
