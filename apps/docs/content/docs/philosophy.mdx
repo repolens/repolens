@@ -1,7 +1,71 @@
 ---
 title: Philosophy
-description: The philosophy of RepoLens
+description: The philosophy behind RepoLens
 icon: ph:brain
 ---
 
-TODO
+Every well-designed tool embodies a clear philosophy that guides its development and shapes its capabilities. RepoLens was built with a set of core principles that address fundamental challenges in working with code repositories for AI applications.
+
+## Code embeddings need specialization
+
+While generic document embedding systems exist, source code has unique properties that require specialized handling. RepoLens recognizes that code is:
+
+- **Structurally hierarchical**: Functions, classes, modules all have relationships that matter
+- **Contextually dense**: A single function may depend on imports, types, and surrounding code
+- **Semantically interconnected**: References between files create a web of dependencies that affect meaning
+- **Linguistically distinct**: Programming languages have syntax and semantics that differ from natural language
+
+Generic embedding approaches miss these crucial aspects, leading to sub-optimal results when building RAG applications that work with code.
+
+## Existing solutions fall short
+
+Many existing tools for code embedding and RAG:
+
+- **Treat code as plain text**: Missing critical structural information
+- **Lack repository-wide context**: Failing to capture cross-file relationships
+- **Provide insufficient granularity controls**: One-size-fits-all chunking strategies
+- **Have limited language support**: Often optimized for only a few languages
+- **Are difficult to customize**: Hard-coded parameters with minimal configuration options
+
+Tools like repomix provide basic functionality but don't address the full spectrum of needs for sophisticated code intelligence applications.
+
+## Developer experience is paramount
+
+RepoLens prioritizes a developer experience that:
+
+- **Respects existing workflows**: Integrating with Git and other familiar tools
+- **Provides intuitive abstractions**: Hiding complexity while exposing powerful capabilities
+- **Offers sensible defaults**: Working well out-of-the-box for common use cases
+- **Maintains flexibility**: Allowing customization when defaults aren't sufficient
+- **Scales with your needs**: From small projects to large codebases
+
+## Language-aware is better than language-agnostic
+
+While language-agnostic tools offer convenience, RepoLens embraces language-specific understanding:
+
+- **Syntax-aware parsing**: Understanding code structure based on language rules
+- **Semantic chunking**: Breaking code into meaningful units, not arbitrary text blocks
+- **Intelligent embeddings**: Capturing code semantics, not just textual similarity
+- **Language-specific optimizations**: Handling different languages according to their unique characteristics
+
+## RAG applications deserve better foundations
+
+Building effective RAG applications for code requires:
+
+- **High-quality embeddings**: Capturing the true meaning and relationships in code
+- **Fine-grained control**: Allowing different strategies for different use cases
+- **Metadata preservation**: Maintaining context about where code comes from
+- **Query optimization**: Supporting code-specific query patterns
+
+RepoLens provides these foundations, enabling you to build more effective code-aware AI applications.
+
+## Open ecosystems drive innovation
+
+RepoLens embraces openness through:
+
+- **Extensible architecture**: Allowing community contributions for new languages and features
+- **Transparent operation**: Making it clear how embeddings are generated
+- **Open standards**: Using interoperable formats that work across the AI ecosystem
+- **Community feedback**: Evolving based on real-world use cases and challenges
+
+By following these principles, RepoLens aims to provide the missing link between source code repositories and the powerful AI applications that can help developers understand, navigate, and improve their codebases.
