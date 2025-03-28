@@ -1,16 +1,24 @@
-import type { Chunker, FileInput, ParsedChunk } from '@repolens/types'
+import type { Parser, ParsedChunk } from '@repolens/types/parser'
+import type { Chunker } from '@repolens/types/chunker'
+import type { FetchedFile } from '@repolens/types/fetcher'
 
-export function createDefaultParser(chunker: Chunker) {
-  return function parseDefault(file: FileInput): ParsedChunk[] {
-    const parts = chunker.chunk(file.content, { path: file.path })
-
-    return parts.map((text, index) => ({
-      type: 'text',
-      name: `part-${index + 1}`,
-      text,
-      path: file.path,
-      language: 'plain',
-      metadata: { part: index },
-    }))
+export function createDefaultParser(chunker: Chunker): Parser {
+  return {
+    parse(file: FetchedFile): ParsedChunk[] {
+      return chunker.chunk([
+        {
+          text: file.content,
+          metadata: {
+            file: {
+              path: file.path,
+              name: file.name,
+              sha: file.sha,
+            },
+            part: 0,
+            parserType: 'default',
+          },
+        },
+      ])
+    },
   }
 }

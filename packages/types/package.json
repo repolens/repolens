@@ -3,17 +3,35 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
+    "./repolens": {
+      "types": "./dist/repolens.d.ts",
+      "import": "./dist/repolens.js",
+      "require": "./dist/repolens.cjs",
+      "default": "./dist/repolens.js"
+    },
     "./fetcher": {
       "types": "./dist/fetcher.d.ts",
-      "import": "./dist/fetcher.mjs",
-      "require": "./dist/fetcher.js",
-      "default": "./dist/fetcher.mjs"
+      "import": "./dist/fetcher.js",
+      "require": "./dist/fetcher.cjs",
+      "default": "./dist/fetcher.js"
     },
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "default": "./dist/index.js"
+    "./parser": {
+      "types": "./dist/parser.d.ts",
+      "import": "./dist/parser.js",
+      "require": "./dist/parser.cjs",
+      "default": "./dist/parser.js"
+    },
+    "./embedder": {
+      "types": "./dist/embedder.d.ts",
+      "import": "./dist/embedder.js",
+      "require": "./dist/embedder.cjs",
+      "default": "./dist/embedder.js"
+    },
+    "./chunker": {
+      "types": "./dist/chunker.d.ts",
+      "import": "./dist/chunker.js",
+      "require": "./dist/chunker.cjs",
+      "default": "./dist/chunker.js"
     }
   },
   "sideEffects": false,

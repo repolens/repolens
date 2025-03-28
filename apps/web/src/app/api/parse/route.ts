@@ -1,30 +1,27 @@
-import { Parser } from '@repolens/parsers'
+import { ParserManager } from '@repolens/parsers'
 import { createDefaultParser } from '@repolens/parsers/default'
 import { createTSParser } from '@repolens/parsers/typescript'
-import { Vectorizer } from '@repolens/vectorizer'
+import { TokenChunker } from '@repolens/chunkers/token'
+import { OpenAIEmbedder } from '@repolens/embedders/openai'
 
 export async function POST(req: Request) {
   const { content, extension } = await req.json()
 
-  const vectorizer = new Vectorizer({
+  const embedder = new OpenAIEmbedder({
     apiKey: process.env.OPENAI_API_KEY!,
   })
-  const parser = new Parser({
-    fallback: createDefaultParser({
-      chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
-    }),
+  const chunker = new TokenChunker(embedder)
+  const parser = new ParserManager({
+    fallback: createDefaultParser(chunker),
   })
 
-  parser.register(
-    'ts',
-    createTSParser({
-      chunk: (text) => vectorizer.generateEmbeddableChunks(text, 8000, 0),
-    })
-  )
+  parser.register(['ts', 'tsx', 'jsx', 'js'], createTSParser(chunker))
 
   const chunks = parser.parse({
-    path: `file.${extension}`,
+    path: `path/to/file.${extension}`,
     content,
+    name: `file.${extension}`,
+    sha: '123',
   })
 
   return new Response(JSON.stringify(chunks))

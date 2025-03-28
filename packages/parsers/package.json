@@ -16,10 +16,10 @@
       "default": "./dist/parsers/typescript.js"
     },
     ".": {
-      "types": "./dist/parser.d.ts",
-      "import": "./dist/parser.js",
-      "require": "./dist/parser.cjs",
-      "default": "./dist/parser.js"
+      "types": "./dist/manager.d.ts",
+      "import": "./dist/manager.js",
+      "require": "./dist/manager.cjs",
+      "default": "./dist/manager.js"
     }
   },
   "scripts": {
