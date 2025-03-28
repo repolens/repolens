@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import type { ParsedChunk } from '@repolens/types'
+import type { RepoLensChunk } from '@repolens/types/repolens'
+import { isDefaultChunk, isTypeScriptChunk } from '@repolens/types/parser'
 
 export function TextParser() {
   const [input, setInput] = useState('')
   const [parser, setParser] = useState('default')
-  const [output, setOutput] = useState<ParsedChunk[]>([])
+  const [output, setOutput] = useState<RepoLensChunk[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   const handleParse = () => {
@@ -82,21 +83,40 @@ export function TextParser() {
                 </p>
               </div>
             ) : (
-              output.map((chunk, index) => (
-                <div
-                  key={index}
-                  className="p-4 border rounded bg-white dark:bg-gray-800"
-                >
-                  <div className="mb-2">
-                    <span className="text-xs font-medium text-gray-500">
-                      {chunk.type} - {chunk.name}
-                    </span>
-                  </div>
-                  <pre className="text-sm font-mono whitespace-pre-wrap">
-                    {chunk.text}
-                  </pre>
-                </div>
-              ))
+              output.map((chunk, index) => {
+                if (isTypeScriptChunk(chunk.metadata)) {
+                  return (
+                    <div
+                      key={index}
+                      className="p-4 border rounded bg-white dark:bg-gray-800"
+                    >
+                      <div className="mb-2">
+                        <span className="text-xs font-medium text-gray-500">
+                          {chunk.metadata.type} - {chunk.metadata.file.name}
+                        </span>
+                      </div>
+                      <pre className="text-sm font-mono whitespace-pre-wrap">
+                        {chunk.text}
+                      </pre>
+                    </div>
+                  )
+                }
+
+                if (isDefaultChunk(chunk.metadata)) {
+                  return (
+                    <div
+                      key={index}
+                      className="p-4 border rounded bg-white dark:bg-gray-800"
+                    >
+                      <pre className="text-sm font-mono whitespace-pre-wrap">
+                        {chunk.text}
+                      </pre>
+                    </div>
+                  )
+                }
+
+                return null
+              })
             )}
           </div>
         </div>

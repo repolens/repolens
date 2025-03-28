@@ -27,10 +27,11 @@
     "ts-morph": "^25.0.1"
   },
   "dependencies": {
+    "@repolens/chunkers": "workspace:*",
+    "@repolens/embedders": "workspace:*",
     "@repolens/fetchers": "workspace:*",
     "@repolens/parsers": "workspace:*",
     "@repolens/types": "workspace:*",
-    "@repolens/vectorizer": "workspace:*",
     "octokit": "^4.1.2"
   },
   "peerDependencies": {

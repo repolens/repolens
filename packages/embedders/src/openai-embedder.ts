@@ -2,8 +2,9 @@
 
 import OpenAI from 'openai'
 import { encode, decode } from 'gpt-tokenizer'
+import type { Embedder } from '@repolens/types/embedder'
 
-export interface VectorizerOptions {
+export interface EmbedderOptions {
   apiKey?: string
   baseUrl?: string
   model?:
@@ -12,14 +13,14 @@ export interface VectorizerOptions {
     | 'text-embedding-ada-002'
 }
 
-export class Vectorizer {
+export class OpenAIEmbedder implements Embedder {
   private openai: OpenAI
   private model:
     | 'text-embedding-3-small'
     | 'text-embedding-3-large'
     | 'text-embedding-ada-002'
 
-  constructor(options: VectorizerOptions) {
+  constructor(options: EmbedderOptions) {
     const apiKey = options.apiKey || process.env.OPENAI_API_KEY
     if (!apiKey) {
       throw new Error('Missing OpenAI API Key')
