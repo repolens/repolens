@@ -35,5 +35,8 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "typescript": "5.8.2"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

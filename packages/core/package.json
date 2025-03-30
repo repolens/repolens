@@ -31,5 +31,8 @@
   },
   "peerDependencies": {
     "ts-morph": "^25.0.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
