@@ -1,10 +1,9 @@
 import { GitHubFetcher } from '@repolens/fetchers/github'
 import { RepoLensParser } from '@repolens/parsers'
 import { TokenChunker } from '@repolens/chunkers/token'
-import { createTSParser } from '@repolens/parsers/typescript'
 import { OpenAIEmbedder } from '@repolens/embedders/openai'
-import type { ParsedChunk, Parser } from '@repolens/types/parser'
-import type { RepoLensConfig, RepoLensChunk } from '@repolens/types/repolens'
+import type { Parser } from '@repolens/types/parser'
+import type { RepoLensConfig } from '@repolens/types/repolens'
 import { Chunker } from '@repolens/types/chunker'
 import { Fetcher } from '@repolens/types/fetcher'
 import { Embedder, EmbeddedChunk } from '@repolens/types/embedder'
@@ -12,6 +11,7 @@ export interface GitHubRunInput {
   owner: string
   repo: string
   ref?: string
+  includeRepoInfo?: boolean
 }
 
 export type RepoLensRunInput<T = any> = GitHubRunInput | T

@@ -14,6 +14,8 @@ export async function POST(req: Request) {
       path: `path/to/file.${extension}`,
       content,
       name: `file.${extension}`,
+      repo: 'repo',
+      owner: 'owner',
       sha: '123',
     },
   ])

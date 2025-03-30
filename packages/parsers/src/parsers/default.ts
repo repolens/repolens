@@ -13,6 +13,8 @@ export function createDefaultParser(chunker: Chunker): Parser {
               path: file.path,
               name: file.name,
               sha: file.sha,
+              repo: file.repo,
+              owner: file.owner,
             },
             part: 0,
             parserType: 'default',

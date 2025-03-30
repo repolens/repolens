@@ -10,11 +10,7 @@ export interface ParsedChunk {
 }
 
 export interface ParsedChunkMetadata {
-  file: {
-    path: string
-    name: string
-    sha: string
-  }
+  file: Omit<FetchedFile, 'content'>
   part: number
   parserType: string
   [key: string]: unknown

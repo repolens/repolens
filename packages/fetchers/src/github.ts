@@ -93,6 +93,8 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
             path: relPath,
             name: path.basename(relPath),
             content,
+            repo: this.repo,
+            owner: this.owner,
             sha: '', // sha injected later
           })
           next()
