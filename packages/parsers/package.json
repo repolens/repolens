@@ -2,6 +2,8 @@
   "name": "@repolens/parsers",
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "author": "Cody Rathor <cody@codyval.dev>",
   "exports": {
     "./default": {
       "types": "./dist/parsers/default.d.ts",
