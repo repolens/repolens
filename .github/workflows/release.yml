@@ -29,6 +29,9 @@ jobs:
         with:
           node-version: 22.x
           cache: pnpm
+          scope: '@repolens'
+          registry-url: 'https://registry.npmjs.org'
+          token: ${{ secrets.NPM_TOKEN }}
 
       - name: Install Dependencies
         run: pnpm install
