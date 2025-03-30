@@ -2,6 +2,8 @@
   "name": "@repolens/embedders",
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "author": "Cody Rathor <cody@codyval.dev>",
   "exports": {
     "./openai": {
       "types": "./dist/openai-embedder.d.ts",

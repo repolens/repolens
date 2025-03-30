@@ -2,6 +2,8 @@
   "name": "@repolens/config",
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "author": "Cody Rathor <cody@codyval.dev>",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

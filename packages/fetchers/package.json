@@ -2,6 +2,8 @@
   "name": "@repolens/fetchers",
   "version": "0.0.0",
   "type": "module",
+  "license": "MIT",
+  "author": "Cody Rathor <cody@codyval.dev>",
   "exports": {
     "./github": {
       "types": "./dist/github.d.ts",
