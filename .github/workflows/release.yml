@@ -37,12 +37,24 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Create Release Pull Request or Publish to npm
+      - name: Run Post Install Script
+        run: pnpm postinstall --include-workspace-root --if-present
+
+      - name: Build Packages
+        run: pnpm build
+
+      - name: Setup Registry
+        run: |
+          npm set registry https://registry.npmjs.org/repolens
+          npm set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+
+      - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
         with:
           # This expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm publish-packages
+          publish: pnpm publish
+          version: pnpm version
           setupGitUser: true
           createGithubReleases: true
         env:
