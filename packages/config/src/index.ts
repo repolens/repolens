@@ -1,12 +1,18 @@
 import { githubEnvSchema, openaiEnvSchema } from './schema.js'
 
-export const githubConfig = githubEnvSchema.parse(process.env)
-export const openaiConfig = openaiEnvSchema.parse(process.env)
+let _githubConfig: ReturnType<typeof githubEnvSchema.parse> | null = null
+let _openaiConfig: ReturnType<typeof openaiEnvSchema.parse> | null = null
 
 export function getGithubConfig() {
-  return githubConfig
+  if (!_githubConfig) {
+    _githubConfig = githubEnvSchema.parse(process.env)
+  }
+  return _githubConfig
 }
 
 export function getOpenaiConfig() {
-  return openaiConfig
+  if (!_openaiConfig) {
+    _openaiConfig = openaiEnvSchema.parse(process.env)
+  }
+  return _openaiConfig
 }
