@@ -6,7 +6,7 @@
     "./*": "./dist/*.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf dist && tsc"
   },
   "devDependencies": {
     "@repolens/types": "workspace:*",

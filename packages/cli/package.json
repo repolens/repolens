@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "type": "module",
   "bin": {
-    "rv": "dist/index.js"
+    "rv": "dist/bin.js"
   },
   "scripts": {
-    "build": "tsc",
-    "start": "tsx src/index.ts"
+    "build": "tsc"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -20,6 +19,6 @@
   },
   "dependencies": {
     "@repolens/core": "workspace:*",
-    "dotenv": "^16.4.7"
+    "@repolens/config": "workspace:*"
   }
 }

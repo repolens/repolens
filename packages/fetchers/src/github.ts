@@ -1,70 +1,62 @@
-import type { Octokit } from 'octokit'
+import { Octokit } from 'octokit'
 import tar from 'tar-stream'
 import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
 import type { Fetcher, FetchedFile } from '@repolens/types/fetcher'
+import { getGithubConfig } from '@repolens/config'
 
-interface FetcherOptions {
+interface GithubFetcherOptions {
   owner: string
   repo: string
   ref?: string
+  token?: string
   includePaths?: Set<string>
 }
 
-export class GitHubFetcher implements Fetcher<FetcherOptions> {
+export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
+  private readonly owner: string
+  private readonly repo: string
+  private readonly ref: string
+  private readonly includePaths: Set<string>
+  private readonly token: string
   private readonly octokit: Octokit
 
-  constructor(octokit: Octokit) {
-    this.octokit = octokit
+  constructor(options: GithubFetcherOptions) {
+    const { owner, repo, ref, token, includePaths } = options
+    this.owner = owner
+    this.repo = repo
+    this.ref = ref ?? 'main'
+    this.includePaths = includePaths ?? new Set()
+    this.token = token ?? getGithubConfig().GITHUB_TOKEN
+    this.octokit = new Octokit({ auth: this.token })
   }
 
-  async fetch({
-    owner,
-    repo,
-    ref = 'HEAD',
-    includePaths = new Set(),
-  }: FetcherOptions): Promise<FetchedFile[]> {
-    return await this.getFilesFromTarball({
-      owner,
-      repo,
-      ref,
-      includePaths,
-    })
+  async fetch(): Promise<FetchedFile[]> {
+    return await this.getFilesFromTarball()
   }
 
-  async getFilesFromTarball({
-    owner,
-    repo,
-    ref,
-    includePaths,
-  }: Required<FetcherOptions>): Promise<FetchedFile[]> {
-    const { data, error } = await this.getTarball({ owner, repo, ref })
+  async getFilesFromTarball(): Promise<FetchedFile[]> {
+    const { data, error } = await this.getTarball()
     if (error) {
-      throw new Error(`Failed to get tarball for ${owner}/${repo}@${ref}`)
+      throw new Error(
+        `Failed to get tarball for ${this.owner}/${this.repo}@${this.ref}`
+      )
     }
     const stream = await this.tarballToStream(data)
-    const files = await this.extractFilesFromTarballStream(stream, includePaths)
-    return (await this.injectShas(files, {
-      owner,
-      repo,
-      ref,
-    })) satisfies FetchedFile[]
+    const files = await this.extractFilesFromTarballStream(stream)
+    return (await this.injectShas(files)) satisfies FetchedFile[]
   }
 
-  async getTarball({
-    owner,
-    repo,
-    ref,
-  }: Required<Omit<FetcherOptions, 'includePaths'>>) {
+  async getTarball() {
     try {
       const response = await this.octokit.request(
         'GET /repos/{owner}/{repo}/tarball/{ref}',
         {
-          owner,
-          repo,
-          ref,
+          owner: this.owner,
+          repo: this.repo,
+          ref: this.ref,
           headers: { Accept: 'application/vnd.github.v3+json' },
         }
       )
@@ -80,17 +72,14 @@ export class GitHubFetcher implements Fetcher<FetcherOptions> {
     return stream
   }
 
-  async extractFilesFromTarballStream(
-    stream: Readable,
-    includePaths: Required<FetcherOptions>['includePaths']
-  ) {
+  async extractFilesFromTarballStream(stream: Readable) {
     const files: FetchedFile[] = []
     const extract = tar.extract()
     const extractPromise = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header: any, streamEntry: any, next: any) => {
         const relPath = header.name.split('/').slice(1).join('/')
 
-        if (includePaths.has(relPath)) {
+        if (this.includePaths.has(relPath)) {
           streamEntry.resume()
           return next()
         }
@@ -120,49 +109,38 @@ export class GitHubFetcher implements Fetcher<FetcherOptions> {
     return files
   }
 
-  async injectShas(
-    files: FetchedFile[],
-    { owner, repo, ref }: Omit<FetcherOptions, 'includePaths'>
-  ) {
-    const { data, error } = await this.getFilteredTreePaths({
-      owner,
-      repo,
-      ref,
-    })
+  async injectShas(files: FetchedFile[]) {
+    const { data, error } = await this.getFilteredTreePaths()
     if (error) {
       throw new Error(
-        `Failed to get filtered tree paths for ${owner}/${repo}@${ref}`
+        `Failed to get filtered tree paths for ${this.owner}/${this.repo}@${this.ref}`
       )
     }
     const shaMap = new Map(data.map((item) => [item.path, item.sha]))
     return files.map((file) => ({ ...file, sha: shaMap.get(file.path) || '' }))
   }
 
-  async getFilteredTreePaths({
-    owner,
-    repo,
-    ref,
-  }: Omit<FetcherOptions, 'includePaths'>) {
+  async getFilteredTreePaths() {
     try {
       const { data: refData } = await this.octokit.rest.git.getRef({
-        owner,
-        repo,
-        ref: `heads/${ref}`,
+        owner: this.owner,
+        repo: this.repo,
+        ref: `heads/${this.ref}`,
       })
 
       const commitSha = refData.object.sha
 
       const { data: commitData } = await this.octokit.rest.git.getCommit({
-        owner,
-        repo,
+        owner: this.owner,
+        repo: this.repo,
         commit_sha: commitSha,
       })
 
       const treeSha = commitData.tree.sha
 
       const { data: treeData } = await this.octokit.rest.git.getTree({
-        owner,
-        repo,
+        owner: this.owner,
+        repo: this.repo,
         tree_sha: treeSha,
         recursive: '1',
       })

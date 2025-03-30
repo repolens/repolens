@@ -1,12 +1,10 @@
-// packages/core/src/Vectorizer.ts
-
 import OpenAI from 'openai'
 import { encode, decode } from 'gpt-tokenizer'
-import type { Embedder } from '@repolens/types/embedder'
+import type { EmbeddedChunk, Embedder } from '@repolens/types/embedder'
+import { getOpenaiConfig } from '@repolens/config'
+import { ParsedChunk } from '@repolens/types/parser'
 
 export interface EmbedderOptions {
-  apiKey?: string
-  baseUrl?: string
   model?:
     | 'text-embedding-3-small'
     | 'text-embedding-3-large'
@@ -20,18 +18,13 @@ export class OpenAIEmbedder implements Embedder {
     | 'text-embedding-3-large'
     | 'text-embedding-ada-002'
 
-  constructor(options: EmbedderOptions) {
-    const apiKey = options.apiKey || process.env.OPENAI_API_KEY
-    if (!apiKey) {
-      throw new Error('Missing OpenAI API Key')
-    }
-
+  constructor(options?: EmbedderOptions) {
     this.openai = new OpenAI({
-      apiKey,
-      baseURL: options.baseUrl,
+      apiKey: getOpenaiConfig().OPENAI_API_KEY,
+      baseURL: getOpenaiConfig().OPENAI_BASE_URL,
     })
 
-    this.model = options.model || 'text-embedding-3-small'
+    this.model = options?.model ?? 'text-embedding-3-small'
   }
 
   async embed(texts: string[]): Promise<Map<number, number[]>> {
@@ -88,6 +81,16 @@ export class OpenAIEmbedder implements Embedder {
     }
 
     return resultMap
+  }
+
+  async embedChunks(chunks: ParsedChunk[]): Promise<EmbeddedChunk[]> {
+    const texts = chunks.map((chunk) => chunk.text)
+    const embeddings = await this.embed(texts)
+
+    return chunks.map((chunk, i) => ({
+      ...chunk,
+      embedding: embeddings.get(i)!,
+    }))
   }
 
   generateEmbeddableChunks(

@@ -5,26 +5,19 @@
   "exports": {
     "./default": {
       "types": "./dist/parsers/default.d.ts",
-      "import": "./dist/parsers/default.js",
-      "require": "./dist/parsers/default.cjs",
-      "default": "./dist/parsers/default.js"
+      "import": "./dist/parsers/default.js"
     },
     "./typescript": {
       "types": "./dist/parsers/typescript.d.ts",
-      "import": "./dist/parsers/typescript.js",
-      "require": "./dist/parsers/typescript.cjs",
-      "default": "./dist/parsers/typescript.js"
+      "import": "./dist/parsers/typescript.js"
     },
     ".": {
-      "types": "./dist/manager.d.ts",
-      "import": "./dist/manager.js",
-      "require": "./dist/manager.cjs",
-      "default": "./dist/manager.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     }
   },
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch"
+    "build": "rm -rf dist && tsc"
   },
   "dependencies": {
     "@repolens/types": "workspace:*"

@@ -1,3 +1,12 @@
-import { envSchema } from './schema.js'
+import { githubEnvSchema, openaiEnvSchema } from './schema.js'
 
-export const config = envSchema.parse(process.env)
+export const githubConfig = githubEnvSchema.parse(process.env)
+export const openaiConfig = openaiEnvSchema.parse(process.env)
+
+export function getGithubConfig() {
+  return githubConfig
+}
+
+export function getOpenaiConfig() {
+  return openaiConfig
+}

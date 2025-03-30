@@ -1,25 +1,21 @@
 {
   "name": "@repolens/embedders",
   "version": "0.0.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "type": "module",
   "exports": {
     "./openai": {
       "types": "./dist/openai-embedder.d.ts",
-      "import": "./dist/openai-embedder.js",
-      "require": "./dist/openai-embedder.cjs",
-      "default": "./dist/openai-embedder.js"
+      "import": "./dist/openai-embedder.js"
     }
   },
   "scripts": {
-    "build": "tsup src/openai-embedder.ts --format cjs,esm --dts",
-    "dev": "tsup src/openai-embedder.ts --format cjs,esm --dts --watch"
+    "build": "rm -rf dist && tsc"
   },
   "dependencies": {
     "openai": "^4.89.0",
     "gpt-tokenizer": "^2.9.0",
-    "@repolens/types": "workspace:*"
+    "@repolens/types": "workspace:*",
+    "@repolens/config": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -27,7 +23,6 @@
     "@turbo/gen": "^2.4.4",
     "@types/node": "^22.13.10",
     "eslint": "^9.22.0",
-    "tsup": "^8.4.0",
     "typescript": "5.8.2"
   }
 }

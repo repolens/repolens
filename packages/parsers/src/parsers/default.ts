@@ -4,9 +4,9 @@ import type { FetchedFile } from '@repolens/types/fetcher'
 
 export function createDefaultParser(chunker: Chunker): Parser {
   return {
-    parse(file: FetchedFile): ParsedChunk[] {
-      return chunker.chunk([
-        {
+    parse(files: FetchedFile[]): ParsedChunk[] {
+      return chunker.chunk(
+        files.map((file) => ({
           text: file.content,
           metadata: {
             file: {
@@ -17,8 +17,8 @@ export function createDefaultParser(chunker: Chunker): Parser {
             part: 0,
             parserType: 'default',
           },
-        },
-      ])
+        }))
+      )
     },
   }
 }

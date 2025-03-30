@@ -4,12 +4,12 @@
   "type": "module",
   "exports": {
     "./github": {
-      "types": "./src/github.ts",
-      "default": "./dist/github.js"
+      "types": "./dist/github.d.ts",
+      "import": "./dist/github.js"
     }
   },
   "scripts": {
-    "build": "tsc"
+    "build": "rm -rf dist && tsc"
   },
   "devDependencies": {
     "@repolens/types": "workspace:*",
@@ -21,10 +21,11 @@
     "@types/node": "^22.13.10",
     "@types/tar-stream": "^3.1.3",
     "eslint": "^9.22.0",
-    "typescript": "5.8.2",
-    "octokit": "^4.1.2"
+    "typescript": "5.8.2"
   },
   "dependencies": {
+    "octokit": "^4.1.2",
+    "@repolens/config": "workspace:*",
     "adm-zip": "^0.5.16",
     "gunzip-maybe": "^1.4.2",
     "tar": "^7.4.3",
