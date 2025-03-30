@@ -37,9 +37,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
 
-      - name: Run Post Install Script
-        run: pnpm postinstall --include-workspace-root --if-present
-
       - name: Build Packages
         run: pnpm build
 
