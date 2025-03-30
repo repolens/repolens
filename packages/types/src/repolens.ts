@@ -1,15 +1,13 @@
-import type { ParsedChunk } from './parser.js'
+import { Chunker } from './chunker.js'
+import { Embedder } from './embedder.js'
+import { Fetcher } from './fetcher.js'
+import type { ParsedChunk, Parser } from './parser.js'
 
 export interface RepoLensConfig {
-  owner: string
-  repo: string
-  ref?: string
-  githubToken?: string
-  openaiApiKey?: string
-  openaiBaseUrl?: string
-  includeExtensions?: string[]
-  excludePaths?: string[]
-  excludeRegex?: RegExp[]
+  parser?: Parser
+  embedder?: Embedder
+  chunker?: Chunker
+  fetcher?: Fetcher
 }
 
 export interface RepoLensChunk extends ParsedChunk {

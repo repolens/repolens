@@ -5,45 +5,33 @@
   "exports": {
     "./repolens": {
       "types": "./dist/repolens.d.ts",
-      "import": "./dist/repolens.js",
-      "require": "./dist/repolens.cjs",
-      "default": "./dist/repolens.js"
+      "import": "./dist/repolens.js"
     },
     "./fetcher": {
       "types": "./dist/fetcher.d.ts",
-      "import": "./dist/fetcher.js",
-      "require": "./dist/fetcher.cjs",
-      "default": "./dist/fetcher.js"
+      "import": "./dist/fetcher.js"
     },
     "./parser": {
       "types": "./dist/parser.d.ts",
-      "import": "./dist/parser.js",
-      "require": "./dist/parser.cjs",
-      "default": "./dist/parser.js"
+      "import": "./dist/parser.js"
     },
     "./embedder": {
       "types": "./dist/embedder.d.ts",
-      "import": "./dist/embedder.js",
-      "require": "./dist/embedder.cjs",
-      "default": "./dist/embedder.js"
+      "import": "./dist/embedder.js"
     },
     "./chunker": {
       "types": "./dist/chunker.d.ts",
-      "import": "./dist/chunker.js",
-      "require": "./dist/chunker.cjs",
-      "default": "./dist/chunker.js"
+      "import": "./dist/chunker.js"
     }
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
+    "build": "rm -rf dist && tsc",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
-    "tsup": "^8.0.2",
     "typescript": "5.8.2"
   }
 }

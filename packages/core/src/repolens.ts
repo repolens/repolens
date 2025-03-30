@@ -1,70 +1,56 @@
-import { Octokit } from 'octokit'
 import { GitHubFetcher } from '@repolens/fetchers/github'
-import { ParserManager } from '@repolens/parsers'
+import { RepoLensParser } from '@repolens/parsers'
 import { TokenChunker } from '@repolens/chunkers/token'
-import { createDefaultParser } from '@repolens/parsers/default'
 import { createTSParser } from '@repolens/parsers/typescript'
 import { OpenAIEmbedder } from '@repolens/embedders/openai'
-import type { ParsedChunk } from '@repolens/types/parser'
+import type { ParsedChunk, Parser } from '@repolens/types/parser'
 import type { RepoLensConfig, RepoLensChunk } from '@repolens/types/repolens'
+import { Chunker } from '@repolens/types/chunker'
+import { Fetcher } from '@repolens/types/fetcher'
+import { Embedder, EmbeddedChunk } from '@repolens/types/embedder'
+export interface GitHubRunInput {
+  owner: string
+  repo: string
+  ref?: string
+}
+
+export type RepoLensRunInput<T = any> = GitHubRunInput | T
 
 export class RepoLens {
-  constructor(private config: RepoLensConfig) {
-    this.config.githubToken ||= process.env.GITHUB_TOKEN
-    this.config.openaiApiKey ||= process.env.OPENAI_API_KEY
+  private parser: Parser
+  private embedder: Embedder
+  private chunker: Chunker
+  private fetcher?: Fetcher
+
+  constructor(config?: RepoLensConfig) {
+    this.embedder = config?.embedder ?? new OpenAIEmbedder()
+    this.chunker = config?.chunker ?? new TokenChunker(this.embedder, 8000, 200)
+    this.parser = config?.parser ?? new RepoLensParser(this.chunker)
+    this.fetcher = config?.fetcher
   }
 
-  async run(): Promise<RepoLensChunk[]> {
-    try {
-      const {
-        owner,
-        repo,
-        ref,
-        githubToken,
-        openaiApiKey,
-        openaiBaseUrl,
-        includeExtensions,
-        excludePaths,
-        excludeRegex,
-      } = this.config
+  static create(config?: ConstructorParameters<typeof RepoLens>[0]) {
+    return new RepoLens(config)
+  }
 
-      const octokit = new Octokit({ auth: githubToken })
-      const fetcher = new GitHubFetcher(octokit)
+  async run<T extends object = GitHubRunInput>(
+    input: T
+  ): Promise<EmbeddedChunk[]> {
+    let fetcher: Fetcher<T>
 
-      const files = await fetcher.fetch({
-        owner,
-        repo,
-        ref,
-        includePaths: new Set(),
-      })
-
-      const embedder = new OpenAIEmbedder({
-        apiKey: openaiApiKey,
-        baseUrl: openaiBaseUrl,
-      })
-      const tokenChunker = new TokenChunker(embedder)
-
-      const parser = new ParserManager({
-        fallback: createDefaultParser(tokenChunker),
-      })
-
-      parser.register(['ts', 'tsx', 'jsx', 'js'], createTSParser(tokenChunker))
-
-      const parsedChunks = files.flatMap((file) => parser.parse(file))
-      const safeChunks = tokenChunker.chunk(parsedChunks)
-
-      const embeddingMap = await embedder.embed(
-        safeChunks.map((chunk: ParsedChunk) => chunk.text)
-      )
-
-      return safeChunks.map((chunk: ParsedChunk, i: number) => ({
-        ...chunk,
-        repo: `${owner}/${repo}`,
-        embedding: embeddingMap.get(i),
-      }))
-    } catch (error) {
-      console.error(error)
-      throw error
+    if (this.fetcher) {
+      fetcher = this.fetcher as Fetcher<T>
+    } else if ('owner' in input && 'repo' in input) {
+      const { owner, repo, ref } = input as GitHubRunInput
+      fetcher = new GitHubFetcher({ owner, repo, ref })
+    } else {
+      throw new Error('No fetcher provided, and input in not Github-compatible')
     }
+
+    const files = await fetcher.fetch(input)
+    const parsed = this.parser.parse(files)
+    const embedded = await this.embedder.embedChunks(parsed)
+
+    return embedded
   }
 }

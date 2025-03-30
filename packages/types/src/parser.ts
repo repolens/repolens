@@ -1,7 +1,7 @@
 import { FetchedFile } from './fetcher.js'
 
 export interface Parser {
-  parse(file: FetchedFile): ParsedChunk[]
+  parse(files: FetchedFile[]): ParsedChunk[]
 }
 
 export interface ParsedChunk {

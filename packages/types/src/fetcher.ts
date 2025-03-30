@@ -1,4 +1,4 @@
-export interface Fetcher<T = Record<string, unknown>> {
+export interface Fetcher<T = any> {
   fetch(opts: T): Promise<FetchedFile[]>
 }
 
