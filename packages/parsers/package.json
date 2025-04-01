@@ -4,18 +4,20 @@
   "type": "module",
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     "./default": {
       "types": "./dist/parsers/default.d.ts",
-      "import": "./dist/parsers/default.js"
+      "default": "./dist/parsers/default.js"
     },
     "./typescript": {
       "types": "./dist/parsers/typescript.d.ts",
-      "import": "./dist/parsers/typescript.js"
+      "default": "./dist/parsers/typescript.js"
     },
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "default": "./dist/index.js"
     }
   },
   "scripts": {

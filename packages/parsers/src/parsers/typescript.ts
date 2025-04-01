@@ -1,9 +1,12 @@
 // packages/parsers/src/createTSParser.ts
 
 import { Project, SyntaxKind } from 'ts-morph'
-import type { Chunker } from '@repolens/types/chunker'
-import type { Parser, ParsedChunk } from '@repolens/types/parser'
-import { RepoLensFile } from '@repolens/types/fetcher'
+import type {
+  Chunker,
+  Parser,
+  ParsedChunk,
+  RepoLensFile,
+} from '@repolens/types'
 
 export function createTSParser(chunker: Chunker): Parser {
   return {

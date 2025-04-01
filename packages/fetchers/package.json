@@ -7,7 +7,7 @@
   "exports": {
     "./github": {
       "types": "./dist/github.d.ts",
-      "import": "./dist/github.js"
+      "default": "./dist/github.js"
     }
   },
   "scripts": {

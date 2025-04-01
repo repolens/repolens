@@ -1,4 +1,4 @@
-import { RepoLensFile } from './fetcher.js'
+import { RepoLensFile } from './file.js'
 
 export interface Parser {
   supports: (file: RepoLensFile) => boolean

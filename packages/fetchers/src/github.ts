@@ -4,7 +4,7 @@ import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
-import type { Fetcher, RepoLensFile } from '@repolens/types/fetcher'
+import type { Fetcher, RepoLensFile } from '@repolens/types'
 import { getGithubConfig } from '@repolens/config'
 
 interface GithubFetcherOptions {

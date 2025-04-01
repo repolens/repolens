@@ -1,6 +1,9 @@
-import type { Parser, ParsedChunk } from '@repolens/types/parser'
-import type { Chunker } from '@repolens/types/chunker'
-import type { RepoLensFile } from '@repolens/types/fetcher'
+import type {
+  Parser,
+  ParsedChunk,
+  RepoLensFile,
+  Chunker,
+} from '@repolens/types'
 
 export function createDefaultParser(chunker: Chunker): Parser {
   return {

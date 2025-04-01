@@ -4,10 +4,12 @@
   "type": "module",
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
+  "main": "./dist/repolens.js",
+  "types": "./dist/repolens.d.ts",
   "exports": {
     ".": {
       "types": "./dist/repolens.d.ts",
-      "import": "./dist/repolens.js"
+      "default": "./dist/repolens.js"
     }
   },
   "scripts": {

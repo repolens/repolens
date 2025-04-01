@@ -1,6 +1,4 @@
-import type { Chunker } from '@repolens/types/chunker'
-import type { ParsedChunk } from '@repolens/types/parser'
-import type { Embedder } from '@repolens/types/embedder'
+import type { Chunker, ParsedChunk, Embedder } from '@repolens/types'
 
 export class TokenChunker implements Chunker {
   constructor(

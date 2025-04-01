@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import type { RepoLensChunk } from '@repolens/types/repolens'
-import { isDefaultChunk, isTypeScriptChunk } from '@repolens/types/parser'
+import {
+  type RepoLensChunk,
+  isDefaultChunk,
+  isTypeScriptChunk,
+} from '@repolens/types'
 
 export function TextParser() {
   const [input, setInput] = useState('')
