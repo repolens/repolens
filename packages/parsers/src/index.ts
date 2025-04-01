@@ -1,9 +1,4 @@
-import type {
-  RepoLensFile,
-  Parser,
-  ParsedChunk,
-  Chunker,
-} from '@repolens/types'
+import type { RepoLensFile, Parser, ParsedChunk } from '@repolens/types'
 import { createDefaultParser } from './parsers/default.js'
 import { createTSParser } from './parsers/typescript.js'
 

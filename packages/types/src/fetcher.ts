@@ -1,5 +1,5 @@
-import { RepoLensFile } from './file.js'
+import { LensData } from './data.js'
 
 export interface Fetcher {
-  fetch(): Promise<RepoLensFile[]>
+  fetch(): Promise<LensData[]>
 }
