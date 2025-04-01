@@ -19,7 +19,7 @@ export abstract class BaseLens {
   /**
    * Subclasses must implement how content is fetched.
    */
-  abstract fetch(): Promise<LensData[]>
+  abstract fetch(...args: any[]): Promise<LensData[]>
 
   /**
    * Optional: Enrich fetched files with metadata before parsing.
