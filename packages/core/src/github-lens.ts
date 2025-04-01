@@ -12,7 +12,6 @@ export interface GithubLensOptions {
 }
 
 export class GithubLens extends BaseLens {
-  name = 'github'
   private fetcher: Fetcher
 
   constructor({ owner, repo, ref }: GithubLensOptions) {

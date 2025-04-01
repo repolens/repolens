@@ -8,8 +8,6 @@ import {
 } from '@repolens/types'
 
 export abstract class BaseLens {
-  abstract name: string
-
   constructor(
     protected parser: Parser,
     protected chunker: Chunker,
@@ -52,8 +50,8 @@ export abstract class BaseLens {
   /**
    * Full pipeline: fetch → enrich → parse → chunk → embed
    */
-  async run(): Promise<EmbeddedChunk[]> {
-    const files = await this.fetch()
+  async run(...args: any[]): Promise<EmbeddedChunk[]> {
+    const files = await this.fetch(...args)
     const enriched = this.enrich(files)
     const parsed = this.parse(enriched)
     const chunked = this.chunk(parsed)
