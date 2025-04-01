@@ -15,7 +15,8 @@
       "@repolens/embedders",
       "@repolens/fetchers",
       "@repolens/parsers",
-      "@repolens/types"
+      "@repolens/types",
+      "@repolens/utils"
     ]
   ],
   "title": "chore: release",
