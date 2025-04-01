@@ -1,5 +1,11 @@
 # @repolens/utils
 
+## 0.6.2
+
+### Patch Changes
+
+- b6fb1df: allow run method to be more flexible, remove name from BaseLens
+
 ## 0.6.1
 
 ### Patch Changes

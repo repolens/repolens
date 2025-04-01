@@ -1,5 +1,13 @@
 # @repolens/parsers
 
+## 0.6.2
+
+### Patch Changes
+
+- b6fb1df: allow run method to be more flexible, remove name from BaseLens
+- Updated dependencies [b6fb1df]
+  - @repolens/types@0.6.2
+
 ## 0.6.1
 
 ### Patch Changes
