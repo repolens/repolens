@@ -1,5 +1,14 @@
 # @repolens/embedders
 
+## 0.6.1
+
+### Patch Changes
+
+- 98e8971: fix type for fetch and fetcher
+- Updated dependencies [98e8971]
+  - @repolens/config@0.6.1
+  - @repolens/types@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @repolens/cli
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [98e8971]
+  - @repolens/config@0.6.1
+  - @repolens/core@0.6.1
+
 ## 0.1.2
 
 ### Patch Changes

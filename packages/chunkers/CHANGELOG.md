@@ -1,5 +1,14 @@
 # @repolens/chunkers
 
+## 0.6.1
+
+### Patch Changes
+
+- 98e8971: fix type for fetch and fetcher
+- Updated dependencies [98e8971]
+  - @repolens/types@0.6.1
+  - @repolens/utils@0.6.1
+
 ## 0.6.0
 
 ### Minor Changes
