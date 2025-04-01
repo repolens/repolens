@@ -1,5 +1,11 @@
 # @repolens/utils
 
+## 0.6.1
+
+### Patch Changes
+
+- 98e8971: fix type for fetch and fetcher
+
 ## 0.6.0
 
 ### Minor Changes
