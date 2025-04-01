@@ -1,5 +1,16 @@
 # @repolens/parsers
 
+## 0.2.0
+
+### Minor Changes
+
+- 174fe6d: Decoupled the FetcherFile (now RepoLensFile) from Fetcher by making it less strict
+
+### Patch Changes
+
+- Updated dependencies [174fe6d]
+  - @repolens/types@0.2.0
+
 ## 0.1.0
 
 ### Minor Changes
