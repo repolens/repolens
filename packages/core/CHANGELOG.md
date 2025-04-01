@@ -1,5 +1,17 @@
 # @repolens/core
 
+## 0.6.2
+
+### Patch Changes
+
+- b6fb1df: allow run method to be more flexible, remove name from BaseLens
+- Updated dependencies [b6fb1df]
+  - @repolens/chunkers@0.6.2
+  - @repolens/embedders@0.6.2
+  - @repolens/fetchers@0.6.2
+  - @repolens/parsers@0.6.2
+  - @repolens/types@0.6.2
+
 ## 0.6.1
 
 ### Patch Changes
