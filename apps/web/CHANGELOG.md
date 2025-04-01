@@ -1,5 +1,15 @@
 # web
 
+## 0.1.5
+
+### Patch Changes
+
+- Updated dependencies [fe253d8]
+- Updated dependencies [21a02b7]
+  - @repolens/chunkers@0.5.0
+  - @repolens/parsers@0.5.0
+  - @repolens/types@0.5.0
+
 ## 0.1.4
 
 ### Patch Changes

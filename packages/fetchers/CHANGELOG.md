@@ -1,5 +1,19 @@
 # @repolens/fetchers
 
+## 0.5.0
+
+### Minor Changes
+
+- fe253d8: bump
+- 21a02b7: re-export RepoLensParser from core, fix fetcher type
+
+### Patch Changes
+
+- Updated dependencies [fe253d8]
+- Updated dependencies [21a02b7]
+  - @repolens/config@0.5.0
+  - @repolens/types@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes
