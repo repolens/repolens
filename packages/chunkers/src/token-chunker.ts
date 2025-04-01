@@ -1,6 +1,4 @@
-import type { Chunker } from '@repolens/types/chunker'
-import type { ParsedChunk } from '@repolens/types/parser'
-import type { Embedder } from '@repolens/types/embedder'
+import type { Chunker, ParsedChunk, Embedder } from '@repolens/types'
 
 export class TokenChunker implements Chunker {
   constructor(
@@ -12,13 +10,13 @@ export class TokenChunker implements Chunker {
   chunk(chunks: ParsedChunk[]): ParsedChunk[] {
     return chunks.flatMap((chunk) => {
       const parts = this.embedder.generateEmbeddableChunks(
-        chunk.text,
+        chunk.content,
         this.maxTokens,
         this.overlap
       )
 
       return parts.map((text, index) => ({
-        text,
+        content: text,
         metadata: {
           ...chunk.metadata,
           part: parts.length > 1 ? index : (chunk.metadata.part ?? 0),

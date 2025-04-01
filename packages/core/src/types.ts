@@ -1,4 +1,4 @@
-import { ParsedChunk } from '@repolens/types/parser'
+import { ParsedChunk } from '@repolens/types'
 
 export interface RepoLensConfig {
   owner: string

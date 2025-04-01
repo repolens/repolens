@@ -1,8 +1,7 @@
 import OpenAI from 'openai'
 import { encode, decode } from 'gpt-tokenizer'
-import type { EmbeddedChunk, Embedder } from '@repolens/types/embedder'
+import type { EmbeddedChunk, Embedder, ParsedChunk } from '@repolens/types'
 import { getOpenaiConfig } from '@repolens/config'
-import { ParsedChunk } from '@repolens/types/parser'
 
 export interface EmbedderOptions {
   model?:
@@ -84,7 +83,7 @@ export class OpenAIEmbedder implements Embedder {
   }
 
   async embedChunks(chunks: ParsedChunk[]): Promise<EmbeddedChunk[]> {
-    const texts = chunks.map((chunk) => chunk.text)
+    const texts = chunks.map((chunk) => chunk.content)
     const embeddings = await this.embed(texts)
 
     return chunks.map((chunk, i) => ({

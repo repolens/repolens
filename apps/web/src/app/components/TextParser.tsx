@@ -1,8 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import type { RepoLensChunk } from '@repolens/types/repolens'
-import { isDefaultChunk, isTypeScriptChunk } from '@repolens/types/parser'
+import {
+  type RepoLensChunk,
+  isDefaultChunk,
+  isTypeScriptChunk,
+} from '@repolens/types'
 
 export function TextParser() {
   const [input, setInput] = useState('')
@@ -92,11 +95,11 @@ export function TextParser() {
                     >
                       <div className="mb-2">
                         <span className="text-xs font-medium text-gray-500">
-                          {chunk.metadata.type} - {chunk.metadata.file.name}
+                          {chunk.metadata.type} - {chunk.metadata.name}
                         </span>
                       </div>
                       <pre className="text-sm font-mono whitespace-pre-wrap">
-                        {chunk.text}
+                        {chunk.content}
                       </pre>
                     </div>
                   )
@@ -109,7 +112,7 @@ export function TextParser() {
                       className="p-4 border rounded bg-white dark:bg-gray-800"
                     >
                       <pre className="text-sm font-mono whitespace-pre-wrap">
-                        {chunk.text}
+                        {chunk.content}
                       </pre>
                     </div>
                   )

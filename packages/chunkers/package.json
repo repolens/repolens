@@ -7,7 +7,7 @@
   "exports": {
     "./token": {
       "types": "./dist/token-chunker.d.ts",
-      "import": "./dist/token-chunker.js"
+      "default": "./dist/token-chunker.js"
     }
   },
   "scripts": {

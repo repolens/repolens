@@ -7,7 +7,7 @@
   "exports": {
     "./openai": {
       "types": "./dist/openai-embedder.d.ts",
-      "import": "./dist/openai-embedder.js"
+      "default": "./dist/openai-embedder.js"
     }
   },
   "scripts": {

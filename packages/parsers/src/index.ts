@@ -1,30 +1,36 @@
-import type { ParsedChunk, Parser } from '@repolens/types/parser'
-import type { FetchedFile } from '@repolens/types/fetcher'
-import { Chunker } from '@repolens/types/chunker'
+import type {
+  RepoLensFile,
+  Parser,
+  ParsedChunk,
+  Chunker,
+} from '@repolens/types'
 import { createDefaultParser } from './parsers/default.js'
 import { createTSParser } from './parsers/typescript.js'
 
 export class RepoLensParser implements Parser {
-  private registry = new Map<string, Parser>()
+  private parsers: Parser[] = []
   protected fallback: Parser
 
   constructor(chunker: Chunker) {
     this.fallback = createDefaultParser(chunker)
-    this.register(['ts', 'tsx', 'js', 'jsx'], createTSParser(chunker))
+    this.register(createTSParser(chunker))
   }
 
-  register(ext: string | string[], parser: Parser) {
-    const extensions = Array.isArray(ext) ? ext : [ext]
-    extensions.forEach((e) => this.registry.set(e, parser))
+  register(parser: Parser) {
+    this.parsers.push(parser)
   }
 
-  parse(files: FetchedFile[]) {
+  supports(_file: RepoLensFile) {
+    return true
+  }
+
+  parse(files: RepoLensFile[]) {
     const allChunks: ParsedChunk[] = []
-    const grouped = new Map<Parser, FetchedFile[]>()
+    const grouped = new Map<Parser, RepoLensFile[]>()
 
     for (const file of files) {
-      const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
-      const parser = this.registry.get(ext) ?? this.fallback
+      const parser =
+        this.parsers.find((p) => p.supports?.(file)) ?? this.fallback
       const current = grouped.get(parser) ?? []
       current.push(file)
       grouped.set(parser, current)
