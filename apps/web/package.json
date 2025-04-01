@@ -11,7 +11,6 @@
   "dependencies": {
     "@repolens/parsers": "workspace:*",
     "@repolens/chunkers": "workspace:*",
-    "@repolens/embedders": "workspace:*",
     "@repolens/types": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

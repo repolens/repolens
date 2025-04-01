@@ -84,9 +84,6 @@ importers:
       '@repolens/chunkers':
         specifier: workspace:*
         version: link:../../packages/chunkers
-      '@repolens/embedders':
-        specifier: workspace:*
-        version: link:../../packages/embedders
       '@repolens/parsers':
         specifier: workspace:*
         version: link:../../packages/parsers
@@ -177,6 +174,9 @@ importers:
       '@repolens/types':
         specifier: workspace:*
         version: link:../types
+      '@repolens/utils':
+        specifier: workspace:*
+        version: link:../utils
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -332,6 +332,9 @@ importers:
       '@repolens/config':
         specifier: workspace:*
         version: link:../config
+      '@repolens/types':
+        specifier: workspace:*
+        version: link:../types
       adm-zip:
         specifier: ^0.5.16
         version: 0.5.16
@@ -354,9 +357,6 @@ importers:
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../config/typescript-config
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../types
       '@turbo/gen':
         specifier: ^2.4.4
         version: 2.4.4(@types/node@22.13.13)(typescript@5.8.2)
@@ -472,6 +472,10 @@ importers:
         version: 5.8.2
 
   packages/utils:
+    dependencies:
+      gpt-tokenizer:
+        specifier: ^2.9.0
+        version: 2.9.0
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*

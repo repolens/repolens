@@ -4,7 +4,7 @@ import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
-import type { Fetcher, RepoLensFile } from '@repolens/types'
+import type { Fetcher, LensData } from '@repolens/types'
 import { getGithubConfig } from '@repolens/config'
 
 interface GithubFetcherOptions {
@@ -15,7 +15,7 @@ interface GithubFetcherOptions {
   includePaths?: Set<string>
 }
 
-export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
+export class GitHubFetcher implements Fetcher {
   private readonly owner: string
   private readonly repo: string
   private readonly ref: string
@@ -33,11 +33,11 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     this.octokit = new Octokit({ auth: this.token })
   }
 
-  async fetch(): Promise<RepoLensFile[]> {
+  async fetch(): Promise<LensData[]> {
     return await this.getFilesFromTarball()
   }
 
-  async getFilesFromTarball(): Promise<RepoLensFile[]> {
+  async getFilesFromTarball(): Promise<LensData[]> {
     const { data, error } = await this.getTarball()
     if (error) {
       throw new Error(
@@ -46,7 +46,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     }
     const stream = await this.tarballToStream(data)
     const files = await this.extractFilesFromTarballStream(stream)
-    return (await this.injectShas(files)) satisfies RepoLensFile[]
+    return (await this.injectShas(files)) satisfies LensData[]
   }
 
   async getTarball() {
@@ -73,7 +73,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
   }
 
   async extractFilesFromTarballStream(stream: Readable) {
-    const files: RepoLensFile[] = []
+    const files: LensData[] = []
     const extract = tar.extract()
     const extractPromise = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header: any, streamEntry: any, next: any) => {
@@ -113,7 +113,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     return files
   }
 
-  async injectShas(files: RepoLensFile[]) {
+  async injectShas(files: LensData[]) {
     const { data, error } = await this.getFilteredTreePaths()
     if (error) {
       throw new Error(
@@ -125,7 +125,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
       ...file,
       metadata: {
         ...file.metadata,
-        sha: shaMap.get(file.metadata?.path || '') || '',
+        sha: shaMap.get(file.metadata?.path as string) || '',
       },
     }))
   }

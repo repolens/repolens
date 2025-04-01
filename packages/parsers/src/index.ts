@@ -11,9 +11,9 @@ export class RepoLensParser implements Parser {
   private parsers: Parser[] = []
   protected fallback: Parser
 
-  constructor(chunker: Chunker) {
-    this.fallback = createDefaultParser(chunker)
-    this.register(createTSParser(chunker))
+  constructor() {
+    this.fallback = createDefaultParser()
+    this.register(createTSParser())
   }
 
   register(parser: Parser) {

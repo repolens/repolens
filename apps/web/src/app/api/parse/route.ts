@@ -1,15 +1,13 @@
 import { RepoLensParser } from '@repolens/parsers'
-import { TokenChunker } from '@repolens/chunkers/token'
-import { OpenAIEmbedder } from '@repolens/embedders/openai'
+import { OpenAITokenChunker } from '@repolens/chunkers/openai'
 
 export async function POST(req: Request) {
   const { content, extension } = await req.json()
 
-  const embedder = new OpenAIEmbedder()
-  const chunker = new TokenChunker(embedder)
-  const parser = new RepoLensParser(chunker)
+  const chunker = new OpenAITokenChunker(8000, 200)
+  const parser = new RepoLensParser()
 
-  const chunks = parser.parse([
+  const parsed = parser.parse([
     {
       metadata: {
         path: `path/to/file.${extension}`,
@@ -21,6 +19,7 @@ export async function POST(req: Request) {
       content,
     },
   ])
+  const chunks = chunker.chunk(parsed)
 
   return new Response(JSON.stringify(chunks))
 }

@@ -1,24 +1,20 @@
 // packages/parsers/src/createTSParser.ts
 
 import { Project, SyntaxKind } from 'ts-morph'
-import type {
-  Chunker,
-  Parser,
-  ParsedChunk,
-  RepoLensFile,
-} from '@repolens/types'
+import type { Parser, ParsedChunk, LensData } from '@repolens/types'
 
-export function createTSParser(chunker: Chunker): Parser {
+export function createTSParser(): Parser {
   return {
-    supports: (file: RepoLensFile) => {
-      const name = file.metadata?.name ?? ''
-      return /\.(ts|tsx|js|jsx)$/.test(name)
+    supports: (file: LensData) => {
+      const name = file.metadata?.name as string | undefined
+      return /\.(ts|tsx|js|jsx)$/.test(name ?? '')
     },
-    parse(files: RepoLensFile[]): ParsedChunk[] {
+    parse(files: LensData[]): ParsedChunk[] {
       const semanticChunks: ParsedChunk[] = []
 
       for (const file of files) {
-        const extension = file.metadata?.path?.split('.').pop() ?? 'ts'
+        const extension =
+          (file.metadata?.path as string)?.split('.').pop() ?? 'ts'
 
         const project = new Project({
           useInMemoryFileSystem: true,
@@ -130,8 +126,7 @@ export function createTSParser(chunker: Chunker): Parser {
         })
       }
 
-      // Let the chunker split large semantic chunks
-      return chunker.chunk(semanticChunks)
+      return semanticChunks
     },
   }
 }

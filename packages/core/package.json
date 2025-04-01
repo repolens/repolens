@@ -4,12 +4,32 @@
   "type": "module",
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
-  "main": "./dist/repolens.js",
-  "types": "./dist/repolens.d.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/repolens.d.ts",
-      "default": "./dist/repolens.js"
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./fetchers": {
+      "types": "./dist/fetchers/index.d.ts",
+      "default": "./dist/fetchers/index.js"
+    },
+    "./chunkers": {
+      "types": "./dist/chunkers/index.d.ts",
+      "default": "./dist/chunkers/index.js"
+    },
+    "./embedders": {
+      "types": "./dist/embedders/index.d.ts",
+      "default": "./dist/embedders/index.js"
+    },
+    "./parsers": {
+      "types": "./dist/parsers/index.d.ts",
+      "default": "./dist/parsers/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./dist/types/index.js"
     }
   },
   "scripts": {

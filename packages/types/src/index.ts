@@ -1,4 +1,6 @@
+export * from './chunk.js'
 export * from './chunker.js'
+export * from './data.js'
 export * from './embedder.js'
 export * from './fetcher.js'
 export * from './file.js'

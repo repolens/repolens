@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { RepoLens } from '@repolens/core'
+import { GithubLens } from '@repolens/core'
 import { argv, exit } from 'node:process'
 
 const [, , owner, repo, ref = 'main'] = argv
@@ -12,9 +12,9 @@ async function main() {
     exit(1)
   }
 
-  const lens = RepoLens.create()
+  const lens = new GithubLens({ owner, repo, ref })
 
-  const chunks = await lens.run({ owner, repo, ref })
+  const chunks = await lens.run()
 
   for (const chunk of chunks) {
     console.log(`\n📄 File:`)
