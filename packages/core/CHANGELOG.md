@@ -1,5 +1,20 @@
 # @repolens/core
 
+## 0.4.0
+
+### Minor Changes
+
+- 23068b4: Create abstract BaseLens class, decouple embedder from chunker, decouple chunker from parser
+
+### Patch Changes
+
+- Updated dependencies [23068b4]
+  - @repolens/chunkers@0.4.0
+  - @repolens/fetchers@0.4.0
+  - @repolens/parsers@0.4.0
+  - @repolens/types@0.4.0
+  - @repolens/embedders@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
