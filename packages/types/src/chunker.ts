@@ -1,4 +1,4 @@
-import { ParsedChunk } from './parser.js'
+import type { ParsedChunk } from './chunk.js'
 
 export interface Chunker {
   chunk(chunks: ParsedChunk[]): ParsedChunk[]

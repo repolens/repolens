@@ -5,16 +5,17 @@
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
   "exports": {
-    "./token": {
-      "types": "./dist/token-chunker.d.ts",
-      "default": "./dist/token-chunker.js"
+    "./openai": {
+      "types": "./dist/openai-token-chunker.d.ts",
+      "default": "./dist/openai-token-chunker.js"
     }
   },
   "scripts": {
     "build": "rm -rf dist && tsc"
   },
   "dependencies": {
-    "@repolens/types": "workspace:*"
+    "@repolens/types": "workspace:*",
+    "@repolens/utils": "workspace:*"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

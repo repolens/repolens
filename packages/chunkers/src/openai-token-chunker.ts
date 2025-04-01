@@ -1,15 +1,15 @@
-import type { Chunker, ParsedChunk, Embedder } from '@repolens/types'
+import type { Chunker, ParsedChunk } from '@repolens/types'
+import { chunkWithGPTTokenizer } from '@repolens/utils'
 
-export class TokenChunker implements Chunker {
+export class OpenAITokenChunker implements Chunker {
   constructor(
-    private embedder: Embedder,
     private maxTokens: number = 8000,
     private overlap: number = 0
   ) {}
 
   chunk(chunks: ParsedChunk[]): ParsedChunk[] {
     return chunks.flatMap((chunk) => {
-      const parts = this.embedder.generateEmbeddableChunks(
+      const parts = chunkWithGPTTokenizer(
         chunk.content,
         this.maxTokens,
         this.overlap

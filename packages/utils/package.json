@@ -4,11 +4,19 @@
   "type": "module",
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./*": "./dist/*.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "build": "rm -rf dist && tsc"
+  },
+  "dependencies": {
+    "gpt-tokenizer": "^2.9.0"
   },
   "devDependencies": {
     "@repolens/types": "workspace:*",
