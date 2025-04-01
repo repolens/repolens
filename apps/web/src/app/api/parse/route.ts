@@ -11,12 +11,14 @@ export async function POST(req: Request) {
 
   const chunks = parser.parse([
     {
-      path: `path/to/file.${extension}`,
+      metadata: {
+        path: `path/to/file.${extension}`,
+        name: `file.${extension}`,
+        repo: 'repo',
+        owner: 'owner',
+        sha: '123',
+      },
       content,
-      name: `file.${extension}`,
-      repo: 'repo',
-      owner: 'owner',
-      sha: '123',
     },
   ])
 

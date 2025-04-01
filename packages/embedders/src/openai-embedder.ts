@@ -84,7 +84,7 @@ export class OpenAIEmbedder implements Embedder {
   }
 
   async embedChunks(chunks: ParsedChunk[]): Promise<EmbeddedChunk[]> {
-    const texts = chunks.map((chunk) => chunk.text)
+    const texts = chunks.map((chunk) => chunk.content)
     const embeddings = await this.embed(texts)
 
     return chunks.map((chunk, i) => ({

@@ -1,21 +1,16 @@
 import type { Parser, ParsedChunk } from '@repolens/types/parser'
 import type { Chunker } from '@repolens/types/chunker'
-import type { FetchedFile } from '@repolens/types/fetcher'
+import type { RepoLensFile } from '@repolens/types/fetcher'
 
 export function createDefaultParser(chunker: Chunker): Parser {
   return {
-    parse(files: FetchedFile[]): ParsedChunk[] {
+    supports: () => true,
+    parse(files: RepoLensFile[]): ParsedChunk[] {
       return chunker.chunk(
-        files.map((file) => ({
-          text: file.content,
+        files.map(({ content, metadata }) => ({
+          content,
           metadata: {
-            file: {
-              path: file.path,
-              name: file.name,
-              sha: file.sha,
-              repo: file.repo,
-              owner: file.owner,
-            },
+            ...metadata,
             part: 0,
             parserType: 'default',
           },

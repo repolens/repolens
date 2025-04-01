@@ -4,7 +4,7 @@ import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
-import type { Fetcher, FetchedFile } from '@repolens/types/fetcher'
+import type { Fetcher, RepoLensFile } from '@repolens/types/fetcher'
 import { getGithubConfig } from '@repolens/config'
 
 interface GithubFetcherOptions {
@@ -33,11 +33,11 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     this.octokit = new Octokit({ auth: this.token })
   }
 
-  async fetch(): Promise<FetchedFile[]> {
+  async fetch(): Promise<RepoLensFile[]> {
     return await this.getFilesFromTarball()
   }
 
-  async getFilesFromTarball(): Promise<FetchedFile[]> {
+  async getFilesFromTarball(): Promise<RepoLensFile[]> {
     const { data, error } = await this.getTarball()
     if (error) {
       throw new Error(
@@ -46,7 +46,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     }
     const stream = await this.tarballToStream(data)
     const files = await this.extractFilesFromTarballStream(stream)
-    return (await this.injectShas(files)) satisfies FetchedFile[]
+    return (await this.injectShas(files)) satisfies RepoLensFile[]
   }
 
   async getTarball() {
@@ -73,7 +73,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
   }
 
   async extractFilesFromTarballStream(stream: Readable) {
-    const files: FetchedFile[] = []
+    const files: RepoLensFile[] = []
     const extract = tar.extract()
     const extractPromise = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header: any, streamEntry: any, next: any) => {
@@ -90,12 +90,14 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
         streamEntry.on('data', (chunk: any) => (content += chunk))
         streamEntry.on('end', () => {
           files.push({
-            path: relPath,
-            name: path.basename(relPath),
             content,
-            repo: this.repo,
-            owner: this.owner,
-            sha: '', // sha injected later
+            metadata: {
+              path: relPath,
+              name: path.basename(relPath),
+              repo: this.repo,
+              owner: this.owner,
+              sha: '', // sha injected later
+            },
           })
           next()
         })
@@ -111,7 +113,7 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
     return files
   }
 
-  async injectShas(files: FetchedFile[]) {
+  async injectShas(files: RepoLensFile[]) {
     const { data, error } = await this.getFilteredTreePaths()
     if (error) {
       throw new Error(
@@ -119,7 +121,13 @@ export class GitHubFetcher implements Fetcher<GithubFetcherOptions> {
       )
     }
     const shaMap = new Map(data.map((item) => [item.path, item.sha]))
-    return files.map((file) => ({ ...file, sha: shaMap.get(file.path) || '' }))
+    return files.map((file) => ({
+      ...file,
+      metadata: {
+        ...file.metadata,
+        sha: shaMap.get(file.metadata?.path || '') || '',
+      },
+    }))
   }
 
   async getFilteredTreePaths() {

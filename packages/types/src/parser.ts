@@ -1,18 +1,18 @@
-import { FetchedFile } from './fetcher.js'
+import { RepoLensFile } from './fetcher.js'
 
 export interface Parser {
-  parse(files: FetchedFile[]): ParsedChunk[]
+  supports: (file: RepoLensFile) => boolean
+  parse: (files: RepoLensFile[]) => ParsedChunk[]
 }
 
 export interface ParsedChunk {
-  text: string
+  content: string
   metadata: ParsedChunkMetadata
 }
 
 export interface ParsedChunkMetadata {
-  file: Omit<FetchedFile, 'content'>
-  part: number
   parserType: string
+  part?: number
   [key: string]: unknown
 }
 

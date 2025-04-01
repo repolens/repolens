@@ -3,15 +3,19 @@
 import { Project, SyntaxKind } from 'ts-morph'
 import type { Chunker } from '@repolens/types/chunker'
 import type { Parser, ParsedChunk } from '@repolens/types/parser'
-import { FetchedFile } from '@repolens/types/fetcher'
+import { RepoLensFile } from '@repolens/types/fetcher'
 
 export function createTSParser(chunker: Chunker): Parser {
   return {
-    parse(files: FetchedFile[]): ParsedChunk[] {
+    supports: (file: RepoLensFile) => {
+      const name = file.metadata?.name ?? ''
+      return /\.(ts|tsx|js|jsx)$/.test(name)
+    },
+    parse(files: RepoLensFile[]): ParsedChunk[] {
       const semanticChunks: ParsedChunk[] = []
 
       for (const file of files) {
-        const extension = file.path.split('.').pop() ?? 'ts'
+        const extension = file.metadata?.path?.split('.').pop() ?? 'ts'
 
         const project = new Project({
           useInMemoryFileSystem: true,
@@ -26,36 +30,26 @@ export function createTSParser(chunker: Chunker): Parser {
           file.content
         )
 
-        sourceFile.forEachChild((node) => {
-          const baseMeta = {
-            file: {
-              path: file.path,
-              name: file.name,
-              sha: file.sha,
-              repo: file.repo,
-              owner: file.owner,
+        const pushChunk = (
+          type: string,
+          name: string,
+          text: string,
+          extra?: Record<string, unknown>
+        ) => {
+          semanticChunks.push({
+            content: text,
+            metadata: {
+              ...file.metadata,
+              parserType: 'typescript',
+              type,
+              name,
+              part: 0,
+              ...extra,
             },
-            parserType: 'typescript' as const,
-          }
+          })
+        }
 
-          const pushChunk = (
-            type: string,
-            name: string,
-            text: string,
-            extra?: Record<string, unknown>
-          ) => {
-            semanticChunks.push({
-              text,
-              metadata: {
-                ...baseMeta,
-                type,
-                name,
-                ...extra,
-                part: 0, // will be rewritten by TokenChunker
-              },
-            })
-          }
-
+        sourceFile.forEachChild((node) => {
           if (node.getKind() === SyntaxKind.FunctionDeclaration) {
             const fn = node.asKind(SyntaxKind.FunctionDeclaration)
             const name = fn?.getName()

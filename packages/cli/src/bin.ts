@@ -18,18 +18,18 @@ async function main() {
 
   for (const chunk of chunks) {
     console.log(`\n📄 File:`)
-    console.log(`  Path: ${chunk.metadata.file.path}`)
-    console.log(`  Name: ${chunk.metadata.file.name}`)
-    console.log(`  SHA: ${chunk.metadata.file.sha}`)
+    console.log(`  Path: ${chunk.metadata.path}`)
+    console.log(`  Name: ${chunk.metadata.name}`)
+    console.log(`  SHA: ${chunk.metadata.sha}`)
 
     console.log(`\n📝 Content:`)
-    console.log(`  ${chunk.text}`)
+    console.log(`  ${chunk.content}`)
 
     console.log(`\n🔖 Metadata:`)
     console.log(`  Part: ${chunk.metadata.part}`)
 
     const extra = Object.entries(chunk.metadata).filter(
-      ([key]) => !['file', 'part'].includes(key)
+      ([key]) => !['path', 'name', 'sha', 'part'].includes(key)
     )
     if (extra.length > 0) {
       console.log(`\n🧩 Additional Metadata:`)
