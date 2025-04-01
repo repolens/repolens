@@ -1,5 +1,11 @@
 # @repolens/types
 
+## 0.6.0
+
+### Minor Changes
+
+- c1b15d8: bump
+
 ## 0.5.0
 
 ### Minor Changes

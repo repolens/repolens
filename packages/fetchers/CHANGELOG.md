@@ -1,5 +1,17 @@
 # @repolens/fetchers
 
+## 0.6.0
+
+### Minor Changes
+
+- c1b15d8: bump
+
+### Patch Changes
+
+- Updated dependencies [c1b15d8]
+  - @repolens/config@0.6.0
+  - @repolens/types@0.6.0
+
 ## 0.5.0
 
 ### Minor Changes
