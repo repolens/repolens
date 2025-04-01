@@ -1,5 +1,11 @@
 # @repolens/types
 
+## 0.3.0
+
+### Minor Changes
+
+- cc5fb2c: Decouple fetcher type from RepoLens
+
 ## 0.2.0
 
 ### Minor Changes

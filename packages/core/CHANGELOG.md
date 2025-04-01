@@ -1,5 +1,20 @@
 # @repolens/core
 
+## 0.3.0
+
+### Minor Changes
+
+- cc5fb2c: Decouple fetcher type from RepoLens
+
+### Patch Changes
+
+- Updated dependencies [cc5fb2c]
+  - @repolens/chunkers@0.3.0
+  - @repolens/embedders@0.3.0
+  - @repolens/fetchers@0.3.0
+  - @repolens/parsers@0.3.0
+  - @repolens/types@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
