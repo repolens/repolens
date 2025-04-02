@@ -73,11 +73,34 @@ export function createMarkdownParser(): Parser {
             const text = node.children
               .map((c: any) => {
                 if (c.type === 'text') return c.value ?? ''
-                if (c.type === 'link')
+                if (c.type === 'link') {
+                  // Handle badge images inside links
+                  const linkContent = c.children[0]
+                  if (linkContent.type === 'image') {
+                    return `[![${linkContent.alt}](${linkContent.url})](${c.url})`
+                  }
                   return `[${c.children[0].value}](${c.url})`
+                }
                 if (c.type === 'strong') return `**${c.children[0].value}**`
                 if (c.type === 'emphasis') return `_${c.children[0].value}_`
-                if (c.type === 'image') return `![${c.alt}](${c.url})`
+                if (c.type === 'image') {
+                  // Store image in chunks separately for better RAG processing
+                  chunks.push({
+                    content: c.alt ?? '',
+                    metadata: {
+                      ...baseMeta,
+                      type: 'image',
+                      format: c.url.startsWith('data:image/')
+                        ? 'base64'
+                        : 'url',
+                      src: c.url,
+                      alt: c.alt,
+                      part: part++,
+                    },
+                  })
+                  // Return markdown image syntax for the paragraph content
+                  return `![${c.alt}](${c.url})`
+                }
                 return ''
               })
               .join('')
@@ -103,7 +126,10 @@ export function createMarkdownParser(): Parser {
             })
           }
 
-          if (node.type === 'image') {
+          if (
+            node.type === 'image' &&
+            (!parent || parent.type !== 'paragraph')
+          ) {
             chunks.push({
               content: node.alt ?? '',
               metadata: {
@@ -161,8 +187,20 @@ export function createMarkdownParser(): Parser {
                 if (child.type === 'paragraph') {
                   return child.children
                     .map((c: any) => {
+                      if (c.type === 'text') return c.value ?? ''
+                      if (c.type === 'link') {
+                        // Handle badge images inside links
+                        const linkContent = c.children[0]
+                        if (linkContent.type === 'image') {
+                          return `[![${linkContent.alt}](${linkContent.url})](${c.url})`
+                        }
+                        return `[${c.children[0].value}](${c.url})`
+                      }
+                      if (c.type === 'strong')
+                        return `**${c.children[0].value}**`
                       if (c.type === 'emphasis')
                         return `_${c.children[0].value}_`
+                      if (c.type === 'image') return `![${c.alt}](${c.url})`
                       return c.value ?? ''
                     })
                     .join('')
@@ -178,14 +216,16 @@ export function createMarkdownParser(): Parser {
               metadata: { ...baseMeta, type: 'blockquote', part: part++ },
             })
             // Mark all children as processed
-            node.children.forEach((child) => {
-              processedNodes.add(child)
-              if (child.children) {
-                child.children.forEach((grandChild: any) =>
-                  processedNodes.add(grandChild)
-                )
-              }
-            })
+            if ('children' in node) {
+              node.children.forEach((child) => {
+                processedNodes.add(child)
+                if ('children' in child) {
+                  child.children.forEach((grandChild: any) =>
+                    processedNodes.add(grandChild)
+                  )
+                }
+              })
+            }
           }
 
           if (node.type === 'list') {
