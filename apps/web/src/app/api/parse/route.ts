@@ -7,6 +7,8 @@ export async function POST(req: Request) {
   const chunker = new OpenAITokenChunker(8000, 200)
   const parser = new RepoLensParser()
 
+  console.log(extension)
+
   const parsed = parser.parse([
     {
       metadata: {
@@ -20,6 +22,8 @@ export async function POST(req: Request) {
     },
   ])
   const chunks = chunker.chunk(parsed)
+
+  console.log('CHUNKS: ', chunks)
 
   return new Response(JSON.stringify(chunks))
 }

@@ -5,6 +5,7 @@ import type { Parser, ParsedChunk, LensData } from '@repolens/types'
 
 export function createTSParser(): Parser {
   return {
+    name: 'typescript',
     supports: (file: LensData) => {
       const name = file.metadata?.name as string | undefined
       return /\.(ts|tsx|js|jsx)$/.test(name ?? '')

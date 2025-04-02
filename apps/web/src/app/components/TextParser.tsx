@@ -51,6 +51,11 @@ export function TextParser() {
             >
               <option value="default">Default Parser</option>
               <option value="ts">TypeScript Parser</option>
+              <option value="tsx">TypeScript JSX Parser</option>
+              <option value="js">JavaScript Parser</option>
+              <option value="jsx">JavaScript JSX Parser</option>
+              <option value="md">Markdown Parser</option>
+              <option value="mdx">MDX Parser</option>
             </select>
           </div>
 

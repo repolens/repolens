@@ -1,4 +1,4 @@
 export interface LensData {
   content: string
-  metadata?: Record<string, unknown>
+  metadata?: Record<string, any>
 }
