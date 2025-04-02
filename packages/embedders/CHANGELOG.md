@@ -1,5 +1,17 @@
 # @repolens/embedders
 
+## 0.7.0
+
+### Minor Changes
+
+- 787e64c: added markdown parser
+
+### Patch Changes
+
+- Updated dependencies [787e64c]
+  - @repolens/types@0.7.0
+  - @repolens/config@0.7.0
+
 ## 0.6.2
 
 ### Patch Changes
