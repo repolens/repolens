@@ -40,7 +40,6 @@ export function createMarkdownParser(): Parser {
             return SKIP
           }
 
-          console.log('NODE: ', node)
           if (node.type === 'heading' && 'children' in node) {
             const text = node.children.map((c: any) => c.value).join('')
             if (text.trim()) {
