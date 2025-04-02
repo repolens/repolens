@@ -1,5 +1,17 @@
 # @repolens/core
 
+## 0.7.1
+
+### Patch Changes
+
+- 3fe5a13: remove unnecessary logs
+- Updated dependencies [3fe5a13]
+  - @repolens/chunkers@0.7.1
+  - @repolens/embedders@0.7.1
+  - @repolens/fetchers@0.7.1
+  - @repolens/parsers@0.7.1
+  - @repolens/types@0.7.1
+
 ## 0.7.0
 
 ### Minor Changes

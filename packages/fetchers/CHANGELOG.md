@@ -1,5 +1,14 @@
 # @repolens/fetchers
 
+## 0.7.1
+
+### Patch Changes
+
+- 3fe5a13: remove unnecessary logs
+- Updated dependencies [3fe5a13]
+  - @repolens/config@0.7.1
+  - @repolens/types@0.7.1
+
 ## 0.7.0
 
 ### Minor Changes

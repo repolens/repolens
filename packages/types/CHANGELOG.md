@@ -1,5 +1,11 @@
 # @repolens/types
 
+## 0.7.1
+
+### Patch Changes
+
+- 3fe5a13: remove unnecessary logs
+
 ## 0.7.0
 
 ### Minor Changes
