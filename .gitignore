@@ -28,6 +28,8 @@ out/
 build
 dist
 
+# Mocks
+packages/cli/mocks/
 
 # Debug
 npm-debug.log*

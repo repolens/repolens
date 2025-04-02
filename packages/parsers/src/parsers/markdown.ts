@@ -19,7 +19,6 @@ export function createMarkdownParser(): Parser {
     parse(files: LensData[]): ParsedChunk[] {
       const chunks: ParsedChunk[] = []
 
-      console.log('FILES: ', files)
       for (const file of files) {
         const tree = unified()
           .use(remarkParse)
