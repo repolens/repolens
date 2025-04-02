@@ -1,5 +1,3 @@
-// packages/parsers/src/createMarkdownParser.ts
-
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
