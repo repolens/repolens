@@ -15,6 +15,10 @@
       "types": "./dist/parsers/typescript.d.ts",
       "default": "./dist/parsers/typescript.js"
     },
+    "./markdown": {
+      "types": "./dist/parsers/markdown.d.ts",
+      "default": "./dist/parsers/markdown.js"
+    },
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"

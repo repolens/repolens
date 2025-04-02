@@ -1,0 +1,567 @@
+[
+  {
+    "content": "🚀 Project Awesome",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 1,
+      "part": 0
+    }
+  },
+  {
+    "content": "An innovative solution for making your development workflow more efficient and enjoyable.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 1
+    }
+  },
+  {
+    "content": "🌟 Features",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 2
+    }
+  },
+  {
+    "content": "Our platform offers a wide range of capabilities to enhance your development experience:",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 3
+    }
+  },
+  {
+    "content": "🔥 Real-time Collaboration",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 4
+    }
+  },
+  {
+    "content": "Work together seamlessly with your team members in real-time.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 5
+    }
+  },
+  {
+    "content": "📦 Installation",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 6
+    }
+  },
+  {
+    "content": "Getting started is quick and easy:",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 7
+    }
+  },
+  {
+    "content": "npm install project-awesome\nyarn add project-awesome\npnpm add project-awesome",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "code",
+      "language": "bash",
+      "part": 8
+    }
+  },
+  {
+    "content": "🛠️ Configuration",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 9
+    }
+  },
+  {
+    "content": "⚙️ Basic Setup",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 10
+    }
+  },
+  {
+    "content": "Configure your environment variables and get started in minutes.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 11
+    }
+  },
+  {
+    "content": "🔒 Security Settings",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 12
+    }
+  },
+  {
+    "content": "Implement robust security measures with our built-in tools.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 13
+    }
+  },
+  {
+    "content": "🔧 Usage",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 14
+    }
+  },
+  {
+    "content": "Here's a quick comparison of our different pricing tiers:",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 15
+    }
+  },
+  {
+    "content": "| Feature | Free | Pro | Enterprise |\n| --------|------|-----|----------- |\n| Users | 5 | 50 | Unlimited |\n| Storage | 10GB | 100GB | 1TB |\n| Support | Community | 24/7 | Dedicated |\n| Custom Domains | ❌ | ✅ | ✅ |",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "table",
+      "part": 16
+    }
+  },
+  {
+    "content": "📝 Example Content Types",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 17
+    }
+  },
+  {
+    "content": "Code Blocks with Syntax Highlighting",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 18
+    }
+  },
+  {
+    "content": "interface User {\n  id: string\n  name: string\n  role: 'admin' | 'user'\n}",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "code",
+      "language": "typescript",
+      "part": 19
+    }
+  },
+  {
+    "content": "Blockquotes",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 20
+    }
+  },
+  {
+    "content": "> Project Awesome makes development a breeze.\n> -- _Happy Developer_",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "blockquote",
+      "part": 21
+    }
+  },
+  {
+    "content": "Project Awesome makes development a breeze.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 22
+    }
+  },
+  {
+    "content": "-- _Happy Developer_",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 23
+    }
+  },
+  {
+    "content": "Task Lists",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 24
+    }
+  },
+  {
+    "content": "- [x] Install Project Awesome\n- [x] Configure environment\n- [ ] Deploy to production\n- [ ] Scale to millions of users",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "task-list",
+      "part": 25
+    }
+  },
+  {
+    "content": "Install Project Awesome",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 26
+    }
+  },
+  {
+    "content": "Configure environment",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 27
+    }
+  },
+  {
+    "content": "Deploy to production",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 28
+    }
+  },
+  {
+    "content": "Scale to millions of users",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 29
+    }
+  },
+  {
+    "content": "Text Styling",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 30
+    }
+  },
+  {
+    "content": "This is **bold text**, this is _italic text_, and this is **undefined**.",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 31
+    }
+  },
+  {
+    "content": "Badges",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 32
+    }
+  },
+  {
+    "content": "[undefined](https://badge.fury.io/js/project-awesome)\n[undefined](https://travis-ci.org/username/project-awesome)\n[undefined](https://opensource.org/licenses/MIT)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 33
+    }
+  },
+  {
+    "content": "npm version",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "image",
+      "format": "url",
+      "src": "https://badge.fury.io/js/project-awesome.svg",
+      "alt": "npm version",
+      "part": 34
+    }
+  },
+  {
+    "content": "Build Status",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "image",
+      "format": "url",
+      "src": "https://travis-ci.org/username/project-awesome.svg?branch=master",
+      "alt": "Build Status",
+      "part": 35
+    }
+  },
+  {
+    "content": "License: MIT",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "image",
+      "format": "url",
+      "src": "https://img.shields.io/badge/License-MIT-yellow.svg",
+      "alt": "License: MIT",
+      "part": 36
+    }
+  },
+  {
+    "content": "Inline Links and Images",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 3,
+      "part": 37
+    }
+  },
+  {
+    "content": "Check out our [blog post](https://blog.project-awesome.com) about the latest features!\nHere's our logo: ![tiny logo](https://tiny.url/project-awesome-icon.png)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 38
+    }
+  },
+  {
+    "content": "tiny logo",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "image",
+      "format": "url",
+      "src": "https://tiny.url/project-awesome-icon.png",
+      "alt": "tiny logo",
+      "part": 39
+    }
+  },
+  {
+    "content": "🏗️ Architecture",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 40
+    }
+  },
+  {
+    "content": "Our system architecture is designed for scalability and performance:",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 41
+    }
+  },
+  {
+    "content": "graph TD\n    A[Client] -->|API Requests| B[Load Balancer]\n    B --> C[API Gateway]\n    C --> D[Authentication Service]\n    C --> E[Core Service]\n    C --> F[Storage Service]\n    E --> G[(Database)]\n    F --> H[(Object Storage)]\n    style A fill:#f9f,stroke:#333,stroke-width:2px\n    style B fill:#bbf,stroke:#333,stroke-width:2px\n    style C fill:#dfd,stroke:#333,stroke-width:2px",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "code",
+      "language": "mermaid",
+      "part": 42
+    }
+  },
+  {
+    "content": "![System Architecture](assets/fake-diagram.png)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 43
+    }
+  },
+  {
+    "content": "System Architecture",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "image",
+      "format": "url",
+      "src": "assets/fake-diagram.png",
+      "alt": "System Architecture",
+      "part": 44
+    }
+  },
+  {
+    "content": "🔗 Useful Links",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "heading",
+      "depth": 2,
+      "part": 45
+    }
+  },
+  {
+    "content": "- [ ] [Documentation](https://docs.project-awesome.com)\n- [ ] [API Reference](https://api.project-awesome.com)\n- [ ] [Community Forum](https://community.project-awesome.com)\n- [ ] [Contributing Guidelines](https://github.com/project-awesome/contributing)\n- [ ] [Security Policy](https://github.com/project-awesome/security)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "task-list",
+      "part": 46
+    }
+  },
+  {
+    "content": "[Documentation](https://docs.project-awesome.com)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 47
+    }
+  },
+  {
+    "content": "[API Reference](https://api.project-awesome.com)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 48
+    }
+  },
+  {
+    "content": "[Community Forum](https://community.project-awesome.com)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 49
+    }
+  },
+  {
+    "content": "[Contributing Guidelines](https://github.com/project-awesome/contributing)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 50
+    }
+  },
+  {
+    "content": "[Security Policy](https://github.com/project-awesome/security)",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 51
+    }
+  },
+  {
+    "content": "Made with ❤️ by the Project Awesome Team",
+    "metadata": {
+      "name": "README.md",
+      "path": "./mocks/README.md",
+      "parserType": "markdown",
+      "type": "paragraph",
+      "part": 52
+    }
+  }
+]

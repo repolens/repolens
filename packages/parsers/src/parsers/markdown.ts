@@ -53,7 +53,17 @@ export function createMarkdownParser(): Parser {
           }
 
           if (node.type === 'paragraph' && 'children' in node) {
-            const text = node.children.map((c: any) => c.value ?? '').join('')
+            const text = node.children
+              .map((c: any) => {
+                if (c.type === 'text') return c.value ?? ''
+                if (c.type === 'link')
+                  return `[${c.children[0].value}](${c.url})`
+                if (c.type === 'strong') return `**${c.children[0].value}**`
+                if (c.type === 'emphasis') return `_${c.children[0].value}_`
+                if (c.type === 'image') return `![${c.alt}](${c.url})`
+                return ''
+              })
+              .join('')
             if (text.trim()) {
               chunks.push({
                 content: text,
@@ -83,6 +93,101 @@ export function createMarkdownParser(): Parser {
                 format: node.url.startsWith('data:image/') ? 'base64' : 'url',
                 src: node.url,
                 alt: node.alt,
+                part: part++,
+              },
+            })
+          }
+
+          if (node.type === 'table') {
+            // Convert table to markdown table string
+            const tableRows = (node.children as any[]).map((row) => {
+              return row.children
+                .map((cell: any) => {
+                  return cell.children?.[0]?.value ?? ''
+                })
+                .join(' | ')
+            })
+
+            // Add separator row after header
+            tableRows.splice(1, 0, tableRows[0].replace(/[^|]/g, '-'))
+
+            const tableContent = tableRows.map((row) => `| ${row} |`).join('\n')
+
+            chunks.push({
+              content: tableContent,
+              metadata: {
+                ...baseMeta,
+                type: 'table',
+                part: part++,
+              },
+            })
+          }
+
+          if (node.type === 'blockquote') {
+            const text = (node.children as any[])
+              .map((child) => {
+                if (child.type === 'paragraph') {
+                  return child.children
+                    .map((c: any) => {
+                      if (c.type === 'emphasis')
+                        return `_${c.children[0].value}_`
+                      return c.value ?? ''
+                    })
+                    .join('')
+                }
+                return ''
+              })
+              .filter(Boolean)
+              .map((line) => `> ${line}`)
+              .join('\n')
+
+            chunks.push({
+              content: text,
+              metadata: { ...baseMeta, type: 'blockquote', part: part++ },
+            })
+          }
+
+          if (node.type === 'list') {
+            const items = (node.children as any[]).map((item) => {
+              const checked = item.checked
+              const text = item.children
+                .map((child: any) => {
+                  if (child.type === 'paragraph' || child.type === 'text') {
+                    return (
+                      child.children
+                        ?.map((c: any) => {
+                          if (c.type === 'link') {
+                            return `[${c.children[0].value}](${c.url})`
+                          }
+                          if (c.type === 'strong')
+                            return `**${c.children[0].value}**`
+                          if (c.type === 'emphasis')
+                            return `_${c.children[0].value}_`
+                          return c.value
+                        })
+                        .join('') ?? ''
+                    )
+                  }
+                  return ''
+                })
+                .join('')
+
+              // Handle task lists (checked/unchecked boxes)
+              if (checked !== undefined) {
+                return `- [${checked ? 'x' : ' '}] ${text}`
+              }
+              return `- ${text}`
+            })
+
+            chunks.push({
+              content: items.join('\n'),
+              metadata: {
+                ...baseMeta,
+                type: node.children.some(
+                  (item: any) => item.checked !== undefined
+                )
+                  ? 'task-list'
+                  : 'list',
                 part: part++,
               },
             })
