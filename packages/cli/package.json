@@ -4,10 +4,11 @@
   "type": "module",
   "private": true,
   "bin": {
-    "rv": "dist/bin.js"
+    "rv": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "cli": "tsx src/index.ts"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -19,7 +20,9 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
+    "@repolens/config": "workspace:*",
     "@repolens/core": "workspace:*",
-    "@repolens/config": "workspace:*"
+    "@repolens/parsers": "workspace:*",
+    "commander": "^13.1.0"
   }
 }
