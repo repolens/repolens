@@ -5,7 +5,7 @@ import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkMdx from 'remark-mdx'
-import { visit } from 'unist-util-visit'
+import { visit, SKIP } from 'unist-util-visit'
 import type { Parser, ParsedChunk, LensData } from '@repolens/types'
 
 export function createMarkdownParser(): Parser {
@@ -34,8 +34,15 @@ export function createMarkdownParser(): Parser {
         }
 
         let part = 0
+        // Set to track nodes that should be skipped because they're handled by their parent
+        const processedNodes = new Set()
 
-        visit(tree, (node) => {
+        visit(tree, (node, index, parent) => {
+          // Skip if this node is already processed as part of a parent
+          if (processedNodes.has(node)) {
+            return SKIP
+          }
+
           console.log('NODE: ', node)
           if (node.type === 'heading' && 'children' in node) {
             const text = node.children.map((c: any) => c.value).join('')
@@ -49,10 +56,20 @@ export function createMarkdownParser(): Parser {
                   part: part++,
                 },
               })
+              // Mark children as processed
+              node.children.forEach((child) => processedNodes.add(child))
             }
           }
 
           if (node.type === 'paragraph' && 'children' in node) {
+            // Skip if this paragraph is part of a blockquote or list
+            if (
+              parent &&
+              (parent.type === 'blockquote' || parent.type === 'listItem')
+            ) {
+              return
+            }
+
             const text = node.children
               .map((c: any) => {
                 if (c.type === 'text') return c.value ?? ''
@@ -69,6 +86,8 @@ export function createMarkdownParser(): Parser {
                 content: text,
                 metadata: { ...baseMeta, type: 'paragraph', part: part++ },
               })
+              // Mark children as processed
+              node.children.forEach((child) => processedNodes.add(child))
             }
           }
 
@@ -99,7 +118,6 @@ export function createMarkdownParser(): Parser {
           }
 
           if (node.type === 'table') {
-            // Convert table to markdown table string
             const tableRows = (node.children as any[]).map((row) => {
               return row.children
                 .map((cell: any) => {
@@ -108,9 +126,7 @@ export function createMarkdownParser(): Parser {
                 .join(' | ')
             })
 
-            // Add separator row after header
             tableRows.splice(1, 0, tableRows[0].replace(/[^|]/g, '-'))
-
             const tableContent = tableRows.map((row) => `| ${row} |`).join('\n')
 
             chunks.push({
@@ -121,6 +137,22 @@ export function createMarkdownParser(): Parser {
                 part: part++,
               },
             })
+            // Mark all children as processed
+            if ('children' in node) {
+              node.children.forEach((row: any) => {
+                processedNodes.add(row)
+                if ('children' in row) {
+                  row.children?.forEach((cell: any) => {
+                    processedNodes.add(cell)
+                    if ('children' in cell) {
+                      cell.children?.forEach((content: any) =>
+                        processedNodes.add(content)
+                      )
+                    }
+                  })
+                }
+              })
+            }
           }
 
           if (node.type === 'blockquote') {
@@ -144,6 +176,15 @@ export function createMarkdownParser(): Parser {
             chunks.push({
               content: text,
               metadata: { ...baseMeta, type: 'blockquote', part: part++ },
+            })
+            // Mark all children as processed
+            node.children.forEach((child) => {
+              processedNodes.add(child)
+              if (child.children) {
+                child.children.forEach((grandChild: any) =>
+                  processedNodes.add(grandChild)
+                )
+              }
             })
           }
 
@@ -190,6 +231,16 @@ export function createMarkdownParser(): Parser {
                   : 'list',
                 part: part++,
               },
+            })
+            // Mark all children and their children as processed
+            node.children.forEach((item: any) => {
+              processedNodes.add(item)
+              item.children?.forEach((child: any) => {
+                processedNodes.add(child)
+                child.children?.forEach((grandChild: any) =>
+                  processedNodes.add(grandChild)
+                )
+              })
             })
           }
         })
