@@ -45,7 +45,7 @@ export class MarkdownParser extends SemanticParser {
           const text = node.children.map((c: any) => c.value).join('')
           if (text.trim()) {
             rawChunks.push({
-              content: text,
+              content: `${'#'.repeat(node.depth)} ${text}`,
               metadata: {
                 ...baseMeta,
                 type: 'heading',
@@ -111,7 +111,7 @@ export class MarkdownParser extends SemanticParser {
 
         if (node.type === 'code') {
           rawChunks.push({
-            content: node.value,
+            content: `\`\`\`${node.lang ?? ''}\n${node.value}\n\`\`\``,
             metadata: {
               ...baseMeta,
               type: 'code',
@@ -251,7 +251,7 @@ export class MarkdownParser extends SemanticParser {
           })
 
           rawChunks.push({
-            content: items.join('\n'),
+            content: `\n${items.join('\n')}\n`,
             metadata: {
               ...baseMeta,
               type: node.children.some(
