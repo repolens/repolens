@@ -30,14 +30,29 @@ export class OpenAIEmbedder implements Embedder {
   async embed(texts: string[]): Promise<Map<number, number[]>> {
     if (!texts.length) return new Map()
 
+    // Filter out empty strings to prevent API errors
+    const validTexts = texts.filter((text) => text.trim().length > 0)
+    if (!validTexts.length) return new Map()
+
     const res = await this.openai.embeddings.create({
       model: this.model!,
-      input: texts,
+      input: validTexts,
     })
 
+    // Create a mapping that preserves the original indices
     const resultMap = new Map<number, number[]>()
-    res.data.forEach((item, i) => {
-      resultMap.set(i, item.embedding)
+    let validIndex = 0
+
+    texts.forEach((text, originalIndex) => {
+      if (text.trim().length > 0) {
+        // Add null check to avoid possible undefined error
+        const embedding = res.data[validIndex]?.embedding || []
+        resultMap.set(originalIndex, embedding)
+        validIndex++
+      } else {
+        // For empty texts, use an empty array as embedding
+        resultMap.set(originalIndex, [])
+      }
     })
 
     return resultMap

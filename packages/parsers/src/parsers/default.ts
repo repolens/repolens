@@ -1,6 +1,6 @@
 // packages/parsers/src/parsers/default.ts
 
-import { SemanticParser, mergeChunksByTokenLimit } from '@repolens/core'
+import { SemanticParser } from '@repolens/core'
 import type { ParsedChunk, LensData } from '@repolens/core'
 
 export class DefaultParser extends SemanticParser {
@@ -22,9 +22,7 @@ export class DefaultParser extends SemanticParser {
         metadata: baseMeta,
       }
 
-      allChunks.push(
-        ...mergeChunksByTokenLimit([chunk], this.maxTokens, baseMeta, 'default')
-      )
+      allChunks.push(...this.mergeChunks([chunk], baseMeta, 'default'))
     }
 
     return allChunks

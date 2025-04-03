@@ -1,6 +1,6 @@
 // packages/parsers/src/parsers/markdown.ts
 
-import { mergeChunksByTokenLimit, SemanticParser } from '@repolens/core'
+import { SemanticParser } from '@repolens/core'
 import type { ParsedChunk, LensData } from '@repolens/core'
 import { unified } from 'unified'
 import remarkParse from 'remark-parse'
@@ -275,14 +275,7 @@ export class MarkdownParser extends SemanticParser {
         }
       })
 
-      parsedChunks.push(
-        ...mergeChunksByTokenLimit(
-          rawChunks,
-          this.maxTokens,
-          baseMeta,
-          'markdown'
-        )
-      )
+      parsedChunks.push(...this.mergeChunks(rawChunks, baseMeta, 'markdown'))
     }
 
     return parsedChunks

@@ -1,7 +1,7 @@
 // packages/parsers/src/parsers/typescript.ts
 
 import { Project, SyntaxKind } from 'ts-morph'
-import { SemanticParser, mergeChunksByTokenLimit } from '@repolens/core'
+import { SemanticParser } from '@repolens/core'
 import type { ParsedChunk, LensData } from '@repolens/core'
 
 export class TypeScriptParser extends SemanticParser {
@@ -103,14 +103,7 @@ export class TypeScriptParser extends SemanticParser {
         }
       })
 
-      allChunks.push(
-        ...mergeChunksByTokenLimit(
-          rawChunks,
-          this.maxTokens,
-          baseMeta,
-          'typescript'
-        )
-      )
+      allChunks.push(...this.mergeChunks(rawChunks, baseMeta, 'typescript'))
     }
 
     return allChunks

@@ -5,7 +5,7 @@ export async function runGithubLens(): Promise<ParsedChunk[]> {
   const lens = new GitHubLens({
     fetcherOptions: {
       owner: 'repolens',
-      repo: 'repolens',
+      repo: 'playground',
       ref: 'main',
     },
   })
