@@ -4,7 +4,7 @@ import gunzip from 'gunzip-maybe'
 import { Readable } from 'node:stream'
 import { Buffer } from 'node:buffer'
 import path from 'node:path'
-import { Fetcher, type LensData } from '@repolens/core'
+import { Fetcher, type LensData, isSkippableFile } from '@repolens/core'
 import { getGithubConfig } from '@repolens/config'
 
 export interface GitHubFetcherInput {
@@ -13,6 +13,7 @@ export interface GitHubFetcherInput {
   ref?: string
   token?: string
   includePaths?: Set<string>
+  excludeNonParsable?: boolean
   octokit?: Octokit
 }
 
@@ -24,6 +25,7 @@ export class GitHubFetcher extends Fetcher<GitHubFetcherInput> {
       ref = 'main',
       token,
       includePaths = new Set(),
+      excludeNonParsable = true,
       octokit,
     } = this.config
 
@@ -36,7 +38,8 @@ export class GitHubFetcher extends Fetcher<GitHubFetcherInput> {
       stream,
       owner,
       repo,
-      includePaths
+      includePaths,
+      excludeNonParsable
     )
     const withShas = await this.injectShas(client, files, owner, repo, ref)
 
@@ -74,7 +77,8 @@ export class GitHubFetcher extends Fetcher<GitHubFetcherInput> {
     stream: Readable,
     owner: string,
     repo: string,
-    includePaths: Set<string>
+    includePaths: Set<string>,
+    excludeNonParsable: boolean
   ): Promise<LensData[]> {
     const files: LensData[] = []
     const extract = tar.extract()
@@ -82,7 +86,19 @@ export class GitHubFetcher extends Fetcher<GitHubFetcherInput> {
     const promise = new Promise<void>((resolve, reject) => {
       extract.on('entry', (header, entry, next) => {
         const relPath = header.name.split('/').slice(1).join('/')
+
+        if (header.type === 'directory') {
+          entry.resume()
+          return next()
+        }
+
         if (includePaths.size > 0 && !includePaths.has(relPath)) {
+          entry.resume()
+          return next()
+        }
+
+        if (excludeNonParsable && isSkippableFile(relPath)) {
+          console.log(`[FETCHER] Skipping non-parsable file: ${relPath}`)
           entry.resume()
           return next()
         }

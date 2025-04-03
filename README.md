@@ -148,3 +148,34 @@ Runs analysis on a repository. For GitHub repositories, the input should include
 - `includeRepoInfo?`: Whether to include repository metadata (optional)
 
 Returns a promise that resolves to an array of `EmbeddedChunk` objects.
+
+## File Filtering
+
+When embedding a repository, RepoLens automatically filters out binary and non-parsable files like:
+
+- Binary files (images, fonts, executables, etc.)
+- Lock files (package-lock.json, yarn.lock, pnpm-lock.yaml, etc.)
+- Build artifacts and directories (dist/, build/, .next/, etc.)
+- Other common non-code files (.env, .DS_Store, etc.)
+
+This filtering helps prevent token limit errors and improves embedding performance. You can control this behavior with the `excludeNonParsable` option:
+
+```typescript
+// Use the default filtering (recommended)
+const lens = new GitHubLens({
+  fetcherOptions: {
+    owner: 'username',
+    repo: 'repo-name',
+    // excludeNonParsable: true, // This is the default
+  },
+})
+
+// Disable filtering (not recommended)
+const lens = new GitHubLens({
+  fetcherOptions: {
+    owner: 'username',
+    repo: 'repo-name',
+    excludeNonParsable: false, // Process all files, may cause token limit errors
+  },
+})
+```
