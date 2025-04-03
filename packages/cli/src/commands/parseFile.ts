@@ -1,9 +1,11 @@
 import fs from 'fs/promises'
 
-import { createTSParser } from '@repolens/parsers/typescript'
-import { createMarkdownParser } from '@repolens/parsers/markdown'
-import { createDefaultParser } from '@repolens/parsers/default'
-import { Parser } from '@repolens/core/types'
+import {
+  createTSParser,
+  createMarkdownParser,
+  createDefaultParser,
+} from '@repolens/parsers'
+import { Parser } from '@repolens/core'
 
 interface ParseOptions {
   parser: string

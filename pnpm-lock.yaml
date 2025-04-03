@@ -81,15 +81,12 @@ importers:
 
   apps/web:
     dependencies:
-      '@repolens/chunkers':
+      '@repolens/core':
         specifier: workspace:*
-        version: link:../../packages/chunkers
+        version: link:../../packages/core
       '@repolens/parsers':
         specifier: workspace:*
         version: link:../../packages/parsers
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../../packages/types
       next:
         specifier: 15.2.3
         version: 15.2.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -205,6 +202,9 @@ importers:
       '@repolens/core':
         specifier: workspace:*
         version: link:../core
+      '@repolens/github-lens':
+        specifier: workspace:*
+        version: link:../github-lens
       '@repolens/parsers':
         specifier: workspace:*
         version: link:../parsers
@@ -258,27 +258,9 @@ importers:
 
   packages/core:
     dependencies:
-      '@repolens/chunkers':
-        specifier: workspace:*
-        version: link:../chunkers
-      '@repolens/embedders':
-        specifier: workspace:*
-        version: link:../embedders
-      '@repolens/fetchers':
-        specifier: workspace:*
-        version: link:../fetchers
-      '@repolens/parsers':
-        specifier: workspace:*
-        version: link:../parsers
-      '@repolens/types':
-        specifier: workspace:*
-        version: link:../types
-      octokit:
-        specifier: ^4.1.2
-        version: 4.1.2
-      ts-morph:
-        specifier: ^25.0.1
-        version: 25.0.1
+      gpt-tokenizer:
+        specifier: ^2.9.0
+        version: 2.9.0
     devDependencies:
       '@repo/eslint-config':
         specifier: workspace:*
@@ -304,9 +286,9 @@ importers:
       '@repolens/config':
         specifier: workspace:*
         version: link:../config
-      '@repolens/types':
+      '@repolens/core':
         specifier: workspace:*
-        version: link:../types
+        version: link:../core
       gpt-tokenizer:
         specifier: ^2.9.0
         version: 2.9.0
@@ -385,11 +367,60 @@ importers:
         specifier: 5.8.2
         version: 5.8.2
 
+  packages/github-lens:
+    dependencies:
+      '@repolens/config':
+        specifier: workspace:*
+        version: link:../config
+      '@repolens/core':
+        specifier: workspace:*
+        version: link:../core
+      '@repolens/embedders':
+        specifier: workspace:*
+        version: link:../embedders
+      '@repolens/parsers':
+        specifier: workspace:*
+        version: link:../parsers
+      gunzip-maybe:
+        specifier: ^1.4.2
+        version: 1.4.2
+      octokit:
+        specifier: ^4.1.2
+        version: 4.1.2
+      tar-stream:
+        specifier: ^3.1.7
+        version: 3.1.7
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../../config/eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../../config/typescript-config
+      '@turbo/gen':
+        specifier: ^2.4.4
+        version: 2.4.4(@types/node@22.13.11)(typescript@5.8.2)
+      '@types/gunzip-maybe':
+        specifier: ^1.4.2
+        version: 1.4.2
+      '@types/node':
+        specifier: ^22.13.10
+        version: 22.13.11
+      '@types/tar-stream':
+        specifier: ^3.1.3
+        version: 3.1.3
+      eslint:
+        specifier: ^9.22.0
+        version: 9.23.0(jiti@2.4.2)
+      typescript:
+        specifier: 5.8.2
+        version: 5.8.2
+
   packages/parsers:
     dependencies:
-      '@repolens/types':
+      '@repolens/core':
         specifier: workspace:*
-        version: link:../types
+        version: link:../core
       remark-frontmatter:
         specifier: ^5.0.0
         version: 5.0.0

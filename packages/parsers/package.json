@@ -7,18 +7,6 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    "./default": {
-      "types": "./dist/parsers/default.d.ts",
-      "default": "./dist/parsers/default.js"
-    },
-    "./typescript": {
-      "types": "./dist/parsers/typescript.d.ts",
-      "default": "./dist/parsers/typescript.js"
-    },
-    "./markdown": {
-      "types": "./dist/parsers/markdown.d.ts",
-      "default": "./dist/parsers/markdown.js"
-    },
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
@@ -29,7 +17,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "@repolens/types": "workspace:*",
+    "@repolens/core": "workspace:*",
     "remark-frontmatter": "^5.0.0",
     "remark-gfm": "^4.0.1",
     "remark-mdx": "^3.1.0",

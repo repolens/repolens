@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import {
-  type RepoLensChunk,
+  type ParsedChunk,
   isDefaultChunk,
   isTypeScriptChunk,
-} from '@repolens/types'
+} from '@repolens/core'
 
 export function TextParser() {
   const [input, setInput] = useState('')
   const [parser, setParser] = useState('default')
-  const [output, setOutput] = useState<RepoLensChunk[]>([])
+  const [output, setOutput] = useState<ParsedChunk[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
   const handleParse = () => {

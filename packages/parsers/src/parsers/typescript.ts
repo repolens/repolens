@@ -1,133 +1,122 @@
-// packages/parsers/src/createTSParser.ts
+// packages/parsers/src/parsers/typescript.ts
 
 import { Project, SyntaxKind } from 'ts-morph'
-import type { Parser, ParsedChunk, LensData } from '@repolens/types'
+import { SemanticParser, mergeChunksByTokenLimit } from '@repolens/core'
+import type { ParsedChunk, LensData } from '@repolens/core'
 
-export function createTSParser(): Parser {
-  return {
-    name: 'typescript',
-    supports: (file: LensData) => {
-      const name = file.metadata?.name as string | undefined
-      return /\.(ts|tsx|js|jsx)$/.test(name ?? '')
-    },
-    parse(files: LensData[]): ParsedChunk[] {
-      const semanticChunks: ParsedChunk[] = []
+export class TypeScriptParser extends SemanticParser {
+  supports(file: LensData): boolean {
+    const name = file.metadata?.name as string | undefined
+    return /\.(ts|tsx|js|jsx)$/.test(name ?? '')
+  }
 
-      for (const file of files) {
-        const extension =
-          (file.metadata?.path as string)?.split('.').pop() ?? 'ts'
+  parse(files: LensData[]): ParsedChunk[] {
+    const allChunks: ParsedChunk[] = []
 
-        const project = new Project({
-          useInMemoryFileSystem: true,
-          compilerOptions: {
-            allowJs: true,
-            jsx: extension === 'tsx' || extension === 'jsx' ? 2 : undefined,
-          },
-        })
+    for (const file of files) {
+      const baseMeta = {
+        ...file.metadata,
+        parserType: 'typescript' as const,
+      }
 
-        const sourceFile = project.createSourceFile(
-          `temp.${extension}`,
-          file.content
-        )
+      const extension =
+        (file.metadata?.path as string)?.split('.').pop() ?? 'ts'
 
-        const pushChunk = (
-          type: string,
-          name: string,
-          text: string,
-          extra?: Record<string, unknown>
-        ) => {
-          semanticChunks.push({
-            content: text,
-            metadata: {
-              ...file.metadata,
-              parserType: 'typescript',
-              type,
-              name,
-              part: 0,
-              ...extra,
-            },
-          })
-        }
+      const project = new Project({
+        useInMemoryFileSystem: true,
+        compilerOptions: {
+          allowJs: true,
+          jsx: extension === 'tsx' || extension === 'jsx' ? 2 : undefined,
+        },
+      })
 
-        sourceFile.forEachChild((node) => {
-          if (node.getKind() === SyntaxKind.FunctionDeclaration) {
-            const fn = node.asKind(SyntaxKind.FunctionDeclaration)
-            const name = fn?.getName()
-            const text = fn?.getText()
-            if (name && text) {
-              pushChunk('function', name, text)
-            }
-          }
+      const sourceFile = project.createSourceFile(
+        `temp.${extension}`,
+        file.content
+      )
+      const rawChunks: ParsedChunk[] = []
 
-          if (node.getKind() === SyntaxKind.ClassDeclaration) {
-            const cls = node.asKind(SyntaxKind.ClassDeclaration)
-            const name = cls?.getName()
-            const text = cls?.getText()
-            if (name && text) {
-              pushChunk('class', name, text)
-
-              cls?.getMethods().forEach((method) => {
-                const name = method.getName()
-                const text = method.getText()
-                if (name && text) {
-                  pushChunk('method', name, text, { parent: cls.getName() })
-                }
-              })
-            }
-          }
-
-          if (node.getKind() === SyntaxKind.TypeAliasDeclaration) {
-            const alias = node.asKind(SyntaxKind.TypeAliasDeclaration)
-            if (alias?.getName()) {
-              pushChunk('type', alias.getName(), alias.getText())
-            }
-          }
-
-          if (node.getKind() === SyntaxKind.InterfaceDeclaration) {
-            const int = node.asKind(SyntaxKind.InterfaceDeclaration)
-            if (int?.getName()) {
-              pushChunk('interface', int.getName(), int.getText())
-            }
-          }
-
-          if (node.getKind() === SyntaxKind.EnumDeclaration) {
-            const enumNode = node.asKind(SyntaxKind.EnumDeclaration)
-            if (enumNode?.getName()) {
-              pushChunk('enum', enumNode.getName(), enumNode.getText())
-            }
-          }
-
-          if (node.getKind() === SyntaxKind.VariableStatement) {
-            const varStatement = node.asKind(SyntaxKind.VariableStatement)
-            const declarations = varStatement
-              ?.getDeclarationList()
-              .getDeclarations()
-
-            if (varStatement?.getText()) {
-              declarations?.forEach((declaration) => {
-                const name = declaration.getName()
-                if (name) {
-                  pushChunk('variable', name, varStatement.getText())
-                }
-              })
-            }
-          }
-
-          if (node.getKind() === SyntaxKind.ImportDeclaration) {
-            const importNode = node.asKind(SyntaxKind.ImportDeclaration)
-            const mod = importNode?.getModuleSpecifier()?.getText()
-            if (mod && importNode) {
-              pushChunk(
-                'import',
-                mod.replace(/['"]/g, ''),
-                importNode.getText()
-              )
-            }
-          }
+      const push = (
+        type: string,
+        name: string,
+        content: string,
+        extra?: Record<string, unknown>
+      ) => {
+        rawChunks.push({
+          content,
+          metadata: { ...baseMeta, type, name, ...extra },
         })
       }
 
-      return semanticChunks
-    },
+      sourceFile.forEachChild((node) => {
+        if (node.getKind() === SyntaxKind.FunctionDeclaration) {
+          const fn = node.asKind(SyntaxKind.FunctionDeclaration)
+          if (fn?.getName() && fn.getText())
+            push('function', fn.getName() ?? '', fn.getText())
+        }
+
+        if (node.getKind() === SyntaxKind.ClassDeclaration) {
+          const cls = node.asKind(SyntaxKind.ClassDeclaration)
+          if (cls?.getName() && cls.getText()) {
+            push('class', cls.getName() ?? '', cls.getText())
+            cls.getMethods().forEach((method) => {
+              if (method.getName() && method.getText()) {
+                push('method', method.getName(), method.getText(), {
+                  parent: cls.getName(),
+                })
+              }
+            })
+          }
+        }
+
+        if (node.getKind() === SyntaxKind.TypeAliasDeclaration) {
+          const alias = node.asKind(SyntaxKind.TypeAliasDeclaration)
+          if (alias?.getName()) push('type', alias.getName(), alias.getText())
+        }
+
+        if (node.getKind() === SyntaxKind.InterfaceDeclaration) {
+          const int = node.asKind(SyntaxKind.InterfaceDeclaration)
+          if (int?.getName()) push('interface', int.getName(), int.getText())
+        }
+
+        if (node.getKind() === SyntaxKind.EnumDeclaration) {
+          const e = node.asKind(SyntaxKind.EnumDeclaration)
+          if (e?.getName()) push('enum', e.getName(), e.getText())
+        }
+
+        if (node.getKind() === SyntaxKind.VariableStatement) {
+          const vs = node.asKind(SyntaxKind.VariableStatement)
+          const declarations = vs?.getDeclarationList().getDeclarations()
+          if (vs?.getText()) {
+            declarations?.forEach((d) => {
+              if (d.getName()) push('variable', d.getName(), vs.getText())
+            })
+          }
+        }
+
+        if (node.getKind() === SyntaxKind.ImportDeclaration) {
+          const imp = node.asKind(SyntaxKind.ImportDeclaration)
+          const mod = imp?.getModuleSpecifier()?.getText()
+          if (mod && imp) {
+            push('import', mod.replace(/['"]/g, ''), imp.getText())
+          }
+        }
+      })
+
+      allChunks.push(
+        ...mergeChunksByTokenLimit(
+          rawChunks,
+          this.maxTokens,
+          baseMeta,
+          'typescript'
+        )
+      )
+    }
+
+    return allChunks
   }
+}
+
+export function createTSParser(maxTokens: number = 8000) {
+  return new TypeScriptParser(maxTokens)
 }

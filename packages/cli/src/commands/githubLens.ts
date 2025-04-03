@@ -1,10 +1,13 @@
-import { GithubLens } from '@repolens/core'
+import { ParsedChunk } from '@repolens/core'
+import { GitHubLens } from '@repolens/github-lens'
 
-export async function runGithubLens() {
-  const lens = new GithubLens({
-    owner: 'repolens',
-    repo: 'repolens',
-    ref: 'main',
+export async function runGithubLens(): Promise<ParsedChunk[]> {
+  const lens = new GitHubLens({
+    fetcherOptions: {
+      owner: 'repolens',
+      repo: 'repolens',
+      ref: 'main',
+    },
   })
   const chunks = await lens.run()
 

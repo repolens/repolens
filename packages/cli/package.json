@@ -23,6 +23,7 @@
     "@repolens/config": "workspace:*",
     "@repolens/core": "workspace:*",
     "@repolens/parsers": "workspace:*",
+    "@repolens/github-lens": "workspace:*",
     "commander": "^13.1.0"
   }
 }

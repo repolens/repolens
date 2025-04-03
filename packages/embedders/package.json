@@ -4,10 +4,12 @@
   "type": "module",
   "license": "MIT",
   "author": "Cody Rathor <cody@codyval.dev>",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    "./openai": {
-      "types": "./dist/openai-embedder.d.ts",
-      "default": "./dist/openai-embedder.js"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {
@@ -16,7 +18,7 @@
   "dependencies": {
     "openai": "^4.89.0",
     "gpt-tokenizer": "^2.9.0",
-    "@repolens/types": "workspace:*",
+    "@repolens/core": "workspace:*",
     "@repolens/config": "workspace:*"
   },
   "devDependencies": {
