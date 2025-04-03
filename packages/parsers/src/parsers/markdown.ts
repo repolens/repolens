@@ -1,5 +1,3 @@
-// packages/parsers/src/parsers/markdown.ts
-
 import { SemanticParser } from '@repolens/core'
 import type { ParsedChunk, LensData } from '@repolens/core'
 import { unified } from 'unified'
